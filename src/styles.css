@@ -84,11 +84,11 @@ button:focus{outline:none;}
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-  background: #000;
+  background: #d3d3d3;
 }
 
 /* Handle on hover */
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(31, 31, 31);
+  background: #fff;
 }
