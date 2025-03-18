@@ -2,6 +2,7 @@ import { Component, OnInit, computed } from '@angular/core';
 import { ThemeService, ThemeType } from '../../services/theme/theme.service';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
+import { VERSION } from '../../../environments/version';
 
 @Component({
     selector: 'app-footer',
@@ -11,6 +12,7 @@ import { RouterLink } from '@angular/router';
 })
 export class FooterComponent implements OnInit {
   currentYear : number;
+  buildHash: string;
 
   footerLogoPath = computed(()=> {
     if (this.theme.themeType() == ThemeType.Light) 
@@ -22,6 +24,7 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     this.currentYear = new Date().getFullYear();
+    this.buildHash = VERSION.hash;
   }
 
 }

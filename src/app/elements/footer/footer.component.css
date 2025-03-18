@@ -33,3 +33,7 @@
 .footer p.binary-text {
     font-family: monospace;
 }
+
+a {
+    text-decoration: none;
+}
