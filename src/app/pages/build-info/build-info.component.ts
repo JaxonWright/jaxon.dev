@@ -4,7 +4,6 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { VERSION } from '../../../environments/version';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatList, MatListItem, MatListItemAvatar, MatListItemTitle, MatListItemLine } from '@angular/material/list';
-import { NgFor } from '@angular/common';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 declare var require: any;
 
@@ -20,7 +19,11 @@ export interface Dependency {
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './build-info.component.html',
     styleUrls: ['./build-info.component.css'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatList, NgFor, MatListItem, FaIconComponent, MatListItemAvatar, MatListItemTitle, MatListItemLine]
+    imports: [
+      MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatList,
+      MatListItem, FaIconComponent, MatListItemAvatar, MatListItemTitle, 
+      MatListItemLine
+    ]
 })
 export class BuildInfoComponent implements OnInit {
   dependencies : Dependency[];

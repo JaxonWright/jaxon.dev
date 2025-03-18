@@ -1,4 +1,4 @@
-<h1>Build Info.</h1>
+<h1 style="margin-top: 0">Build Info</h1>
 <div class="row">
   <mat-card appearance="outlined">
     <mat-card-header>
@@ -8,11 +8,13 @@
     </mat-card-header>
     <mat-card-content>
       <mat-list>
-        <mat-list-item *ngFor="let dep of buildInfo">
-          <fa-icon matListItemAvatar [icon]="dep.icon"></fa-icon>
-          <h3 matListItemTitle>{{dep.name}}</h3>
-          <a [href]="dep.link" matListItemLine>{{dep.version}}</a>
-        </mat-list-item>
+        @for (dep of buildInfo; track $index) {
+          <mat-list-item>
+            <fa-icon matListItemAvatar [icon]="dep.icon"></fa-icon>
+            <h3 matListItemTitle>{{dep.name}}</h3>
+            <a [href]="dep.link" matListItemLine>{{dep.version}}</a>
+          </mat-list-item>
+        }
       </mat-list>
     </mat-card-content>
   </mat-card>
@@ -24,11 +26,13 @@
     </mat-card-header>
     <mat-card-content>
       <mat-list>
-        <mat-list-item *ngFor="let dep of dependencies">
-          <fa-icon matListItemAvatar [icon]="dep.icon"></fa-icon>
-          <h3 matListItemTitle>{{dep.name}}</h3>
-          <a [href]="dep.link" matListItemLine>{{dep.version}}</a>
-        </mat-list-item>
+        @for (dep of dependencies; track $index) {
+          <mat-list-item>
+            <fa-icon matListItemAvatar [icon]="dep.icon"></fa-icon>
+            <h3 matListItemTitle>{{dep.name}}</h3>
+            <a [href]="dep.link" matListItemLine>{{dep.version}}</a>
+          </mat-list-item>
+        }
       </mat-list>
     </mat-card-content>
   </mat-card>
