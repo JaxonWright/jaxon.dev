@@ -1,6 +1,5 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ThemeService } from './services/theme/theme.service';
 
 @Component({
     selector: 'app-root',
@@ -12,27 +11,12 @@ export class AppComponent implements OnInit {
   @HostBinding('class') componentCssClass;
 
   constructor(
-    public overlayContainer : OverlayContainer,
-    public theme : ThemeService
+    public overlayContainer : OverlayContainer
   ) {
 
   }
 
   ngOnInit() {
-    this.setTheme(this.theme.getSaved());
-  }
 
-  setTheme(theme) {
-    this.overlayContainer.getContainerElement().classList.forEach((v,k,p)=> {
-      if (v.endsWith('theme')) {
-        p.replace(v,theme);
-        return;
-      }
-    })
-    document.documentElement.classList.remove(this.theme.themeType())
-    document.documentElement.classList.add(theme);
-    this.componentCssClass = theme;
-    this.theme.set(theme);
   }
-
 }

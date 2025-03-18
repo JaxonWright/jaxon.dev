@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { ThemeService } from '../../services/theme/theme.service';
 import { NgFor } from '@angular/common';
 import { ProjectCardComponent } from '../../elements/project-card/project-card.component';
 
@@ -35,8 +34,10 @@ export interface Action {
 export class ProjectsComponent implements OnInit {
   projects : Project[];
 
-  constructor(private titleServ : Title, public theme : ThemeService) { 
-    this.titleServ.setTitle('Jaxon Wright - Projects');
+  constructor(
+    private title : Title
+  ) { 
+    this.title.setTitle('Jaxon Wright - Projects');
   }
 
   ngOnInit() {

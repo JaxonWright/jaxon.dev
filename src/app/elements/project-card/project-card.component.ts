@@ -1,6 +1,5 @@
-import { Component, OnInit, computed, effect, input, signal } from '@angular/core';
+import { Component, OnInit, computed, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ThemeService, ThemeType } from '@services/theme/theme.service';
 import { Project } from '@app/pages/projects/projects.component';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { NgIf, NgFor } from '@angular/common';
@@ -19,9 +18,7 @@ import { MatAnchor } from '@angular/material/button';
 export class ProjectCardComponent implements OnInit {
   project = input<Project>();
   imageSource = computed(() => {
-    if (this.theme.themeType() == ThemeType.Light && this.project()?.logo) {
-      return this.project().logo;
-    } else if (this.project()?.darkLogo) {
+    if (this.project()?.darkLogo) {
       return this.project().darkLogo;
     } else {
       return this.project().logo ?? '';
@@ -30,7 +27,7 @@ export class ProjectCardComponent implements OnInit {
 
   constructor(
     public router : Router,
-    public theme : ThemeService) { 
+  ) { 
 
   }
 

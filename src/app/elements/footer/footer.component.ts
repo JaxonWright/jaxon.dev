@@ -1,5 +1,4 @@
-import { Component, OnInit, computed } from '@angular/core';
-import { ThemeService, ThemeType } from '../../services/theme/theme.service';
+import { Component, OnInit } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 import { VERSION } from '../../../environments/version';
@@ -14,13 +13,9 @@ export class FooterComponent implements OnInit {
   currentYear : number;
   buildHash: string;
 
-  footerLogoPath = computed(()=> {
-    if (this.theme.themeType() == ThemeType.Light) 
-      return '../../assets/img/branding/jhwb.png'
-    return '../../assets/img/branding/jhw.png' 
-  })
+  constructor() {
 
-  constructor(public theme : ThemeService) { }
+   }
 
   ngOnInit() {
     this.currentYear = new Date().getFullYear();

@@ -26,7 +26,6 @@ import {MatIconModule} from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { OverlayModule } from '@angular/cdk/overlay';
-import { ThemeService } from '@services/theme/theme.service';
 import { BuildInfoComponent } from '@pages/build-info/build-info.component';
 import { IconsModule } from './icons.module';
 import { RoutesModule } from './routes.module';
@@ -63,7 +62,6 @@ import { ProjectCardComponent } from './elements/project-card/project-card.compo
         ProjectCardComponent,
     ],
     providers: [
-        ThemeService
     ],
     bootstrap: [AppComponent]
 })

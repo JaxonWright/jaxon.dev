@@ -8,20 +8,6 @@
 @include mat.elevation-classes();
 @include mat.app-background();
 
-$light-app-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$green-palette,
-  )
-));
-
-$dark-app-theme: mat.define-theme((
-  color: (
-    theme-type: dark,
-    primary: mat.$green-palette,
-  )
-));
-
 $black-app-theme: mat.define-theme((
   color: (
     theme-type: dark,
@@ -30,26 +16,6 @@ $black-app-theme: mat.define-theme((
 ));
 
 html {
-  @include mat.elevation-classes();
-  @include mat.app-background();
-  @include mat.toolbar-theme($light-app-theme);
-  @include mat.button-theme($light-app-theme);
-  @include mat.icon-button-theme($light-app-theme);
-  @include mat.fab-theme($light-app-theme);
-  @include mat.card-theme($light-app-theme);
-  @include mat.tooltip-theme($light-app-theme);
-  @include mat.divider-theme($light-app-theme);
-  @include mat.chips-theme($light-app-theme);
-  @include mat.dialog-theme($light-app-theme);
-  @include mat.form-field-theme($light-app-theme);
-  @include mat.input-theme($light-app-theme);
-  @include mat.snack-bar-theme($light-app-theme);
-  @include mat.list-theme($light-app-theme);
-  @include mat.menu-theme($light-app-theme);
-  @include mat.icon-theme($light-app-theme);
-}
-
-.black-theme {
   @include mat.elevation-classes();
   @include mat.app-background();
   @include mat.toolbar-color($black-app-theme);
@@ -73,45 +39,4 @@ html {
   .mat-mdc-card { background-color: #000000; color: rgb(236, 236, 236) }
   .mat-mdc-menu-panel { background-color: #000000; color: rgb(236, 236, 236) }
   .mat-mdc-dialog-container .mdc-dialog__surface { background-color: #000000; color: rgb(236, 236, 236) }
-}
-
-.dark-theme {
-  @include mat.elevation-classes();
-  @include mat.app-background();
-  @include mat.toolbar-color($dark-app-theme);
-  @include mat.button-color($dark-app-theme);
-  @include mat.icon-button-color($dark-app-theme);
-  @include mat.fab-color($dark-app-theme);
-  @include mat.card-color($dark-app-theme);
-  @include mat.tooltip-color($dark-app-theme);
-  @include mat.divider-color($dark-app-theme);
-  @include mat.chips-color($dark-app-theme);
-  @include mat.dialog-color($dark-app-theme);
-  @include mat.form-field-color($dark-app-theme);
-  @include mat.input-color($dark-app-theme);
-  @include mat.snack-bar-color($dark-app-theme);
-  @include mat.list-color($dark-app-theme);
-  @include mat.menu-color($dark-app-theme);
-  @include mat.icon-color($dark-app-theme);
-  @include mat.sidenav-color($dark-app-theme);
-}
-
-.light-theme {
-  @include mat.elevation-classes();
-  @include mat.app-background();
-  @include mat.toolbar-color($light-app-theme);
-  @include mat.button-color($light-app-theme);
-  @include mat.icon-button-color($light-app-theme);
-  @include mat.fab-color($light-app-theme);
-  @include mat.card-color($light-app-theme);
-  @include mat.tooltip-color($light-app-theme);
-  @include mat.divider-color($light-app-theme);
-  @include mat.chips-color($light-app-theme);
-  @include mat.dialog-color($light-app-theme);
-  @include mat.form-field-color($light-app-theme);
-  @include mat.input-color($light-app-theme);
-  @include mat.snack-bar-color($light-app-theme);
-  @include mat.list-color($light-app-theme);
-  @include mat.menu-color($light-app-theme);
-  @include mat.icon-color($light-app-theme);
 }
