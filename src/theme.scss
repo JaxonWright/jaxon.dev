@@ -18,21 +18,21 @@ $black-app-theme: mat.define-theme((
 html {
   @include mat.elevation-classes();
   @include mat.app-background();
-  @include mat.toolbar-color($black-app-theme);
-  @include mat.button-color($black-app-theme);
-  @include mat.icon-button-color($black-app-theme);
-  @include mat.fab-color($black-app-theme);
-  @include mat.card-color($black-app-theme);
-  @include mat.tooltip-color($black-app-theme);
-  @include mat.divider-color($black-app-theme);
-  @include mat.chips-color($black-app-theme);
-  @include mat.dialog-color($black-app-theme);
-  @include mat.form-field-color($black-app-theme);
-  @include mat.input-color($black-app-theme);
-  @include mat.snack-bar-color($black-app-theme);
-  @include mat.list-color($black-app-theme);
-  @include mat.menu-color($black-app-theme);
-  @include mat.icon-color($black-app-theme);
+  @include mat.toolbar-theme($black-app-theme);
+  @include mat.button-theme($black-app-theme);
+  @include mat.icon-button-theme($black-app-theme);
+  @include mat.fab-theme($black-app-theme);
+  @include mat.card-theme($black-app-theme);
+  @include mat.tooltip-theme($black-app-theme);
+  @include mat.divider-theme($black-app-theme);
+  @include mat.chips-theme($black-app-theme);
+  @include mat.dialog-theme($black-app-theme);
+  @include mat.form-field-theme($black-app-theme);
+  @include mat.input-theme($black-app-theme);
+  @include mat.snack-bar-theme($black-app-theme);
+  @include mat.list-theme($black-app-theme);
+  @include mat.menu-theme($black-app-theme);
+  @include mat.icon-theme($black-app-theme);
 
   .mat-app-background,
   .mat-toolbar { background-color: #000000; color: rgb(236, 236, 236) }
