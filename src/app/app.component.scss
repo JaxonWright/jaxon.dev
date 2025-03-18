@@ -14,15 +14,6 @@ app-navbar {
 
 .content {
     flex: 1;
-    margin-left: 25%;
-    margin-right: 25%;
-    padding-bottom: 64px;
-    padding-top: 64px;
-}
-
-@media(max-width:1200px) {
-    .content {
-        margin-left: 32px;
-        margin-right: 32px;
-    }
+    padding: 64px 32px;
+    max-width: 720px;
 }
