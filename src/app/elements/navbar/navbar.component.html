@@ -1,8 +1,11 @@
-<mat-toolbar >
+<mat-toolbar>
   <mat-toolbar-row>
-    <a mat-button routerLink="" class="logo-button">
-      <img [src]="theme.themeType() == ThemeType.Dark || theme.themeType() == ThemeType.Black ? 'assets/img/branding/white.png' : 'assets/img/branding/dark.png'" class='logo mx-auto'>
+    <a mat-button class="logo-button" routerLink="" matTooltip="">
+      <app-logo></app-logo>
     </a>
+    <a mat-button class="route-button" routerLink="" routerLinkActive="link-active" [routerLinkActiveOptions]="{ exact: true }"> / About</a>
+    <a mat-button class="route-button" routerLink="projects" routerLinkActive="link-active">/ Projects</a>
+    <a mat-button class="route-button" routerLink="contact" routerLinkActive="link-active">/ Contact</a>
     <div class="social-button-container">
       <a mat-icon-button href="https://twitter.com/jxn_w"  matTooltip="X" class="social-button">
         <fa-icon [icon]="['fab','x-twitter']" size="2x"/>
@@ -13,30 +16,24 @@
     </div>
     <button mat-icon-button class="theme-button" matTooltip="Switch Theme"
       [matMenuTriggerFor]="menu" matTooltipPosition="below" matTooltipClass="mat-tooltip-multi">
-      <mat-icon *ngIf="theme.themeType() == ThemeType.Light">brightness_5</mat-icon>
-      <mat-icon *ngIf="theme.themeType() == ThemeType.Dark">dark_mode</mat-icon>
-      <mat-icon *ngIf="theme.themeType() == ThemeType.Black">nights_stay</mat-icon>
+      @switch (theme.themeType()) {
+        @case (ThemeType.Light) {
+          <mat-icon>brightness_5</mat-icon>
+        }
+        @case (ThemeType.Black) {
+          <mat-icon>nights_stay</mat-icon>
+        }
+      }
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="app.setTheme(ThemeType.Light)">
         <mat-icon>brightness_5</mat-icon>
         <span>Light</span>
       </button>
-      <button mat-menu-item (click)="app.setTheme(ThemeType.Dark)">
-        <mat-icon>dark_mode</mat-icon>
-        <span>Dark</span>
-      </button>
       <button mat-menu-item (click)="app.setTheme(ThemeType.Black)">
         <mat-icon>nights_stay</mat-icon>
         <span>Night</span>
       </button>
     </mat-menu>
-  </mat-toolbar-row>
-  <mat-toolbar-row>
-    <div class="route-button-container">
-      <a mat-button routerLink="" routerLinkActive="link-active" [routerLinkActiveOptions]="{ exact: true }">About</a>
-      <a mat-button routerLink="projects" routerLinkActive="link-active">Projects</a>
-      <a mat-button routerLink="contact" routerLinkActive="link-active">Contact</a>
-    </div>
   </mat-toolbar-row>
 </mat-toolbar>
