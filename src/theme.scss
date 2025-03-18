@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use '../_theme-colors' as theme;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -11,7 +12,8 @@
 $black-app-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$green-palette,
+    primary: theme.$primary-palette,
+    tertiary: theme.$secondary-palette
   )
 ));
 
@@ -34,9 +36,23 @@ html {
   @include mat.menu-theme($black-app-theme);
   @include mat.icon-theme($black-app-theme);
 
+  .mat-mdc-card-outlined  { --mdc-outlined-card-outline-color: #004525; }
+
   .mat-app-background,
   .mat-toolbar { background-color: #000000; color: rgb(236, 236, 236) }
   .mat-mdc-card { background-color: #000000; color: rgb(236, 236, 236) }
   .mat-mdc-menu-panel { background-color: #000000; color: rgb(236, 236, 236) }
   .mat-mdc-dialog-container .mdc-dialog__surface { background-color: #000000; color: rgb(236, 236, 236) }
+}
+
+.tertiary-button {
+  @include mat.button-color($black-app-theme, $color-variant: tertiary);
+}
+
+.tertiary-fab {
+  @include mat.fab-color($black-app-theme, $color-variant: tertiary);
+}
+
+.tertiary-chip {
+  @include mat.chips-color($black-app-theme, $color-variant: tertiary);
 }

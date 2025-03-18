@@ -9,7 +9,7 @@
       </mat-card-title>
       <mat-card-subtitle>
         <mat-chip-listbox>
-          <mat-chip *ngFor="let cat of project().categories">
+          <mat-chip class="tertiary-chip" *ngFor="let cat of project().categories">
             <fa-icon [icon]="cat.icon" size="lg" transform="shrink-6.5" [mask]="['fas','circle']"></fa-icon>
             &nbsp;{{cat.title}}
           </mat-chip>
@@ -23,7 +23,7 @@
     </mat-card-content>
     <mat-card-actions>
       <ng-container *ngFor="let action of project().actions">
-        <a mat-button [href]="action.link" target="_blank">{{action.title}}</a>
+        <a mat-button class="tertiary-button" [href]="action.link" target="_blank">{{action.title}}</a>
       </ng-container>
     </mat-card-actions>
   </mat-card>
