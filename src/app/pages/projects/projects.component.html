@@ -1,4 +1,4 @@
 <h1 style="margin-top: 0">Projects</h1>
-<ng-container *ngFor="let project of projects">
+@for (project of projects; track $index) {
   <app-project-card [project]="project"></app-project-card>
-</ng-container>
+}
