@@ -1,7 +1,7 @@
 <mat-toolbar>
   <mat-toolbar-row>
     <a mat-button class="logo-button" routerLink="" matTooltip="">
-      <app-logo></app-logo>
+      <app-logo height="42px" [color]="theme.themeType() == ThemeType.Light ? '#000' : '#FFF'"></app-logo>
     </a>
     <a mat-button class="route-button" routerLink="" routerLinkActive="link-active" [routerLinkActiveOptions]="{ exact: true }"> / About</a>
     <a mat-button class="route-button" routerLink="projects" routerLinkActive="link-active">/ Projects</a>
