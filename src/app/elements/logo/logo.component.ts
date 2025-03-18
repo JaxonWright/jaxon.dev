@@ -8,4 +8,5 @@ import { Component, input, Input } from '@angular/core';
 })
 export class LogoComponent {
   height = input('42px');
+  color = input('#FFF');
 }
