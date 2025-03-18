@@ -7,7 +7,7 @@ import { VERSION } from '../../../environments/version';
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.component.html',
-    styleUrls: ['./footer.component.css'],
+    styleUrls: ['./footer.component.scss'],
     imports: [MatToolbar, RouterLink]
 })
 export class FooterComponent implements OnInit {
