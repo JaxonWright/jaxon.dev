@@ -4,12 +4,12 @@
 [![GitHub license](https://img.shields.io/github/license/JaxonWright/jaxonwright.com?style=flat-square)](https://github.com/JaxonWright/jaxonwright.com/blob/master/LICENSE)
 
 ## About
-This website is the personal site of me, Jaxon Wright. It is written with the Google-maintained Angular Framework. It is meant to showcase a little about me and what I have been working on. Feel free to reference any of this for your own project or even fork the repository.
+This website is the personal site of Jaxon Wright, a software developer in the Grand Rapids, Michigan Area. It is written with the Angular framework. It is meant to showcase a little about Jaxon and what I he's been working on. Feel free to reference any of this for your own project or even fork the repository.
 
 ## Libraries Used
 This is not an exhaustive list, but it is the core of what is used.
 - [Angular](https://github.com/angular/angular) : The backbone
-- [Angular Material](https://github.com/angular/material2) : Provides a plethora of elements that follow Google's Material Design standard
+- [Angular Material](https://github.com/angular/components) : Provides a plethora of elements that follow Google's Material 3 design standard
 - [Angular FontAwesome](https://fontawesome.com/) : A very powerful, fast and light way to handle icons.
 
 ## Testing, Building and Deploying
