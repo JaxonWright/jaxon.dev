@@ -6,7 +6,6 @@ import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatAnchor, MatIconAnchor, MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { LogoComponent } from "../logo/logo.component";
 
@@ -16,8 +15,8 @@ import { LogoComponent } from "../logo/logo.component";
     styleUrls: ['./navbar.component.scss'],
     imports: [
       MatToolbar, MatToolbarRow, MatAnchor, RouterLink, MatIconAnchor,
-      MatTooltip, FaIconComponent, MatIconButton, MatMenuTrigger,
-      MatIcon, MatMenu, MatMenuItem, RouterLinkActive, LogoComponent,
+      MatTooltip, FaIconComponent, MatIconButton,
+      MatIcon, RouterLinkActive, LogoComponent,
     ]
 })
 export class NavbarComponent {
