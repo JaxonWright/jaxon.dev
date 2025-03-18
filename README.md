@@ -1,4 +1,4 @@
-<img src="https://www.jaxonwright.com/assets/img/branding/dark.png" width="100px"/>
+<img src="https://www.jaxon.dev/assets/img/branding/favicon.svg" width="100px"/>
 
 [![Website status](https://img.shields.io/website-up-down-green-red/http/jaxonwright.com.svg?style=flat-square)](https://jaxonwright.com)
 [![GitHub license](https://img.shields.io/github/license/JaxonWright/jaxonwright.com?style=flat-square)](https://github.com/JaxonWright/jaxonwright.com/blob/master/LICENSE)
