@@ -241,11 +241,11 @@ export class ProjectsComponent implements OnInit {
         ]
       },
       {
-        title : 'jaxonwright.com',
-        logo : '../../assets/img/branding/dark.png',
-        darkLogo : '../../assets/img/branding/white.png',
+        title : 'jaxon.dev',
+        logo : '../../assets/img/branding/favicon.svg',
+        darkLogo : '../../assets/img/branding/favicon.svg',
         logoOnly : false,
-        description : `This is the website that you are currently on. This is my personal website.`,
+        description : `The website that you are currently on. This is my personal website.`,
         categories : [
           {
             icon : ['fas','file-contract'],
@@ -270,7 +270,7 @@ export class ProjectsComponent implements OnInit {
         ],
         actions : [
           {
-            link : 'https://github.com/JaxonWright/jaxonwright.com',
+            link : 'https://github.com/JaxonWright/jaxon.dev',
             title : 'GitHub'
           }
         ]
