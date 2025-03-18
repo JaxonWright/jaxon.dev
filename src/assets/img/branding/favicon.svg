@@ -1,18 +1,1 @@
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="100" height="100" viewBox="0 0 454.000000 384.000000"
- preserveAspectRatio="xMidYMid meet">
-   <style>
-    g {
-      fill: black;
-    }
-    @media (prefers-color-scheme: dark) {
-      g {
-        fill: white;
-      }
-    }
-  </style>
-<g transform="translate(0.000000,384.000000) scale(0.100000,-0.100000)" stroke="none">
-<path d="M2480 2585 l0 -975 -980 0 -980 0 392 -590 393 -589 786 -1 786 0
-353 528 c195 290 376 557 402 595 l48 67 0 970 0 970 -600 0 -600 0 0 -975z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 1185 538"><path d="M359.5 358.5V538H180V358.5zm179 0V538H359V358.5zm0-179V359H359V179.5zm0-179V180H359V.5zM358 179.2h179.5v179.5H358zm0 179h179.5v179.5H358zm-179 0h179.5v179.5H179zm-179 0h179.5v179.5H0zm932.5.3V538H753V358.5zm-179 0V538H574V358.5zm0-179V359H574V179.5zm0-179V180H574V.5zm36 358V538H610V358.5zm179 0V538H789V358.5zm0-179V359H789V179.5zm0-179V180H789V.5zm37 358V538H826V358.5zm179 0V538H1005V358.5zm0-179V359H1005V179.5zm0-179V180H1005V.5z" style="fill:#fff"/></svg>
