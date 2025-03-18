@@ -51,8 +51,7 @@ export class ProjectsComponent implements OnInit {
         logo : '../../assets/img/projects/testube.png',
         darkLogo : '../../assets/img/projects/testubeLight.png',
         logoOnly : true,
-        description : `This is a web application that allows Tesla drivers to have easy access to a multitude of media services while their vehicle is in park. 
-        What makes this special is that it triggers "Theater Mode", which will make the application and anything clicked within it be open on the entire screen.`,
+        description : `Used by more than 3,000 people every month, testube provides Tesla drivers with seamless access to a wide range of media services while their vehicle is parked. What sets it apart is its ability to activate Tesla's "Theater Mode," allowing any application or content to be displayed in full screen, enhancing the overall viewing experience.`,
         categories : [
           {
             icon : ['fas','file-contract'],
