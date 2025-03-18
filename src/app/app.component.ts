@@ -9,10 +9,14 @@ import { ThemeService } from './services/theme/theme.service';
     standalone: false
 })
 export class AppComponent implements OnInit {
-  title = 'app';
   @HostBinding('class') componentCssClass;
 
-  constructor(public overlayContainer : OverlayContainer, public theme : ThemeService){}
+  constructor(
+    public overlayContainer : OverlayContainer,
+    public theme : ThemeService
+  ) {
+
+  }
 
   ngOnInit() {
     this.setTheme(this.theme.getSaved());
