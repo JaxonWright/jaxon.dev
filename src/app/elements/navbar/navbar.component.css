@@ -1,9 +1,3 @@
-img.logo {
-    height: 24px;
-    vertical-align: middle;
-    margin-left: -4px;
-}
-
 mat-toolbar-row {
     height: 50px;
 }
@@ -13,9 +7,7 @@ a:hover {
 }
 
 .logo-button {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-56%);
+    padding-top: 8px;
 }
 
 .social-button-container {
@@ -29,4 +21,26 @@ a:hover {
 .route-button-container {
     margin-left: auto;
     margin-right: auto;
+}
+
+
+
+
+.route-button {
+    font-family: Figtree,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+    text-transform:uppercase;
 }

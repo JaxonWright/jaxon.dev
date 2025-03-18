@@ -7,14 +7,18 @@ import { MatAnchor, MatIconAnchor, MatIconButton } from '@angular/material/butto
 import { MatTooltip } from '@angular/material/tooltip';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
+import { LogoComponent } from "../logo/logo.component";
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css'],
-    imports: [MatToolbar, MatToolbarRow, MatAnchor, RouterLink, MatIconAnchor, MatTooltip, FaIconComponent, MatIconButton, MatMenuTrigger, NgIf, MatIcon, MatMenu, MatMenuItem, RouterLinkActive]
+    imports: [
+      MatToolbar, MatToolbarRow, MatAnchor, RouterLink, MatIconAnchor,
+      MatTooltip, FaIconComponent, MatIconButton, MatMenuTrigger,
+      MatIcon, MatMenu, MatMenuItem, RouterLinkActive, LogoComponent,
+    ]
 })
 export class NavbarComponent {
   ThemeType = ThemeType;
