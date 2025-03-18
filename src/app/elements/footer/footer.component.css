@@ -8,24 +8,28 @@
     padding-right: 16px;
 }
 
-img.footer-logo {
-    position: absolute;
-    right: 16px;
-    bottom: 10px;
-    padding: 0;
-    max-width: 30vw;
-}
-
-mat-divider {
-    position: absolute;
-    bottom: 64px;
-    left: 0;
-    right: 0;
-}
-
-
 .footer p {
+    font-family: Figtree,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        "Noto Sans",
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
+    text-transform: uppercase;
     margin: 8px 0;
-    font-weight: 300;
+    font-weight: 500;
     font-size: small;
+}
+
+.footer p.binary-text {
+    font-family: monospace;
 }
