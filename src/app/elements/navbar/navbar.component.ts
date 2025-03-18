@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AppComponent } from '@app/app.component';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
-import { MatAnchor, MatIconAnchor, MatIconButton } from '@angular/material/button';
+import { MatAnchor } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { LogoComponent } from "../logo/logo.component";
 
 @Component({
@@ -12,8 +11,8 @@ import { LogoComponent } from "../logo/logo.component";
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss'],
     imports: [
-      MatToolbar, MatToolbarRow, MatAnchor, RouterLink, MatIconAnchor,
-      MatTooltip, FaIconComponent, RouterLinkActive, LogoComponent,
+      MatToolbar, MatToolbarRow, MatAnchor, RouterLink,
+      MatTooltip, RouterLinkActive, LogoComponent,
     ]
 })
 export class NavbarComponent {
