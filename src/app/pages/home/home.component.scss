@@ -6,9 +6,19 @@ h4 {
     margin-top: 8px;
 }
 
-.things-card {
-    flex: 1;
-    flex-basis: 270px;
+.top-card-content {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    
+    .headshot {
+        flex: 0 0 auto;
+    }
+
+    p {
+        flex: 1;
+    }
 }
 
 .mat-mdc-card-avatar {
@@ -37,18 +47,8 @@ h4 {
     background-size: cover;
     height: 145px;
     width: 145px;
-}
-
-.about-me-card-header {
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
-}
-
-.about-me-desc {
-  display: flex;
-  align-self: center;
-  flex-basis: 625px;  
+    border-radius: 8px;
+    display: inline-block;
 }
 
 .mat-mdc-card-subtitle  {
