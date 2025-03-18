@@ -36,7 +36,10 @@ html {
   @include mat.menu-theme($black-app-theme);
   @include mat.icon-theme($black-app-theme);
 
-  .mat-mdc-card-outlined  { --mdc-outlined-card-outline-color: #004525; }
+  .mat-mdc-card-outlined  { 
+    --mdc-outlined-card-outline-color: #004525;
+    --mdc-outlined-card-outline-width: 2px;
+  }
 
   .mat-app-background,
   .mat-toolbar { background-color: #000000; color: rgb(236, 236, 236) }
