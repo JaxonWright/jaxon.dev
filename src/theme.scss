@@ -45,6 +45,10 @@ html {
   .mat-mdc-dialog-container .mdc-dialog__surface { background-color: #000000; color: rgb(236, 236, 236) }
 }
 
+.tertiary-text {
+  color: #0ace70;
+}
+
 .tertiary-button {
   @include mat.button-color($black-app-theme, $color-variant: tertiary);
 }

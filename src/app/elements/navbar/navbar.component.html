@@ -3,9 +3,15 @@
     <a mat-button class="logo-button tertiary-button" routerLink="" matTooltip="">
       <app-logo height="42px" color="#FFF"/>
     </a>
-    <a mat-button class="route-button tertiary-button" routerLink="" routerLinkActive="link-active" [routerLinkActiveOptions]="{ exact: true }"> / About</a>
-    <a mat-button class="route-button tertiary-button" routerLink="projects" routerLinkActive="link-active">/ Projects</a>
-    <a mat-button class="route-button tertiary-button" routerLink="contact" routerLinkActive="link-active">/ Contact</a>
+    <a mat-button class="route-button tertiary-button" routerLink="" routerLinkActive="link-active" [routerLinkActiveOptions]="{ exact: true }">
+      <span class="tertiary-text">/</span> About
+    </a>
+    <a mat-button class="route-button tertiary-button" routerLink="projects" routerLinkActive="link-active">
+      <span class="tertiary-text">/</span> Projects
+    </a>
+    <a mat-button class="route-button tertiary-button" routerLink="contact" routerLinkActive="link-active">
+      <span class="tertiary-text">/</span> Contact
+    </a>
     <!-- <div class="social-button-container">
       <a mat-icon-button href="https://twitter.com/jxn_w"  matTooltip="X" class="social-button">
         <fa-icon [icon]="['fab','x-twitter']" size="2x"/>
