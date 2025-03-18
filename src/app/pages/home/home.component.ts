@@ -11,7 +11,7 @@ import { MatChipListbox, MatChip } from '@angular/material/chips';
     selector: 'app-home',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css'],
+    styleUrls: ['./home.component.scss'],
     imports: [MatCard, MatCardHeader, MatCardAvatar, MatCardContent, MatCardTitle, FaIconComponent, MatCardSubtitle, MatCardActions, MatAnchor, MatTooltip, MatChipListbox, MatChip]
 })
 export class HomeComponent implements OnInit, AfterViewInit {
