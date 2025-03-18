@@ -14,26 +14,17 @@
         <fa-icon [icon]="['fab','github']" size="2x"/>
       </a>
     </div>
-    <button mat-icon-button class="theme-button" matTooltip="Switch Theme"
-      [matMenuTriggerFor]="menu" matTooltipPosition="below" matTooltipClass="mat-tooltip-multi">
-      @switch (theme.themeType()) {
-        @case (ThemeType.Light) {
+    @switch (theme.themeType()) {
+      @case (ThemeType.Light) {
+        <button mat-icon-button class="theme-button" matTooltip="Switch Theme" (click)="app.setTheme(ThemeType.Black)">
           <mat-icon>brightness_5</mat-icon>
-        }
-        @case (ThemeType.Black) {
-          <mat-icon>nights_stay</mat-icon>
-        }
+        </button>
       }
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="app.setTheme(ThemeType.Light)">
-        <mat-icon>brightness_5</mat-icon>
-        <span>Light</span>
-      </button>
-      <button mat-menu-item (click)="app.setTheme(ThemeType.Black)">
-        <mat-icon>nights_stay</mat-icon>
-        <span>Night</span>
-      </button>
-    </mat-menu>
+      @case (ThemeType.Black) {
+        <button mat-icon-button class="theme-button" matTooltip="Switch Theme" (click)="app.setTheme(ThemeType.Light)">
+          <mat-icon>nights_stay</mat-icon>
+        </button>
+      }
+    }
   </mat-toolbar-row>
 </mat-toolbar>
