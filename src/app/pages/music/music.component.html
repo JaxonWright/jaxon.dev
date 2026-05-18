@@ -1,1 +1,76 @@
 <h1 style="margin-top: 0">Music</h1>
+<p>I love meticulously crafting playlists of my favorite music genres and niches. Here are all of them for your listening pleasure.</p>
+
+@if (primePlaylists().length) {
+  <h2 class="section-title">Prime PLaylists</h2>
+  <p>Taking my favorite songs from my larger playlists and curating them into slimmer ones.</p>
+  <div class="playlist-grid">
+    @for (playlist of primePlaylists(); track playlist.id) {
+      <mat-card class="playlist-card" appearance="outlined">
+        <img mat-card-image [src]="playlist.imageUrl" [alt]="playlist.name">
+        <!-- <mat-card-header> -->
+          <!-- <mat-card-title>{{playlist.name}}</mat-card-title> -->
+          <!-- <mat-card-subtitle>{{playlist.trackCount}} songs</mat-card-subtitle> -->
+        <!-- </mat-card-header> -->
+        @if (playlist.description) {
+          <mat-card-content>
+            <p>{{decode(playlist.description)}}</p>
+          </mat-card-content>
+        }
+        <mat-card-actions>
+          <a mat-button class="tertiary-button" [href]="playlist.url" target="_blank" rel="noopener noreferrer">Open in Spotify</a>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+}
+
+@if (goatedPlaylists().length) {
+  <h2 class="section-title">GOATed Playlists</h2>
+  <p>My favorite albums from each given year.</p>
+  <div class="playlist-grid">
+    @for (playlist of goatedPlaylists(); track playlist.id) {
+      <mat-card class="playlist-card" appearance="outlined">
+        <img mat-card-image [src]="playlist.imageUrl" [alt]="playlist.name">
+        <!-- <mat-card-header> -->
+          <!-- <mat-card-title>{{playlist.name}}</mat-card-title> -->
+          <!-- <mat-card-subtitle>{{playlist.trackCount}} songs</mat-card-subtitle> -->
+        <!-- </mat-card-header> -->
+        @if (playlist.description) {
+          <mat-card-content>
+            <p>{{decode(playlist.description)}}</p>
+          </mat-card-content>
+        }
+        <mat-card-actions>
+          <a mat-button class="tertiary-button" [href]="playlist.url" target="_blank" rel="noopener noreferrer">Open in Spotify</a>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+}
+
+<h2 class="section-title">The Rest</h2>
+<p>Large collections of songs from my favorite genres..</p>
+@if (otherPlaylists().length) {
+  <div class="playlist-grid">
+    @for (playlist of otherPlaylists(); track playlist.id) {
+      <mat-card class="playlist-card" appearance="outlined">
+        <img mat-card-image [src]="playlist.imageUrl" [alt]="playlist.name">
+        <!-- <mat-card-header> -->
+          <!-- <mat-card-title>{{playlist.name}}</mat-card-title> -->
+          <!-- <mat-card-subtitle>{{playlist.trackCount}}+ songs</mat-card-subtitle> -->
+        <!-- </mat-card-header> -->
+        @if (playlist.description) {
+          <mat-card-content>
+            <p>{{decode(playlist.description)}}</p>
+          </mat-card-content>
+        }
+        <mat-card-actions>
+          <a mat-button class="tertiary-button" [href]="playlist.url" target="_blank" rel="noopener noreferrer">Open in Spotify</a>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+} @else {
+  <p class="empty-state">No playlists loaded yet. Set up your Spotify API credentials and run <code>npm run fetch:playlists</code> to populate.</p>
+}
