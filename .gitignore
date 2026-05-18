@@ -25,6 +25,12 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# auto-generated data
+/src/app/services/playlist-data.ts
+
+# environment config
+.env
+
 # misc
 /.angular/cache
 /.sass-cache
