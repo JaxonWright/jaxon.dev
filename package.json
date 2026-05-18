@@ -5,8 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "node version.js && ng serve",
-    "build": "node version.js && ng build --configuration production --output-hashing=all",
+    "build": "node version.js && node scripts/fetch-spotify-playlists.mjs && ng build --configuration production --output-hashing=all",
     "build:ci": "npm run build && cp ./dist/index.html ./dist/404.html",
+    "fetch:playlists": "node scripts/fetch-spotify-playlists.mjs",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
