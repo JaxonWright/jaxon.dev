@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AppComponent } from '@app/app.component';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
@@ -10,6 +10,7 @@ import { LogoComponent } from "../logo/logo.component";
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
       MatToolbar, MatToolbarRow, MatAnchor, RouterLink,
       MatTooltip, RouterLinkActive, LogoComponent,

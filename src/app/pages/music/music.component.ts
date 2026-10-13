@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { SPOTIFY_PLAYLISTS } from '@services/playlist-data';
   selector: 'app-music',
   imports: [MatCardModule, MatButtonModule],
   templateUrl: './music.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './music.component.scss',
 })
 export class MusicComponent {
