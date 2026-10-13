@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, input } from '@angular/core';
+import { Component, OnInit, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Project } from '@app/pages/projects/projects.component';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
@@ -12,6 +12,7 @@ import { MatAnchor } from '@angular/material/button';
     selector: 'app-project-card',
     templateUrl: './project-card.component.html',
     styleUrls: ['./project-card.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
       MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatChipListbox,
       MatChip, FaIconComponent, MatCardContent, MatCardActions, MatAnchor
