@@ -49,15 +49,18 @@ export class AppComponent implements OnInit, OnDestroy {
     effect(() => {
       const t = this.term.theme();
       const s = document.documentElement.style;
-      s.setProperty('--t-primary', t.primary);
-      s.setProperty('--t-secondary', t.secondary);
+      const dark = t.mode === 'dark';
       s.setProperty('--t-bg', t.background);
-      s.setProperty('--t-text', t.text);
-      s.setProperty('--t-accent', t.accent);
-      // Photo tint: spearmint on the default monochrome theme, otherwise the theme's primary color.
-      const mono = t.name === 'monochrome';
-      s.setProperty('--t-photo', mono ? '#3EB489' : t.primary);
-      s.setProperty('--t-photo-hi', mono ? '#98FFC8' : t.primary);
+      s.setProperty('--t-text', t.foreground);
+      s.setProperty('--t-primary', t.bright);       // headings, logos, highlights
+      s.setProperty('--t-secondary', t.accent);     // prompt
+      s.setProperty('--t-accent', `color-mix(in srgb, ${t.foreground} 55%, ${t.background})`); // dim text
+      s.setProperty('--t-error', t.red);
+      // Photo ramp: shadow -> accent -> highlight (inverted ends on light themes so the face isn't a negative).
+      s.setProperty('--t-photo-lo', dark ? t.background : t.foreground);
+      s.setProperty('--t-photo', t.name === 'midnight' ? '#3EB489' : t.accent);
+      s.setProperty('--t-photo-hi', t.name === 'midnight' ? '#98FFC8' : (dark ? t.bright : t.background));
+      document.documentElement.classList.toggle('t-light', !dark);
       document.querySelector('meta[name="theme-color"]')?.setAttribute('content', t.background);
     });
     // Re-type the echoed command whenever it changes.
@@ -182,6 +185,11 @@ export class AppComponent implements OnInit, OnDestroy {
     if (target.closest('a, button, input')) return;
     if (window.getSelection()?.toString()) return;
     this.focusInput(true);
+  }
+
+  pickTheme(name: string): void {
+    const t = this.themes.find(x => x.name === name);
+    if (t) this.term.setTheme(t);
   }
 
   setHelp(text: string): void {

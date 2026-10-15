@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { TERMINAL_THEMES, DEFAULT_THEME, TerminalTheme } from './omarchy-themes';
 
 export interface TerminalLine {
   text: string;
@@ -27,24 +28,8 @@ export interface TerminalCommand {
   run?: (args: string[]) => TerminalLine[] | void;
 }
 
-export interface TerminalTheme {
-  name: string;
-  primary: string;
-  secondary: string;
-  background: string;
-  text: string;
-  accent: string;
-}
-
-/** Palettes modeled after the WALLHACK terminal theme list. */
-export const TERMINAL_THEMES: TerminalTheme[] = [
-  { name: 'monochrome', primary: '#FFFFFF', secondary: '#CCCCCC', background: '#000000', text: '#FFFFFF', accent: '#999999' },
-  { name: 'hacker_green', primary: '#00FF00', secondary: '#00AA00', background: '#001100', text: '#00FF00', accent: '#00CC00' },
-  { name: 'retro_amber', primary: '#FFBF00', secondary: '#FF7F00', background: '#1A1408', text: '#FFD27A', accent: '#B38600' },
-  { name: 'tron_blue', primary: '#00BFFF', secondary: '#0080B0', background: '#000000', text: '#00FFFF', accent: '#0090C0' },
-  { name: 'code_red', primary: '#FF4C4C', secondary: '#CC0000', background: '#1A1A1A', text: '#F2F2F2', accent: '#A33' },
-  { name: 'cyberpunk_neon', primary: '#FF0066', secondary: '#00FFFF', background: '#110022', text: '#FFFFFF', accent: '#B0489A' },
-];
+export { TERMINAL_THEMES, DEFAULT_THEME } from './omarchy-themes';
+export type { TerminalTheme } from './omarchy-themes';
 
 const THEME_KEY = 'jxn-terminal-theme';
 const CRT_KEY = 'jxn-terminal-crt';
@@ -55,7 +40,7 @@ export class TerminalService {
   readonly history = signal<string[]>([]);
   /** Command echoed above the currently routed page. */
   readonly routeEcho = signal<string>('');
-  readonly theme = signal<TerminalTheme>(TERMINAL_THEMES[0]);
+  readonly theme = signal<TerminalTheme>(TERMINAL_THEMES.find(t => t.name === DEFAULT_THEME)!);
   readonly crt = signal<boolean>(true);
   readonly helpText = signal<string>('');
 
@@ -67,6 +52,7 @@ export class TerminalService {
     { name: 'contact', aliases: ['socials', 'email'], description: 'Ways to reach me', route: '/contact', echo: 'cat contact.txt' },
     { name: 'pay', aliases: ['venmo', 'tip'], description: 'Send me money', route: '/contact', echo: 'cat contact.txt --pay' },
     { name: 'version', aliases: ['build-info', 'build', 'uname -a', 'neofetch'], description: 'Build + dependency info', route: '/build-info', echo: 'uname -a' },
+    { name: 'theme', description: 'List themes or switch: theme <name>', run: (a) => this.themeCommand(a) },
     { name: 'crt', description: 'Toggle CRT scanlines: crt on|off', run: (a) => this.crtCommand(a) },
     { name: 'history', description: 'Show command history', run: () => this.history().map((h, i) => ({ text: `${String(i + 1).padStart(4)}  ${h}` })) },
     { name: 'clear', aliases: ['cls'], description: 'Clear the screen', run: () => { this.entries.set([]); this.routeEcho.set(''); this.cleared.set(true); return; } },
@@ -81,7 +67,13 @@ export class TerminalService {
 
   constructor(private router: Router) {
     try {
-      // Theme switching is disabled for now; always use the default theme.
+      const saved = localStorage.getItem(THEME_KEY);
+      const t = TERMINAL_THEMES.find(x => x.name === saved);
+      if (t) this.theme.set(t);
+      // ?theme=<name> previews a theme without saving it.
+      const q = new URLSearchParams(location.search).get('theme');
+      const qt = TERMINAL_THEMES.find(x => x.name === q);
+      if (qt) this.theme.set(qt);
       const crt = localStorage.getItem(CRT_KEY);
       if (crt !== null) this.crt.set(crt === 'on');
     } catch { /* storage unavailable */ }
@@ -158,7 +150,7 @@ export class TerminalService {
     const visible = this.commands.filter(c => !c.hidden);
     return [
       { text: 'AVAILABLE COMMANDS — click one or type it', kind: 'accent' },
-      ...visible.map(c => ({ text: `${c.name.padEnd(11)}${c.description}`, command: c.name === 'crt' ? undefined : c.name })),
+      ...visible.map(c => ({ text: `${c.name.padEnd(11)}${c.description}`, command: c.name === 'crt' || c.name === 'theme' ? (c.name === 'theme' ? 'theme' : undefined) : c.name })),
       { text: '' },
       { text: 'KEYS: ↑/↓ history · TAB complete · CTRL+L clear', kind: 'muted' },
     ];
@@ -169,7 +161,7 @@ export class TerminalService {
     const t = TERMINAL_THEMES.find(x => x.name === name);
     if (!t) {
       return [
-        { text: 'USAGE: theme <name>', kind: 'muted' },
+        { text: 'USAGE: theme <name>  (Omarchy themes + midnight)', kind: 'muted' },
         ...TERMINAL_THEMES.map(x => ({ text: `${x.name === this.theme().name ? '>' : ' '} ${x.name}`, command: `theme ${x.name}` })),
       ];
     }

@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const knee = 0.7;
     if (t <= knee) {
       const pct = Math.round(Math.pow(t / knee, 1.1) * 100);
-      return `color-mix(in srgb, var(--t-photo) ${pct}%, #050a08)`;
+      return `color-mix(in srgb, var(--t-photo) ${pct}%, var(--t-photo-lo))`;
     }
     const pct = Math.round((t - knee) / (1 - knee) * 100);
     return `color-mix(in srgb, var(--t-photo-hi) ${pct}%, var(--t-photo))`;

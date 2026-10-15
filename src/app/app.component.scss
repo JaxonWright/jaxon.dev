@@ -26,6 +26,7 @@
     radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,.45) 100%);
   animation: flicker 6s infinite steps(1);
 }
+:host-context(.t-light) .terminal.crt::after { opacity: .35; }
 .terminal.crt .screen { text-shadow: 0 0 4px color-mix(in srgb, var(--t-primary) 55%, transparent); }
 
 @keyframes flicker { 0%, 97% { opacity: 1; } 98% { opacity: .85; } 99% { opacity: .95; } }
@@ -71,7 +72,7 @@
   padding: 0;
   color: inherit;
 }
-.line.error { color: #ff5f56; }
+.line.error { color: var(--t-error, #ff5f56); }
 .line.accent { color: var(--t-primary); text-transform: uppercase; }
 .line.muted { color: var(--t-accent); }
 button.line, a.line { cursor: pointer; text-decoration: none; }
@@ -120,6 +121,14 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   font-size: 10.5px;
   text-transform: uppercase;
 }
+.theme-pick { display: flex; align-items: center; gap: 6px; flex: none; color: var(--t-accent); }
+.theme-pick select {
+  font: inherit; font-size: 11px; text-transform: lowercase;
+  color: var(--t-text); background: var(--t-bg);
+  border: 1px solid color-mix(in srgb, var(--t-accent) 60%, transparent);
+  padding: 2px 4px; cursor: pointer;
+}
+.theme-pick select:focus-visible { outline: 1px solid var(--t-primary); }
 .hash { font: inherit; color: var(--t-accent); background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 0; }
 .hash:hover { color: var(--t-primary); }
 .binary { margin-left: auto; color: var(--t-accent); }
@@ -135,6 +144,8 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   .quick { flex: 1; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 6px; }
   .quick::-webkit-scrollbar { display: none; }
   .quick button { padding: 8px 4px; border: 1px solid color-mix(in srgb, var(--t-accent) 50%, transparent); }
-  .hash { flex: none; }
+  .hash { display: none; }
+  .theme-pick span { display: none; }
+  .theme-pick select { max-width: 92px; font-size: 12px; padding: 7px 2px; }
   .binary { display: none; }
 }

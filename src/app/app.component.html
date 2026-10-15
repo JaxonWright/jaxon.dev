@@ -61,6 +61,14 @@
         <button type="button" (click)="run(cmd)">[ {{ cmd }} ]</button>
       }
     </nav>
+    <label class="theme-pick" title="Theme">
+      <span aria-hidden="true">THEME</span>
+      <select aria-label="Theme" [value]="term.theme().name" (change)="pickTheme($any($event.target).value)">
+        @for (t of themes; track t.name) {
+          <option [value]="t.name" [selected]="t.name === term.theme().name">{{ t.name }}</option>
+        }
+      </select>
+    </label>
     <button type="button" class="hash" (click)="run('version')" title="Build info">{{ version.hash }}</button>
     <span class="binary">&copy; {{ year }} JAXON WRIGHT <span title="J">01001010</span> <span title="H">01001000</span> <span title="W">01010111</span></span>
   </footer>
