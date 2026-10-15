@@ -115,6 +115,7 @@ button:focus{outline:none;}
   --t-bg: #000;
   --t-text: #fff;
   --t-accent: #999;
+  --t-photo: #33ff66;
   --t-font: "JetBrainsMono Nerd Font", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --t-help-font: "Google Sans", ui-sans-serif, system-ui, sans-serif;
 }
@@ -171,7 +172,6 @@ pre.cp437, .cp437 {
   white-space: pre; text-shadow: none; font-variant-ligatures: none;
 }
 .t-page .photo-gray .r { display: block; height: auto; }
-.t-page .logo-box { width: 180px; }
 .t-page .logo-art { font-size: 5px; }
 .t-page .with-art { display: flex; gap: 2ch; align-items: flex-start; }
 .t-page .with-art > div:not(.art) { flex: 1; min-width: 0; }
