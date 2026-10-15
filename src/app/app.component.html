@@ -51,33 +51,16 @@
           </span>
         </form>
 
-        <nav class="quick" aria-label="Commands">
-          @for (cmd of term.quickCommands; track cmd) {
-            <button type="button" (click)="run(cmd)" (mouseenter)="setHelp('Run `' + cmd + '`')" (mouseleave)="setHelp('')"
-                    (focus)="setHelp('Run `' + cmd + '`')" (blur)="setHelp('')">[ {{ cmd }} ]</button>
-          }
-        </nav>
       </section>
     }
   </div>
 
   <footer class="statusbar">
-    <div class="help-box" [class.open]="helpOpen()">
-      <button type="button" class="help-toggle" (click)="helpOpen.set(!helpOpen())" [attr.aria-expanded]="helpOpen()">
-        <span>HELP</span><span>{{ helpOpen() ? 'v' : '^' }}</span>
-      </button>
-      @if (helpOpen()) {
-        <div class="help-panel">
-          <p>{{ term.helpText() || 'Hover a command to see what it does. Type `help` for the full list.' }}</p>
-        </div>
+    <nav class="quick" aria-label="Pages">
+      @for (cmd of term.quickCommands; track cmd) {
+        <button type="button" (click)="run(cmd)">[ {{ cmd }} ]</button>
       }
-    </div>
-    <div class="themes" aria-label="Themes">
-      @for (t of themes; track t.name) {
-        <button type="button" class="swatch" [class.active]="t.name === term.theme().name" [title]="t.name"
-                [style.background]="t.primary" (click)="term.setTheme(t)" [attr.aria-label]="'Theme ' + t.name"></button>
-      }
-    </div>
+    </nav>
     <button type="button" class="hash" (click)="run('version')" title="Build info">{{ version.hash }}</button>
     <span class="binary">&copy; {{ year }} JAXON WRIGHT <span title="J">01001010</span> <span title="H">01001000</span> <span title="W">01010111</span></span>
   </footer>

@@ -94,14 +94,16 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
 .ghost { white-space: pre-wrap; word-break: break-all; }
 .input-wrap:not(:focus-within) .cursor.block { opacity: .4; animation: none; }
 
-.quick { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 18px; }
+.quick { display: flex; flex-wrap: wrap; gap: 2px 10px; min-width: 0; }
 .quick button {
+  font-size: 12px !important;
   font: inherit;
   color: var(--t-text);
   background: none;
   border: 0;
-  padding: 4px 2px;
+  padding: 2px 2px;
   cursor: pointer;
+  white-space: nowrap;
   text-transform: uppercase;
 }
 .quick button:hover, .quick button:focus-visible { background: var(--t-primary); color: var(--t-bg); outline: none; }
@@ -118,33 +120,6 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   font-size: 10.5px;
   text-transform: uppercase;
 }
-.help-box { position: relative; width: 160px; }
-.help-toggle {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  font: inherit;
-  color: var(--t-text);
-  background: var(--t-bg);
-  border: 1px solid var(--t-text);
-  padding: 2px 6px;
-  cursor: pointer;
-}
-.help-panel {
-  position: absolute;
-  bottom: calc(100% - 1px);
-  left: 0;
-  width: 280px;
-  padding: 8px;
-  border: 1px solid var(--t-text);
-  background: var(--t-bg);
-  font-family: var(--t-help-font);
-  text-transform: none;
-  font-size: 11px;
-}
-.themes { display: flex; gap: 6px; }
-.swatch { width: 12px; height: 12px; border: 1px solid var(--t-bg); outline: 1px solid var(--t-accent); padding: 0; cursor: pointer; }
-.swatch.active { outline: 2px solid var(--t-text); }
 .hash { font: inherit; color: var(--t-accent); background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 0; }
 .hash:hover { color: var(--t-primary); }
 .binary { margin-left: auto; color: var(--t-accent); }
@@ -156,9 +131,10 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   .output { padding-left: 0; }
   .ps1 { display: block; }
   .input-line { display: block; }
-  .quick { position: sticky; bottom: -18px; background: var(--t-bg); padding: 6px 0 8px; }
+  .statusbar { gap: 8px; padding: 6px 8px; }
+  .quick { flex: 1; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 6px; }
+  .quick::-webkit-scrollbar { display: none; }
   .quick button { padding: 8px 4px; border: 1px solid color-mix(in srgb, var(--t-accent) 50%, transparent); }
-  .statusbar { gap: 10px; flex-wrap: wrap; padding: 6px 8px; }
-  .help-box { width: 100px; }
+  .hash { flex: none; }
   .binary { display: none; }
 }

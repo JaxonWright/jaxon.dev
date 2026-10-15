@@ -67,7 +67,6 @@ export class TerminalService {
     { name: 'contact', aliases: ['socials', 'email'], description: 'Ways to reach me', route: '/contact', echo: 'cat contact.txt' },
     { name: 'pay', aliases: ['venmo', 'tip'], description: 'Send me money', route: '/contact', echo: 'cat contact.txt --pay' },
     { name: 'version', aliases: ['build-info', 'build', 'uname -a', 'neofetch'], description: 'Build + dependency info', route: '/build-info', echo: 'uname -a' },
-    { name: 'theme', description: 'Change colors: theme <name>', run: (a) => this.themeCommand(a) },
     { name: 'crt', description: 'Toggle CRT scanlines: crt on|off', run: (a) => this.crtCommand(a) },
     { name: 'history', description: 'Show command history', run: () => this.history().map((h, i) => ({ text: `${String(i + 1).padStart(4)}  ${h}` })) },
     { name: 'clear', aliases: ['cls'], description: 'Clear the screen', run: () => { this.entries.set([]); this.routeEcho.set(''); this.cleared.set(true); return; } },
@@ -82,16 +81,14 @@ export class TerminalService {
 
   constructor(private router: Router) {
     try {
-      const saved = localStorage.getItem(THEME_KEY);
-      const t = TERMINAL_THEMES.find(x => x.name === saved);
-      if (t) this.theme.set(t);
+      // Theme switching is disabled for now; always use the default theme.
       const crt = localStorage.getItem(CRT_KEY);
       if (crt !== null) this.crt.set(crt === 'on');
     } catch { /* storage unavailable */ }
   }
 
   /** Commands shown as clickable shortcuts. */
-  readonly quickCommands = ['about', 'projects', 'playlists', 'contact', 'version', 'help'];
+  readonly quickCommands = ['about', 'projects', 'playlists', 'contact', 'pay', 'version', 'help'];
 
   completions(prefix: string): string[] {
     const p = prefix.trim().toLowerCase();
@@ -161,7 +158,7 @@ export class TerminalService {
     const visible = this.commands.filter(c => !c.hidden);
     return [
       { text: 'AVAILABLE COMMANDS — click one or type it', kind: 'accent' },
-      ...visible.map(c => ({ text: `${c.name.padEnd(11)}${c.description}`, command: c.name === 'theme' || c.name === 'crt' ? undefined : c.name })),
+      ...visible.map(c => ({ text: `${c.name.padEnd(11)}${c.description}`, command: c.name === 'crt' ? undefined : c.name })),
       { text: '' },
       { text: 'KEYS: ↑/↓ history · TAB complete · CTRL+L clear', kind: 'muted' },
     ];
