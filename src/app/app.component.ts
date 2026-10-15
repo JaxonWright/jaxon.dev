@@ -6,21 +6,10 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { VERSION } from '../environments/version';
 import { TERMINAL_THEMES, TerminalService } from '@services/terminal.service';
+import { JW_LOGO, JW_LOGO_SMALL } from '@services/ascii-art';
 
 const BOOT_KEY = 'jxn-terminal-booted';
 
-// ASCII rendering of the JW mark (src/assets/img/branding/favicon.svg).
-export const ASCII_LOGO = [
-  '            000000 000000 000000 000000',
-  '            000000 000000 000000 000000',
-  '            000000 000000 000000 000000',
-  '            000000 000000 000000 000000',
-  '            000000 000000 000000 000000',
-  '            000000 000000 000000 000000',
-  '000000000000000000 00000000000000000000',
-  '000000000000000000 00000000000000000000',
-  '000000000000000000 00000000000000000000',
-].join('\n');
 
 @Component({
   selector: 'app-root',
@@ -33,7 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('cmdInput') cmdInput?: ElementRef<HTMLInputElement>;
   @ViewChild('screen') screen?: ElementRef<HTMLElement>;
 
-  readonly logo = ASCII_LOGO;
+  readonly logo = JW_LOGO;
+  readonly logoSmall = JW_LOGO_SMALL;
   readonly themes = TERMINAL_THEMES;
   readonly version = VERSION;
   readonly year = new Date().getFullYear();

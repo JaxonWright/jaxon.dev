@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { DateTime } from 'luxon';
+import { PHOTO, VOLGISTICS_LOGO, CONFIGURA_LOGO, GVSU_LOGO } from '@services/ascii-art';
 
 @Component({
     selector: 'app-home',
@@ -11,6 +12,7 @@ import { DateTime } from 'luxon';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   yearsAtVolgistics : number;
+  readonly art = { photo: PHOTO, volgistics: VOLGISTICS_LOGO, configura: CONFIGURA_LOGO, gvsu: GVSU_LOGO };
 
   constructor(private titleServ : Title) { 
     this.titleServ.setTitle('Jaxon Wright - About');

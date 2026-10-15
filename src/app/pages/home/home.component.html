@@ -1,13 +1,16 @@
 <article class="t-page">
   <h1>{{getTimeGreeting()}}. My name is Jaxon.</h1>
-  <div class="block">
-    <p>
+  <div class="block with-art">
+    <pre class="art cp437 photo" role="img" aria-label="Photo of Jaxon Wright">{{ art.photo }}</pre>
+    <div><p>
       I am a {{getAge()}}-year-old tech enthusiast, I'm captivated by the rapid evolution of technology around us. The pace of innovation is accelerating, transforming the world by making the impossible achievable and simplifying countless tasks. My passion lies in harnessing cutting-edge technologies to create a better world. I find immense satisfaction in developing software that enhances people's lives, providing them with tools to navigate their daily routines more efficiently. The joy of software development for me stems from crafting solutions that bring value and delight to others.
-    </p>
+    </p></div>
   </div>
 
   <h2>Experience</h2>
-  <div class="block">
+  <div class="block with-art">
+    <pre class="art cp437 logo-art" role="img" aria-label="Volgistics logo">{{ art.volgistics }}</pre>
+    <div>
     <h3>Software Developer</h3>
     <p class="dim">Volgistics, Byron Center, MI &middot; Jul 2017 - Present <span class="muted">({{yearsAtVolgistics}} years)</span></p>
     <p>
@@ -20,8 +23,11 @@
       introduced completely redone customer-facing products using the Angular framework; most notably the VicNet volunteer
       portal. VicNet and the VicTouch time clock are now also native apps on Android and iOS.
     </p>
+    </div>
   </div>
-  <div class="block">
+  <div class="block with-art">
+    <pre class="art cp437 logo-art" role="img" aria-label="Configura logo">{{ art.configura }}</pre>
+    <div>
     <h3>Application Consultant Intern</h3>
     <p class="dim">Configura, Grand Rapids, MI &middot; Jun 2015 - Sep 2015 &amp; May 2016 - Sep 2016 <span class="muted">(9 months)</span></p>
     <p>
@@ -29,10 +35,13 @@
       visual and intuitive space-planning software that simplifies specifying and selling of products in a variety of industries. CET is
       written with Configura's own programming language, CM.
     </p>
+    </div>
   </div>
 
   <h2>Education</h2>
-  <div class="block">
+  <div class="block with-art">
+    <pre class="art cp437 logo-art" role="img" aria-label="Grand Valley State University logo">{{ art.gvsu }}</pre>
+    <div>
     <h3>Bachelor of Science in Computer Science</h3>
     <p class="dim">Grand Valley State University, Allendale, MI &middot; 2013 - 2017 <span class="muted">(4 years)</span></p>
     <p>
@@ -40,5 +49,6 @@
       development.
     </p>
     <p class="tags">[3.5 GPA] [1 PUBLICATION]</p>
+    </div>
   </div>
 </article>

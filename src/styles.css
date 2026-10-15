@@ -147,3 +147,29 @@ body { font-family: var(--t-font); color: var(--t-text); }
 .t-page td { padding: 1px 2ch 1px 0; vertical-align: top; }
 .t-page .cmd-link { cursor: pointer; background: none; border: 0; padding: 0; font: inherit; color: var(--t-text); text-decoration: underline; }
 .t-page .cmd-link:hover { background: var(--t-primary); color: var(--t-bg); }
+
+/* CP437 block art: line-height 1 and no letter-spacing so ▀▄█ cells tile without gaps. */
+pre.cp437, .cp437 {
+  font-family: var(--t-font);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  margin: 0;
+  text-shadow: none;
+  font-variant-ligatures: none;
+}
+.mobile-only { display: none; }
+@media (max-width: 640px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+}
+.t-page .art { color: var(--t-primary); flex: none; }
+/* Sizes are multiples of 5px so JetBrains Mono's 0.6em advance lands on whole pixels (no seams). */
+.t-page .photo { font-size: 10px; color: var(--t-text); }
+.t-page .logo-art { font-size: 5px; }
+.t-page .with-art { display: flex; gap: 2ch; align-items: flex-start; }
+.t-page .with-art > div { flex: 1; min-width: 0; }
+@media (max-width: 640px) {
+  .t-page .with-art { flex-direction: column; gap: 8px; }
+  .t-page .photo { font-size: 5px; }
+}
