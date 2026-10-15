@@ -1,14 +1,21 @@
 import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { NgTemplateOutlet } from '@angular/common';
 import { DateTime } from 'luxon';
-import { PHOTO_GRAY, PHOTO_GRAY_LEVELS, VOLGISTICS_LOGO, CONFIGURA_LOGO, GVSU_LOGO } from '@services/ascii-art';
+import { PHOTO_GRAY, PHOTO_GRAY_LEVELS, VOLGISTICS_COLOR, CONFIGURA_COLOR, GVSU_COLOR } from '@services/ascii-art';
+
+type Run = [string | null, string | null, number];
+export interface ArtRun { fg: string; bg: string; text: string; }
+const toRuns = (rows: Run[][]): ArtRun[][] => rows.map(row => row.map(([fg, bg, n]) => ({
+  fg: fg ?? 'transparent', bg: bg ?? 'transparent', text: (fg ? '▀' : bg ? '▄' : ' ').repeat(n),
+})).map(r => r.fg === 'transparent' && r.bg !== 'transparent' ? { fg: r.bg, bg: 'transparent', text: r.text } : r));
 
 @Component({
     selector: 'app-home',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    imports: []
+    imports: [NgTemplateOutlet]
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   yearsAtVolgistics : number;
@@ -21,7 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const v = Math.round(level / (PHOTO_GRAY_LEVELS - 1) * 255);
     return `rgb(${v},${v},${v})`;
   }
-  readonly art = { volgistics: VOLGISTICS_LOGO, configura: CONFIGURA_LOGO, gvsu: GVSU_LOGO };
+  readonly logos = { volgistics: toRuns(VOLGISTICS_COLOR), configura: toRuns(CONFIGURA_COLOR), gvsu: toRuns(GVSU_COLOR) };
 
   constructor(private titleServ : Title) { 
     this.titleServ.setTitle('Jaxon Wright - About');

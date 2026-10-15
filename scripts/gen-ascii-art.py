@@ -78,6 +78,74 @@ def gray_halfblocks(img: Image.Image, cols: int, levels: int = 32):
     return out
 
 
+def key_background(img: Image.Image, tol: int = 40) -> Image.Image:
+    """Make the flat background connected to the corners transparent (flood fill),
+    so white parts inside a logo (e.g. the Volgistics V) are kept."""
+    rgba = img.convert('RGBA')
+    w, h = rgba.size
+    px = rgba.load()
+    ref = px[0, 0]
+    if ref[3] < 20:
+        return rgba
+    seen = set()
+    stack = [(0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)]
+    while stack:
+        x, y = stack.pop()
+        if (x, y) in seen or not (0 <= x < w and 0 <= y < h):
+            continue
+        r, g, b, a = px[x, y]
+        if abs(r - ref[0]) + abs(g - ref[1]) + abs(b - ref[2]) > tol:
+            continue
+        seen.add((x, y))
+        px[x, y] = (0, 0, 0, 0)
+        stack.extend(((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)))
+    return rgba
+
+
+def color_halfblocks(img: Image.Image, max_cols: int, max_rows: int):
+    """Logo as ▀ cells with real colors: fg = top pixel, bg = bottom pixel,
+    None = transparent. Fits inside max_cols x max_rows keeping aspect.
+    Colors are quantized to 4 bits/channel so runs merge. Returns rows of [fg, bg, n]."""
+    rgba = img.convert('RGBA')
+    rgba = rgba.crop(rgba.getchannel('A').point(lambda a: 255 if a > 100 else 0).getbbox())
+    w, h = rgba.size
+    cell_w, half_h = 0.6, 0.66  # em
+    cols = max_cols
+    prow = round(cols * cell_w * h / w / half_h)
+    if prow > max_rows * 2:
+        prow = max_rows * 2
+        cols = round(prow * half_h * w / h / cell_w)
+    prow += prow % 2
+    # Supersample then box-reduce (premultiplied) for clean anti-aliased edges.
+    small = rgba.resize((cols, prow), Image.BOX)
+    px = small.load()
+
+    def col(v):
+        r, g, b, a = v
+        if a < 100:
+            return None
+        q = lambda c: min(15, round(c / 17))
+        return '#' + ''.join('0123456789abcdef'[q(c)] for c in (r, g, b))
+
+    out = []
+    for y in range(0, prow, 2):
+        runs = []
+        for x in range(cols):
+            fg, bg = col(px[x, y]), col(px[x, y + 1])
+            if runs and runs[-1][0] == fg and runs[-1][1] == bg:
+                runs[-1][2] += 1
+            else:
+                runs.append([fg, bg, 1])
+        while runs and runs[-1][0] is None and runs[-1][1] is None:
+            runs.pop()
+        out.append(runs)
+    while out and not out[0]:
+        out.pop(0)
+    while out and not out[-1]:
+        out.pop()
+    return out
+
+
 def mask_from(img: Image.Image, test) -> Image.Image:
     rgba = img.convert('RGBA')
     out = Image.new('L', rgba.size, 0)
@@ -114,6 +182,14 @@ def main():
     out.append('/** Grayscale photo: rows of [fgLevel, bgLevel, count] runs of ▀ (levels 0-31). */\n')
     out.append(f'export const PHOTO_GRAY: [number, number, number][][] = {json.dumps(photo_runs, separators=SEP)};\n')
     out.append('export const PHOTO_GRAY_LEVELS = 32;\n')
+    logos = {
+        'VOLGISTICS_COLOR': key_background(Image.open(res / 'volgistics.png')),
+        'CONFIGURA_COLOR': Image.open(res / 'configura.png').convert('RGBA'),
+        'GVSU_COLOR': key_background(Image.open(res / 'GVSU.jpg')),
+    }
+    out.append('/** Color logos: rows of [fg, bg, count] runs of ▀; null = transparent. */\n')
+    for name, im in logos.items():
+        out.append(f'export const {name}: [string | null, string | null, number][][] = {json.dumps(color_halfblocks(im, 60, 37), separators=SEP)};\n')
     (ROOT / 'src/app/services/ascii-art.ts').write_text(''.join(out), encoding='utf-8')
     for name, s in [('jw', jw), ('jw_small', jw_small), ('volg', volg), ('conf', conf), ('gvsu', gvsu)]:
         print(f'--- {name}\n{s}')
