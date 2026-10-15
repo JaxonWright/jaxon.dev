@@ -46,7 +46,7 @@ export class TerminalService {
     { name: 'help', aliases: ['?', 'man'], description: 'List available commands', run: () => this.helpLines() },
     { name: 'about', aliases: ['whoami', 'home', 'cd ~'], description: 'Who is Jaxon?', route: '/', echo: 'cat about.txt' },
     { name: 'projects', aliases: ['ls', 'ls projects', 'cd projects'], description: 'Things I have built', route: '/projects', echo: 'ls -l ./projects' },
-    { name: 'playlists', aliases: ['music', 'spotify', 'cd music'], description: 'My Spotify playlists', route: '/music', echo: 'spotify --list' },
+    { name: 'playlists', aliases: ['music', 'spotify', 'cd playlists', 'cd music'], description: 'My Spotify playlists', route: '/playlists', echo: 'spotify --list' },
     { name: 'contact', aliases: ['socials', 'email'], description: 'Ways to reach me', route: '/contact', echo: 'cat contact.txt' },
     { name: 'pay', aliases: ['venmo', 'tip'], description: 'Send me money', route: '/contact', echo: 'cat contact.txt --pay' },
     { name: 'version', aliases: ['build-info', 'build', 'uname -a', 'neofetch'], description: 'Build + dependency info', route: '/build-info', echo: 'uname -a' },

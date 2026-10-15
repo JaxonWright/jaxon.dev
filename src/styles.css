@@ -180,4 +180,4 @@ pre.cp437, .cp437 {
   .t-page .with-art { flex-direction: column; gap: 8px; }
 }
 /* Align entry text flush with the top of its CP437 art. */
-.t-page .with-art > div:not(.art) > :first-child { margin-top: 0; line-height: 1; }
+.t-page .with-art > div:not(.art) > :first-child { margin-top: calc(0.5em - 0.5lh); } /* trim half-leading so the first line's top is flush with the art */

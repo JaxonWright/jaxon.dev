@@ -53,6 +53,6 @@ export class MusicComponent {
   );
 
   constructor(private title: Title) {
-    this.title.setTitle('Jaxon Wright - Music');
+    this.title.setTitle('Jaxon Wright - Playlists');
   }
 }
