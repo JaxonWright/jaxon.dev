@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { DateTime } from 'luxon';
-import { PHOTO, VOLGISTICS_LOGO, CONFIGURA_LOGO, GVSU_LOGO } from '@services/ascii-art';
+import { PHOTO_GRAY, PHOTO_GRAY_LEVELS, VOLGISTICS_LOGO, CONFIGURA_LOGO, GVSU_LOGO } from '@services/ascii-art';
 
 @Component({
     selector: 'app-home',
@@ -12,7 +12,16 @@ import { PHOTO, VOLGISTICS_LOGO, CONFIGURA_LOGO, GVSU_LOGO } from '@services/asc
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   yearsAtVolgistics : number;
-  readonly art = { photo: PHOTO, volgistics: VOLGISTICS_LOGO, configura: CONFIGURA_LOGO, gvsu: GVSU_LOGO };
+  /** Grayscale ▀ half-block photo: each run has its own fg (top) and bg (bottom) gray. */
+  readonly photoRows = PHOTO_GRAY.map(row => row.map(([fg, bg, n]) => ({
+    fg: this.gray(fg), bg: this.gray(bg), text: '▀'.repeat(n),
+  })));
+
+  private gray(level: number): string {
+    const v = Math.round(level / (PHOTO_GRAY_LEVELS - 1) * 255);
+    return `rgb(${v},${v},${v})`;
+  }
+  readonly art = { volgistics: VOLGISTICS_LOGO, configura: CONFIGURA_LOGO, gvsu: GVSU_LOGO };
 
   constructor(private titleServ : Title) { 
     this.titleServ.setTitle('Jaxon Wright - About');

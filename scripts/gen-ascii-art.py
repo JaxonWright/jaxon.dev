@@ -52,6 +52,32 @@ def shade_photo(img: Image.Image, cols: int, ramp=SHADES) -> str:
     return '\n'.join(''.join(lut(px[x, y]) for x in range(cols)).rstrip() for y in range(rows))
 
 
+def gray_halfblocks(img: Image.Image, cols: int, levels: int = 32):
+    """Grayscale photo as ▀ cells: fg = top pixel gray, bg = bottom pixel gray.
+    Rendered at line-height: normal (JetBrains Mono content box = 1.32em), so a
+    half-cell is 0.6em x 0.66em. Returns rows of merged runs [fg, bg, count]."""
+    g = ImageOps.grayscale(img)
+    g = ImageOps.autocontrast(g, cutoff=1)
+    g = ImageOps.equalize(g).point(lambda v: int(255 * (v / 255) ** 1.1))
+    g = g.filter(ImageFilter.UnsharpMask(radius=2, percent=140, threshold=2))
+    w, h = g.size
+    rows = round(cols * h / w * 0.6 / 0.66 / 2) * 2
+    g = g.resize((cols, rows), Image.LANCZOS)
+    px = g.load()
+    q = lambda v: round(v / 255 * (levels - 1))
+    out = []
+    for y in range(0, rows, 2):
+        runs = []
+        for x in range(cols):
+            fg, bg = q(px[x, y]), q(px[x, y + 1])
+            if runs and runs[-1][0] == fg and runs[-1][1] == bg:
+                runs[-1][2] += 1
+            else:
+                runs.append([fg, bg, 1])
+        out.append(runs)
+    return out
+
+
 def mask_from(img: Image.Image, test) -> Image.Image:
     rgba = img.convert('RGBA')
     out = Image.new('L', rgba.size, 0)
@@ -68,7 +94,8 @@ def main():
     jw = half_blocks(mask_from(logo, lambda r, g, b, a: r < 128), 50)
     jw_small = half_blocks(mask_from(logo, lambda r, g, b, a: r < 128), 30)
 
-    photo = shade_photo(Image.open(ROOT / 'scripts/ascii-src/github-avatar.png').crop((40, 20, 360, 400)), 46)
+    photo_runs = gray_halfblocks(Image.open(ROOT / 'scripts/ascii-src/github-avatar.png').crop((95, 30, 315, 330)), 60)
+    photo = '\\n'.join('▀' * sum(r[2] for r in row) for row in photo_runs)
 
     volg = half_blocks(mask_from(Image.open(res / 'volgistics.png'),
                                  lambda r, g, b, a: a > 128 and r > 200 and g < 190 and b < 140), 22)
@@ -82,8 +109,13 @@ def main():
     for name, s in [('JW_LOGO', jw), ('JW_LOGO_SMALL', jw_small), ('PHOTO', photo),
                     ('VOLGISTICS_LOGO', volg), ('CONFIGURA_LOGO', conf), ('GVSU_LOGO', gvsu)]:
         out.append(f'export const {name} = {json_str(s)};\n')
+    import json
+    SEP = (',', ':')
+    out.append('/** Grayscale photo: rows of [fgLevel, bgLevel, count] runs of ▀ (levels 0-31). */\n')
+    out.append(f'export const PHOTO_GRAY: [number, number, number][][] = {json.dumps(photo_runs, separators=SEP)};\n')
+    out.append('export const PHOTO_GRAY_LEVELS = 32;\n')
     (ROOT / 'src/app/services/ascii-art.ts').write_text(''.join(out), encoding='utf-8')
-    for name, s in [('jw', jw), ('jw_small', jw_small), ('photo', photo), ('volg', volg), ('conf', conf), ('gvsu', gvsu)]:
+    for name, s in [('jw', jw), ('jw_small', jw_small), ('volg', volg), ('conf', conf), ('gvsu', gvsu)]:
         print(f'--- {name}\n{s}')
 
 

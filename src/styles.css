@@ -165,11 +165,15 @@ pre.cp437, .cp437 {
 }
 .t-page .art { color: var(--t-primary); flex: none; }
 /* Sizes are multiples of 5px so JetBrains Mono's 0.6em advance lands on whole pixels (no seams). */
-.t-page .photo { font-size: 10px; color: var(--t-text); }
+.t-page .photo-gray {
+  /* line-height: normal makes each row exactly the font's content box, so ▀ backgrounds tile with no gaps. */
+  font-family: var(--t-font); font-size: 5px; line-height: normal; letter-spacing: 0;
+  white-space: pre; text-shadow: none; font-variant-ligatures: none;
+}
+.t-page .photo-gray .r { display: block; height: auto; }
 .t-page .logo-art { font-size: 5px; }
 .t-page .with-art { display: flex; gap: 2ch; align-items: flex-start; }
-.t-page .with-art > div { flex: 1; min-width: 0; }
+.t-page .with-art > div:not(.art) { flex: 1; min-width: 0; }
 @media (max-width: 640px) {
   .t-page .with-art { flex-direction: column; gap: 8px; }
-  .t-page .photo { font-size: 5px; }
 }
