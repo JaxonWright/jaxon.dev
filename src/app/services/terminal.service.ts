@@ -32,7 +32,6 @@ export { TERMINAL_THEMES, DEFAULT_THEME } from './omarchy-themes';
 export type { TerminalTheme } from './omarchy-themes';
 
 const THEME_KEY = 'jxn-terminal-theme';
-const CRT_KEY = 'jxn-terminal-crt';
 
 @Injectable({ providedIn: 'root' })
 export class TerminalService {
@@ -41,7 +40,6 @@ export class TerminalService {
   /** Command echoed above the currently routed page. */
   readonly routeEcho = signal<string>('');
   readonly theme = signal<TerminalTheme>(TERMINAL_THEMES.find(t => t.name === DEFAULT_THEME)!);
-  readonly crt = signal<boolean>(true);
   readonly helpText = signal<string>('');
 
   readonly commands: TerminalCommand[] = [
@@ -53,7 +51,6 @@ export class TerminalService {
     { name: 'pay', aliases: ['venmo', 'tip'], description: 'Send me money', route: '/contact', echo: 'cat contact.txt --pay' },
     { name: 'version', aliases: ['build-info', 'build', 'uname -a', 'neofetch'], description: 'Build + dependency info', route: '/build-info', echo: 'uname -a' },
     { name: 'theme', description: 'List themes or switch: theme <name>', run: (a) => this.themeCommand(a) },
-    { name: 'crt', description: 'Toggle CRT scanlines: crt on|off', run: (a) => this.crtCommand(a) },
     { name: 'history', description: 'Show command history', run: () => this.history().map((h, i) => ({ text: `${String(i + 1).padStart(4)}  ${h}` })) },
     { name: 'clear', aliases: ['cls'], description: 'Clear the screen', run: () => { this.entries.set([]); this.routeEcho.set(''); this.cleared.set(true); return; } },
     { name: 'date', description: 'Print the date', hidden: true, run: () => [{ text: new Date().toString() }] },
@@ -74,8 +71,6 @@ export class TerminalService {
       const q = new URLSearchParams(location.search).get('theme');
       const qt = TERMINAL_THEMES.find(x => x.name === q);
       if (qt) this.theme.set(qt);
-      const crt = localStorage.getItem(CRT_KEY);
-      if (crt !== null) this.crt.set(crt === 'on');
     } catch { /* storage unavailable */ }
   }
 
@@ -150,7 +145,7 @@ export class TerminalService {
     const visible = this.commands.filter(c => !c.hidden);
     return [
       { text: 'AVAILABLE COMMANDS — click one or type it', kind: 'accent' },
-      ...visible.map(c => ({ text: `${c.name.padEnd(11)}${c.description}`, command: c.name === 'crt' || c.name === 'theme' ? (c.name === 'theme' ? 'theme' : undefined) : c.name })),
+      ...visible.map(c => ({ text: `${c.name.padEnd(11)}${c.description}`, command: c.name })),
       { text: '' },
       { text: 'KEYS: ↑/↓ history · TAB complete · CTRL+L clear', kind: 'muted' },
     ];
@@ -174,11 +169,4 @@ export class TerminalService {
     try { localStorage.setItem(THEME_KEY, t.name); } catch { /* ignore */ }
   }
 
-  private crtCommand(args: string[]): TerminalLine[] {
-    const arg = (args[0] ?? '').toLowerCase();
-    const on = arg === 'on' ? true : arg === 'off' ? false : !this.crt();
-    this.crt.set(on);
-    try { localStorage.setItem(CRT_KEY, on ? 'on' : 'off'); } catch { /* ignore */ }
-    return [{ text: `CRT EFFECT ${on ? 'ENABLED' : 'DISABLED'}` }];
-  }
 }

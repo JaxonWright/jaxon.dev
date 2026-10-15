@@ -174,6 +174,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onDocKey(event: KeyboardEvent): void {
     if (this.booting()) { this.finishBoot(); event.preventDefault(); return; }
     const target = event.target as HTMLElement;
+    if (this.themeOpen() || target?.closest?.('.statusbar')) return;
     if (target?.tagName !== 'INPUT' && event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
       this.focusInput();
     }
@@ -182,14 +183,65 @@ export class AppComponent implements OnInit, OnDestroy {
   onScreenClick(event: MouseEvent): void {
     if (this.booting()) { this.finishBoot(); return; }
     const target = event.target as HTMLElement;
-    if (target.closest('a, button, input')) return;
+    if (target.closest('a, button, input, select, .statusbar')) return;
     if (window.getSelection()?.toString()) return;
     this.focusInput(true);
   }
 
-  pickTheme(name: string): void {
-    const t = this.themes.find(x => x.name === name);
+  // ---- Theme popover (custom listbox; a native <select> lost focus to the prompt) ----
+  @ViewChild('themeList') themeList?: ElementRef<HTMLElement>;
+  @ViewChild('themeBtn') themeBtn?: ElementRef<HTMLButtonElement>;
+  readonly themeOpen = signal(false);
+  readonly themeIndex = signal(0);
+
+  toggleThemes(): void {
+    if (this.themeOpen()) { this.closeThemes(true); return; }
+    this.themeIndex.set(Math.max(0, this.themes.findIndex(t => t.name === this.term.theme().name)));
+    this.themeOpen.set(true);
+    setTimeout(() => {
+      const list = this.themeList?.nativeElement;
+      list?.focus({ preventScroll: true });
+      list?.querySelector('.current')?.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  closeThemes(refocusButton = false): void {
+    this.themeOpen.set(false);
+    if (refocusButton) setTimeout(() => this.themeBtn?.nativeElement.focus({ preventScroll: true }));
+  }
+
+  chooseTheme(i: number): void {
+    const t = this.themes[i];
     if (t) this.term.setTheme(t);
+    this.closeThemes(true);
+  }
+
+  onThemeBtnKey(e: KeyboardEvent): void {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); if (!this.themeOpen()) this.toggleThemes(); }
+    e.stopPropagation();
+  }
+
+  onThemeListKey(e: KeyboardEvent): void {
+    e.stopPropagation();
+    const n = this.themes.length;
+    const move = (i: number) => {
+      this.themeIndex.set((i + n) % n);
+      setTimeout(() => this.themeList?.nativeElement.querySelector('.active')?.scrollIntoView({ block: 'nearest' }));
+    };
+    switch (e.key) {
+      case 'ArrowDown': e.preventDefault(); move(this.themeIndex() + 1); break;
+      case 'ArrowUp': e.preventDefault(); move(this.themeIndex() - 1); break;
+      case 'Home': e.preventDefault(); move(0); break;
+      case 'End': e.preventDefault(); move(n - 1); break;
+      case 'Enter': case ' ': e.preventDefault(); this.chooseTheme(this.themeIndex()); break;
+      case 'Escape': case 'Tab': e.preventDefault(); this.closeThemes(true); break;
+    }
+  }
+
+  /** Outside click closes the popover. */
+  @HostListener('document:pointerdown', ['$event'])
+  onDocPointer(e: PointerEvent): void {
+    if (this.themeOpen() && !(e.target as HTMLElement).closest?.('.theme-pick')) this.closeThemes();
   }
 
   setHelp(text: string): void {

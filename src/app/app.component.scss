@@ -14,22 +14,6 @@
   overflow: hidden;
 }
 
-/* CRT: scanlines, vignette and a faint flicker. */
-.terminal.crt::after {
-  content: '';
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  background:
-    repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.22) 3px, rgba(0,0,0,0) 4px),
-    radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,.45) 100%);
-  animation: flicker 6s infinite steps(1);
-}
-:host-context(.t-light) .terminal.crt::after { opacity: .35; }
-.terminal.crt .screen { text-shadow: 0 0 4px color-mix(in srgb, var(--t-primary) 55%, transparent); }
-
-@keyframes flicker { 0%, 97% { opacity: 1; } 98% { opacity: .85; } 99% { opacity: .95; } }
 
 .screen {
   flex: 1;
@@ -121,14 +105,27 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   font-size: 10.5px;
   text-transform: uppercase;
 }
-.theme-pick { display: flex; align-items: center; gap: 6px; flex: none; color: var(--t-accent); }
-.theme-pick select {
-  font: inherit; font-size: 11px; text-transform: lowercase;
-  color: var(--t-text); background: var(--t-bg);
-  border: 1px solid color-mix(in srgb, var(--t-accent) 60%, transparent);
-  padding: 2px 4px; cursor: pointer;
+.theme-pick { position: relative; flex: none; }
+.theme-btn {
+  font: inherit; font-size: 11px; color: var(--t-text); background: var(--t-bg); cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--t-accent) 60%, transparent); padding: 2px 6px; white-space: nowrap;
+  text-transform: lowercase;
 }
-.theme-pick select:focus-visible { outline: 1px solid var(--t-primary); }
+.theme-btn .lbl { color: var(--t-accent); text-transform: uppercase; }
+.theme-btn:hover, .theme-btn:focus-visible { border-color: var(--t-primary); outline: none; }
+.theme-list {
+  position: absolute; bottom: calc(100% + 6px); right: 0; z-index: 50;
+  margin: 0; padding: 4px 0; list-style: none; min-width: 190px;
+  max-height: min(60vh, 420px); overflow-y: auto; overscroll-behavior: contain;
+  background: var(--t-bg); border: 1px solid var(--t-text); outline: none;
+  font-size: 12px; text-transform: lowercase;
+  box-shadow: 0 -6px 24px rgba(0,0,0,.4);
+}
+.theme-list li { display: flex; align-items: center; gap: 8px; padding: 5px 10px; cursor: pointer; color: var(--t-text); }
+.theme-list li.current::after { content: '●'; margin-left: auto; color: var(--t-secondary); }
+.theme-list li.active { background: var(--t-primary); color: var(--t-bg); }
+.sw { width: 14px; height: 14px; border: 1px solid; display: inline-flex; align-items: flex-end; justify-content: flex-end; flex: none; }
+.sw span { width: 6px; height: 6px; }
 .hash { font: inherit; color: var(--t-accent); background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 0; }
 .hash:hover { color: var(--t-primary); }
 .binary { margin-left: auto; color: var(--t-accent); }
@@ -145,7 +142,8 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   .quick::-webkit-scrollbar { display: none; }
   .quick button { padding: 8px 4px; border: 1px solid color-mix(in srgb, var(--t-accent) 50%, transparent); }
   .hash { display: none; }
-  .theme-pick span { display: none; }
-  .theme-pick select { max-width: 92px; font-size: 12px; padding: 7px 2px; }
+  .theme-btn .lbl { display: none; }
+  .theme-btn { padding: 7px 6px; font-size: 12px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+  .theme-list li { padding: 9px 12px; font-size: 13px; }
   .binary { display: none; }
 }

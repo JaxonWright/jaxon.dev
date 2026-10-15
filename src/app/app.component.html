@@ -1,4 +1,4 @@
-<div class="terminal" [class.crt]="term.crt()" (click)="onScreenClick($event)">
+<div class="terminal" (click)="onScreenClick($event)">
   <div class="screen" #screen>
     <header class="banner">
       <pre class="ascii-logo cp437 desktop-only" role="img" aria-label="JW logo">{{ logo }}</pre>
@@ -61,14 +61,25 @@
         <button type="button" (click)="run(cmd)">[ {{ cmd }} ]</button>
       }
     </nav>
-    <label class="theme-pick" title="Theme">
-      <span aria-hidden="true">THEME</span>
-      <select aria-label="Theme" [value]="term.theme().name" (change)="pickTheme($any($event.target).value)">
-        @for (t of themes; track t.name) {
-          <option [value]="t.name" [selected]="t.name === term.theme().name">{{ t.name }}</option>
-        }
-      </select>
-    </label>
+    <div class="theme-pick" (click)="$event.stopPropagation()">
+      <button #themeBtn type="button" class="theme-btn" aria-haspopup="listbox" [attr.aria-expanded]="themeOpen()"
+              (click)="toggleThemes()" (keydown)="onThemeBtnKey($event)">
+        <span class="lbl">THEME</span> {{ term.theme().name }} {{ themeOpen() ? '▾' : '▴' }}
+      </button>
+      @if (themeOpen()) {
+        <ul #themeList class="theme-list" role="listbox" tabindex="-1" aria-label="Theme"
+            [attr.aria-activedescendant]="'theme-opt-' + themeIndex()" (keydown)="onThemeListKey($event)">
+          @for (t of themes; track t.name; let i = $index) {
+            <li role="option" [id]="'theme-opt-' + i" [attr.aria-selected]="t.name === term.theme().name"
+                [class.active]="i === themeIndex()" [class.current]="t.name === term.theme().name"
+                (mouseenter)="themeIndex.set(i)" (click)="chooseTheme(i)">
+              <span class="sw" [style.background]="t.background" [style.border-color]="t.accent"><span [style.background]="t.accent"></span></span>
+              {{ t.name }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
     <button type="button" class="hash" (click)="run('version')" title="Build info">{{ version.hash }}</button>
     <span class="binary">&copy; {{ year }} JAXON WRIGHT <span title="J">01001010</span> <span title="H">01001000</span> <span title="W">01010111</span></span>
   </footer>
