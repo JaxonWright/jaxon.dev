@@ -94,13 +94,28 @@ button:focus{outline:none;}
 }
 
 /* ---- Terminal experiment ---- */
+/* JetBrains Mono Nerd Font v3.5.1 (ryanoasis/nerd-fonts), SIL OFL 1.1: assets/fonts/JetBrainsMonoNerdFont-OFL.txt */
+@font-face {
+  font-family: "JetBrainsMono Nerd Font";
+  src: url("/assets/fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrainsMono Nerd Font";
+  src: url("/assets/fonts/JetBrainsMonoNerdFont-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --t-primary: #fff;
   --t-secondary: #ccc;
   --t-bg: #000;
   --t-text: #fff;
   --t-accent: #999;
-  --t-font: "Share Tech Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --t-font: "JetBrainsMono Nerd Font", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --t-help-font: "Google Sans", ui-sans-serif, system-ui, sans-serif;
 }
 html, body { background: var(--t-bg); }

@@ -41,8 +41,8 @@
 .ascii-logo {
   margin: 0 0 14px;
   font-family: var(--t-font);
-  font-size: 11px;
-  line-height: 1.05;
+  font-size: 12px;
+  line-height: 1.1;
   color: var(--t-primary);
 }
 
@@ -153,7 +153,7 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
 @media (max-width: 640px) {
   .terminal { font-size: 13px; }
   .screen { padding: 10px 10px 18px; }
-  .ascii-logo { font-size: 6.5px; }
+  .ascii-logo { font-size: 8px; }
   .output { padding-left: 0; }
   .ps1 { display: block; }
   .input-line { display: block; }
