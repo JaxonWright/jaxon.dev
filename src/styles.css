@@ -179,3 +179,5 @@ pre.cp437, .cp437 {
 @media (max-width: 640px) {
   .t-page .with-art { flex-direction: column; gap: 8px; }
 }
+/* Align entry text flush with the top of its CP437 art. */
+.t-page .with-art > div:not(.art) > :first-child { margin-top: 0; line-height: 1; }
