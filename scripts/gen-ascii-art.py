@@ -36,8 +36,8 @@ def half_blocks(mask: Image.Image, cols: int) -> str:
 SHADES = ' ░▒▓█'
 
 
-def shade_photo(img: Image.Image, cols: int, ramp=" .:-=+*%#@") -> str:
-    """Luminance ramp, sketch style: dark features (hair, glasses, mustache,
+def shade_photo(img: Image.Image, cols: int, ramp=SHADES) -> str:
+    """CP437 shade ramp ( ░▒▓█), sketch style: dark features (hair, glasses, mustache,
     shirt) get dense glyphs so the face reads on a dark terminal and the flat
     light background drops out to blank."""
     g = ImageOps.grayscale(img)
@@ -48,7 +48,7 @@ def shade_photo(img: Image.Image, cols: int, ramp=" .:-=+*%#@") -> str:
     g = g.resize((cols, rows), Image.LANCZOS)
     px = g.load()
     n = len(ramp) - 1
-    lut = lambda v: ' ' if v < 62 else ramp[min(n, max(1, round(((v / 255) ** 1.25) * n)))]
+    lut = lambda v: ' ' if v < 105 else ramp[min(n, max(1, round(((v / 255) ** 1.15) * n)))]
     return '\n'.join(''.join(lut(px[x, y]) for x in range(cols)).rstrip() for y in range(rows))
 
 

@@ -38,7 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
   readonly helpOpen = signal(false);
   readonly progressBar = computed(() => {
     const filled = Math.round(this.progress() / 5);
-    return '[' + '#'.repeat(filled) + '.'.repeat(20 - filled) + ']';
+    return '▐' + '█'.repeat(filled) + '░'.repeat(20 - filled) + '▌';
   });
 
   private historyIndex = -1;
