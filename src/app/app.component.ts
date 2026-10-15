@@ -54,8 +54,10 @@ export class AppComponent implements OnInit, OnDestroy {
       s.setProperty('--t-bg', t.background);
       s.setProperty('--t-text', t.text);
       s.setProperty('--t-accent', t.accent);
-      // Photo tint: terminal green on the monochrome theme, otherwise the theme's primary color.
-      s.setProperty('--t-photo', t.name === 'monochrome' ? '#33ff66' : t.primary);
+      // Photo tint: spearmint on the default monochrome theme, otherwise the theme's primary color.
+      const mono = t.name === 'monochrome';
+      s.setProperty('--t-photo', mono ? '#3EB489' : t.primary);
+      s.setProperty('--t-photo-hi', mono ? '#98FFC8' : t.primary);
       document.querySelector('meta[name="theme-color"]')?.setAttribute('content', t.background);
     });
     // Re-type the echoed command whenever it changes.

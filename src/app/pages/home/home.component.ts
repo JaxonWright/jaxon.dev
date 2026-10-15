@@ -21,9 +21,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     fg: this.tint(fg), bg: this.tint(bg), text: '▀'.repeat(n),
   })));
 
+  /** Ramp: near-black -> --t-photo (spearmint on the default theme) -> --t-photo-hi (pale mint highlights). */
   private tint(level: number): string {
-    const pct = Math.round(Math.pow(level / (PHOTO_LEVEL_COUNT - 1), 1.1) * 100);
-    return `color-mix(in srgb, var(--t-photo) ${pct}%, #000)`;
+    const t = level / (PHOTO_LEVEL_COUNT - 1);
+    const knee = 0.7;
+    if (t <= knee) {
+      const pct = Math.round(Math.pow(t / knee, 1.1) * 100);
+      return `color-mix(in srgb, var(--t-photo) ${pct}%, #050a08)`;
+    }
+    const pct = Math.round((t - knee) / (1 - knee) * 100);
+    return `color-mix(in srgb, var(--t-photo-hi) ${pct}%, var(--t-photo))`;
   }
 
   constructor(private titleServ : Title) { 

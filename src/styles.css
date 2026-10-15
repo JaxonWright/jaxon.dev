@@ -115,7 +115,8 @@ button:focus{outline:none;}
   --t-bg: #000;
   --t-text: #fff;
   --t-accent: #999;
-  --t-photo: #33ff66;
+  --t-photo: #3EB489;
+  --t-photo-hi: #98FFC8;
   --t-font: "JetBrainsMono Nerd Font", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --t-help-font: "Google Sans", ui-sans-serif, system-ui, sans-serif;
 }
