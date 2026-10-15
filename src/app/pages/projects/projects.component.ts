@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { ProjectCardComponent } from '../../elements/project-card/project-card.component';
 
 export interface Project {
   logo  : string,
@@ -28,9 +27,7 @@ export interface Action {
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './projects.component.html',
     styleUrls: ['./projects.component.css'],
-    imports: [
-      ProjectCardComponent
-    ]
+    imports: []
 })
 export class ProjectsComponent implements OnInit {
   projects : Project[];

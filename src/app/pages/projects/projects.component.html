@@ -1,4 +1,15 @@
-<h1 style="margin-top: 0">Projects</h1>
-@for (project of projects; track $index) {
-  <app-project-card [project]="project"></app-project-card>
-}
+<article class="t-page">
+  <p class="muted">total {{projects.length}}</p>
+  @for (project of projects; track $index) {
+    <section class="block">
+      <h2>{{project.title}}</h2>
+      <p class="tags">@for (cat of project.categories; track $index) {[{{cat.title}}] }</p>
+      <p>{{project.description}}</p>
+      <p>
+        @for (action of project.actions; track $index) {
+          <a [href]="action.link" target="_blank" rel="noopener">{{action.title}} ↗</a>&nbsp;&nbsp;
+        }
+      </p>
+    </section>
+  }
+</article>

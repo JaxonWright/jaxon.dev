@@ -6,8 +6,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from '@pages/home/home.component';
 import { ProjectsComponent } from '@pages/projects/projects.component';
 import { PageNotFoundComponent } from '@pages/page-not-found/page-not-found.component';
-import { NavbarComponent } from '@elements/navbar/navbar.component';
-import { FooterComponent } from '@elements/footer/footer.component';
 import { ContactComponent } from '@pages/contact/contact.component';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -55,8 +53,6 @@ import { ProjectCardComponent } from './elements/project-card/project-card.compo
         HomeComponent,
         ProjectsComponent,
         PageNotFoundComponent,
-        NavbarComponent,
-        FooterComponent,
         ContactComponent,
         BuildInfoComponent,
         ProjectCardComponent,

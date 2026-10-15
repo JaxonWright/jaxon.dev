@@ -92,3 +92,43 @@ button:focus{outline:none;}
 ::-webkit-scrollbar-thumb:hover {
   background: #fff;
 }
+
+/* ---- Terminal experiment ---- */
+:root {
+  --t-primary: #fff;
+  --t-secondary: #ccc;
+  --t-bg: #000;
+  --t-text: #fff;
+  --t-accent: #999;
+  --t-font: "Share Tech Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --t-help-font: "Google Sans", ui-sans-serif, system-ui, sans-serif;
+}
+html, body { background: var(--t-bg); }
+body { font-family: var(--t-font); color: var(--t-text); }
+::selection { background: var(--t-primary); color: var(--t-bg); }
+
+/* Shared terminal page styles used by the routed pages. */
+.t-page { font-family: var(--t-font); }
+.t-page h1, .t-page h2, .t-page h3, .t-page h4 {
+  font-family: var(--t-font);
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 18px 0 6px;
+  font-size: 1em;
+  color: var(--t-primary);
+}
+.t-page h1 { margin-top: 4px; }
+.t-page h1::before { content: '## '; color: var(--t-accent); }
+.t-page h2::before { content: '>> '; color: var(--t-accent); }
+.t-page p { line-height: 1.5; margin: 0 0 8px; max-width: 90ch; }
+.t-page a { color: var(--t-text); text-decoration: underline; text-underline-offset: 3px; }
+.t-page a:hover, .t-page a:focus-visible { background: var(--t-primary); color: var(--t-bg); text-decoration: none; outline: none; }
+.t-page .muted { color: var(--t-accent); }
+.t-page .dim { color: var(--t-secondary); }
+.t-page .rule { color: var(--t-accent); margin: 10px 0; overflow: hidden; white-space: nowrap; }
+.t-page .tags { color: var(--t-secondary); }
+.t-page .block { border-left: 1px solid var(--t-accent); padding-left: 1.5ch; margin: 10px 0 16px; }
+.t-page table { border-collapse: collapse; }
+.t-page td { padding: 1px 2ch 1px 0; vertical-align: top; }
+.t-page .cmd-link { cursor: pointer; background: none; border: 0; padding: 0; font: inherit; color: var(--t-text); text-decoration: underline; }
+.t-page .cmd-link:hover { background: var(--t-primary); color: var(--t-bg); }

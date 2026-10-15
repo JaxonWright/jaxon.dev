@@ -1,39 +1,15 @@
-<h1 style="margin-top: 0">Build Info</h1>
-<div class="row">
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>
-        <h3>Build</h3>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list>
-        @for (dep of buildInfo; track $index) {
-          <mat-list-item>
-            <fa-icon matListItemAvatar [icon]="dep.icon"></fa-icon>
-            <h3 matListItemTitle>{{dep.name}}</h3>
-            <a [href]="dep.link" matListItemLine>{{dep.version}}</a>
-          </mat-list-item>
-        }
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>
-        <h3>Dependencies</h3>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list>
-        @for (dep of dependencies; track $index) {
-          <mat-list-item>
-            <fa-icon matListItemAvatar [icon]="dep.icon"></fa-icon>
-            <h3 matListItemTitle>{{dep.name}}</h3>
-            <a [href]="dep.link" matListItemLine>{{dep.version}}</a>
-          </mat-list-item>
-        }
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
-</div>
+<article class="t-page">
+  <p>jaxon.dev {{version.raw}} angular-{{dependencies[0].version}} {{buildDate}}</p>
+  <h1>Build Info</h1>
+  <table>
+    @for (dep of buildInfo; track $index) {
+      <tr><td class="muted">{{dep.name}}</td><td>@if (dep.link) {<a [href]="dep.link" target="_blank" rel="noopener">{{dep.version}}</a>} @else {{{dep.version}}}</td></tr>
+    }
+  </table>
+  <h1>Dependencies</h1>
+  <table>
+    @for (dep of dependencies; track $index) {
+      <tr><td class="muted">{{dep.name}}</td><td><a [href]="dep.link" target="_blank" rel="noopener">{{dep.version}}</a></td></tr>
+    }
+  </table>
+</article>

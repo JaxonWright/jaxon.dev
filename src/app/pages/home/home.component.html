@@ -1,86 +1,44 @@
-<h1 style="margin-top: 0">{{getTimeGreeting()}}. My name is Jaxon.</h1>
-<div class="row">
-  <mat-card appearance="outlined" class="full-width">
-    <mat-card-content class="top-card-content">
-      <span class="headshot"></span>
-      <p>
-        I am a {{getAge()}}-year-old tech enthusiast, I'm captivated by the rapid evolution of technology around us. The pace of innovation is accelerating, transforming the world by making the impossible achievable and simplifying countless tasks. My passion lies in harnessing cutting-edge technologies to create a better world. I find immense satisfaction in developing software that enhances people's lives, providing them with tools to navigate their daily routines more efficiently. The joy of software development for me stems from crafting solutions that bring value and delight to others.
-      </p>
-    </mat-card-content>
-  </mat-card>
-</div>
-<h2>Experience</h2>
-<div class="row">
-  <mat-card appearance="outlined" class="full-width">
-    <mat-card-header>
-      <div mat-card-avatar class="volgistics-header-image"></div>
-      <mat-card-title><h3>Software Developer</h3></mat-card-title>
-      <mat-card-subtitle>Volgistics, Byron Center, MI</mat-card-subtitle>
-      <mat-card-subtitle>Jul 2017 - Present <i>({{yearsAtVolgistics}} years)</i></mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
+<article class="t-page">
+  <h1>{{getTimeGreeting()}}. My name is Jaxon.</h1>
+  <div class="block">
+    <p>
+      I am a {{getAge()}}-year-old tech enthusiast, I'm captivated by the rapid evolution of technology around us. The pace of innovation is accelerating, transforming the world by making the impossible achievable and simplifying countless tasks. My passion lies in harnessing cutting-edge technologies to create a better world. I find immense satisfaction in developing software that enhances people's lives, providing them with tools to navigate their daily routines more efficiently. The joy of software development for me stems from crafting solutions that bring value and delight to others.
+    </p>
+  </div>
+
+  <h2>Experience</h2>
+  <div class="block">
+    <h3>Software Developer</h3>
+    <p class="dim">Volgistics, Byron Center, MI &middot; Jul 2017 - Present <span class="muted">({{yearsAtVolgistics}} years)</span></p>
+    <p>
       The Volgistics team is a group of dedicated volunteer management and information technology professionals who
-      enjoy helping
-      volunteer leaders achieve their missions through the use of technology. 
-      </p>
-      <br>
-      <p>
+      enjoy helping volunteer leaders achieve their missions through the use of technology.
+    </p>
+    <p>
       My role as a software developer here is to
       create and ship a fantastic product. In my years here, I have written internal tools from the ground up as well as
       introduced completely redone customer-facing products using the Angular framework; most notably the VicNet volunteer
       portal. VicNet and the VicTouch time clock are now also native apps on Android and iOS.
-      </p>
-    </mat-card-content>
-  </mat-card>
-</div>
-<div class="row">
-  <mat-card appearance="outlined" class="full-width">
-    <mat-card-header>
-      <div mat-card-avatar class="configura-header-image"></div>
-      <mat-card-title><h3>Application Consultant Intern</h3></mat-card-title>
-      <mat-card-subtitle>Configura, Grand Rapids, MI</mat-card-subtitle>
-      <mat-card-subtitle>Jun 2015 - Sep 2015 &amp; May 2016 - Sep 2016 <i>(9 months)</i></mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        Gaining real-world software development experience by working on CETDesigner, a piece of intelligent, highly
-        visual and intuitive
-        space-planning software that simplifies specifying and selling of products in a variety of industries. CET is
-        written
-        with Configura's own programming language, CM.
-      </p>
-    </mat-card-content>
-  </mat-card>
-</div>
-<h2>Education</h2>
-<div class="row">
-  <mat-card appearance="outlined" class="full-width">
-    <mat-card-header>
-      <div mat-card-avatar class="gvsu-header-image"></div>
-      <mat-card-title><h3>Bachelor of Science in Computer Science</h3></mat-card-title>
-      <mat-card-subtitle>Grand Valley State University, Allendale, MI</mat-card-subtitle>
-      <mat-card-subtitle>2013 - 2017 <i>(4 years)</i></mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        I completed my undergraduate education in 4 years, preparing myself for a career in programming and software
-        development.
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <mat-chip-listbox>
-        <mat-chip>
-          <fa-icon [icon]="['fas', 'balance-scale']" size="lg" transform="shrink-6.5" [mask]="['fas', 'circle']">
-          </fa-icon>
-          &nbsp;3.5 GPA
-        </mat-chip>
-        <mat-chip>
-          <fa-icon [icon]="['fas', 'newspaper']" size="lg" transform="shrink-6.5" [mask]="['fas', 'circle']">
-          </fa-icon>
-          &nbsp;1 Publication
-        </mat-chip>
-      </mat-chip-listbox>
-    </mat-card-actions>
-  </mat-card>
-</div>
+    </p>
+  </div>
+  <div class="block">
+    <h3>Application Consultant Intern</h3>
+    <p class="dim">Configura, Grand Rapids, MI &middot; Jun 2015 - Sep 2015 &amp; May 2016 - Sep 2016 <span class="muted">(9 months)</span></p>
+    <p>
+      Gaining real-world software development experience by working on CETDesigner, a piece of intelligent, highly
+      visual and intuitive space-planning software that simplifies specifying and selling of products in a variety of industries. CET is
+      written with Configura's own programming language, CM.
+    </p>
+  </div>
+
+  <h2>Education</h2>
+  <div class="block">
+    <h3>Bachelor of Science in Computer Science</h3>
+    <p class="dim">Grand Valley State University, Allendale, MI &middot; 2013 - 2017 <span class="muted">(4 years)</span></p>
+    <p>
+      I completed my undergraduate education in 4 years, preparing myself for a career in programming and software
+      development.
+    </p>
+    <p class="tags">[3.5 GPA] [1 PUBLICATION]</p>
+  </div>
+</article>

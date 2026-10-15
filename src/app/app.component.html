@@ -1,7 +1,83 @@
-<div class="app-frame mat-app-background">
-  <app-navbar></app-navbar>
-  <main class="content">
-    <router-outlet></router-outlet>
-  </main>
-  <app-footer></app-footer>
+<div class="terminal" [class.crt]="term.crt()" (click)="onScreenClick($event)">
+  <div class="screen" #screen>
+    <header class="banner">
+      <pre class="ascii-logo" aria-label="JXN">{{ logo }}</pre>
+      <p class="sys">JXN_TERMINAL V{{ version.version }} &mdash; JAXON.DEV {{ year }}</p>
+      <p class="sys muted">TYPE A COMMAND OR CLICK ONE &middot; ↑/↓ HISTORY &middot; TAB COMPLETE</p>
+    </header>
+
+    @if (booting()) {
+      <section class="boot" aria-live="polite">
+        @for (step of bootSteps; track step; let i = $index) {
+          @if (i <= bootIndex()) {
+            <p class="sys">{{ step }}@if (i < bootIndex()) {<span class="muted"> ... OK</span>}</p>
+          }
+        }
+        <p class="sys">{{ progressBar() }} {{ progress() }}% COMPLETE<span class="cursor">_</span></p>
+        <p class="sys muted">PRESS ANY KEY TO SKIP</p>
+      </section>
+    } @else {
+      <section class="session">
+        @if (!term.cleared()) {
+          <p class="prompt-line"><span class="ps1">guest&#64;jaxon.dev:~$</span> {{ typed() }}</p>
+          <div class="output page" [class.revealed]="typed() === term.routeEcho()">
+            <router-outlet></router-outlet>
+          </div>
+        }
+
+        @for (entry of term.entries(); track $index) {
+          <p class="prompt-line"><span class="ps1">guest&#64;jaxon.dev:~$</span> {{ entry.command }}</p>
+          <div class="output">
+            @for (line of entry.lines; track $index) {
+              @if (line.command) {
+                <button type="button" class="line link" [class]="line.kind" (click)="run(line.command)">{{ line.text }}</button>
+              } @else if (line.href) {
+                <a class="line link" [class]="line.kind" [href]="line.href" target="_blank" rel="noopener">{{ line.text }}</a>
+              } @else {
+                <pre class="line" [class]="line.kind">{{ line.text || ' ' }}</pre>
+              }
+            }
+          </div>
+        }
+
+        <form class="prompt-line input-line" (submit)="$event.preventDefault(); submit()">
+          <label for="cmd" class="ps1">guest&#64;jaxon.dev:~$</label>
+          <span class="input-wrap">
+            <span class="ghost" aria-hidden="true">{{ input() }}<span class="cursor block">&#9608;</span></span>
+            <input #cmdInput id="cmd" name="cmd" autocomplete="off" autocapitalize="off" spellcheck="false"
+                   enterkeyhint="go" aria-label="Terminal command"
+                   [value]="input()" (input)="input.set(cmdInput.value)" (keydown)="onKeydown($event)">
+          </span>
+        </form>
+
+        <nav class="quick" aria-label="Commands">
+          @for (cmd of term.quickCommands; track cmd) {
+            <button type="button" (click)="run(cmd)" (mouseenter)="setHelp('Run `' + cmd + '`')" (mouseleave)="setHelp('')"
+                    (focus)="setHelp('Run `' + cmd + '`')" (blur)="setHelp('')">[ {{ cmd }} ]</button>
+          }
+        </nav>
+      </section>
+    }
+  </div>
+
+  <footer class="statusbar">
+    <div class="help-box" [class.open]="helpOpen()">
+      <button type="button" class="help-toggle" (click)="helpOpen.set(!helpOpen())" [attr.aria-expanded]="helpOpen()">
+        <span>HELP</span><span>{{ helpOpen() ? 'v' : '^' }}</span>
+      </button>
+      @if (helpOpen()) {
+        <div class="help-panel">
+          <p>{{ term.helpText() || 'Hover a command to see what it does. Type `help` for the full list.' }}</p>
+        </div>
+      }
+    </div>
+    <div class="themes" aria-label="Themes">
+      @for (t of themes; track t.name) {
+        <button type="button" class="swatch" [class.active]="t.name === term.theme().name" [title]="t.name"
+                [style.background]="t.primary" (click)="term.setTheme(t)" [attr.aria-label]="'Theme ' + t.name"></button>
+      }
+    </div>
+    <button type="button" class="hash" (click)="run('version')" title="Build info">{{ version.hash }}</button>
+    <span class="binary">&copy; {{ year }} JAXON WRIGHT <span title="J">01001010</span> <span title="H">01001000</span> <span title="W">01010111</span></span>
+  </footer>
 </div>

@@ -2,9 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { VERSION } from '../../../environments/version';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { MatList, MatListItem, MatListItemAvatar, MatListItemTitle, MatListItemLine } from '@angular/material/list';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 declare var require: any;
 
 export interface Dependency {
@@ -19,17 +16,14 @@ export interface Dependency {
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './build-info.component.html',
     styleUrls: ['./build-info.component.css'],
-    imports: [
-      MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatList,
-      MatListItem, FaIconComponent, MatListItemAvatar, MatListItemTitle, 
-      MatListItemLine
-    ]
+    imports: []
 })
 export class BuildInfoComponent implements OnInit {
   dependencies : Dependency[];
   buildInfo : Dependency[];
 
   buildDate : string;
+  readonly version = VERSION;
 
   constructor(private title : Title) { 
     this.title.setTitle('Jaxon Wright - Build Info');
@@ -47,7 +41,7 @@ export class BuildInfoComponent implements OnInit {
                         ];
     
     this.buildInfo = [
-                      {name: 'Hash', version: VERSION.hash, link: `https://github.com/JaxonWright/jaxonwright.com/commit/${VERSION.hash}`, icon: ['fas', 'hashtag']},
+                      {name: 'Hash', version: VERSION.hash, link: `https://github.com/JaxonWright/jaxon.dev/commit/${VERSION.hash}`, icon: ['fas', 'hashtag']},
                       {name: 'Date', version: this.buildDate, link: '', icon: ['fas', 'calendar']}
                      ]
 
