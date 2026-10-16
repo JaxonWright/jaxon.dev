@@ -174,3 +174,11 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   .hash { display: none; }
   .theme-btn { padding-bottom: 0; }
 }
+
+/* rm -rf / easter egg: content vanishes under CP437 noise for ~0.7s. */
+.screen.rmrf-glitch > :not(.glitch-noise) { visibility: hidden; }
+.glitch-noise {
+  position: fixed; inset: 0; z-index: 5; margin: 0; overflow: hidden; pointer-events: none;
+  color: var(--t-primary); line-height: 1; font-size: 15px;
+  text-shadow: 2px 0 var(--t-error), -2px 0 var(--t-secondary);
+}

@@ -1,5 +1,6 @@
 <div class="terminal" (click)="onScreenClick($event)">
-  <div class="screen" #screen>
+  <div class="screen" #screen [class.rmrf-glitch]="term.glitch() !== null">
+    @if (term.glitch(); as noise) {<pre class="glitch-noise cp437" aria-hidden="true">{{ noise }}</pre>}
     <header class="banner">
       <pre class="ascii-logo cp437 desktop-only" role="img" aria-label="JW logo">{{ logoAnim.text() }}</pre>
       <pre class="ascii-logo cp437 mobile-only" role="img" aria-label="JW logo">{{ logoSmallAnim.text() }}</pre>

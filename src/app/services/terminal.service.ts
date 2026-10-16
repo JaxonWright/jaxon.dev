@@ -55,6 +55,8 @@ export class TerminalService {
     { name: 'clear', aliases: ['cls'], description: 'Clear the screen', run: () => { this.entries.set([]); this.routeEcho.set(''); this.cleared.set(true); return; } },
     { name: 'date', description: 'Print the date', hidden: true, run: () => [{ text: new Date().toString() }] },
     { name: 'echo', description: 'Print text', hidden: true, run: (a) => [{ text: a.join(' ') }] },
+    { name: 'rm -rf /', aliases: ['rm -rf /*', 'rm -rf --no-preserve-root /', 'sudo rm -rf /', 'sudo rm -rf /*', 'sudo rm -rf --no-preserve-root /'],
+      description: '', hidden: true, run: () => undefined },
     { name: 'sudo', description: '', hidden: true, run: () => [{ text: 'ACCESS DENIED. THIS INCIDENT WILL BE REPORTED.', kind: 'error' }] },
     { name: 'exit', description: '', hidden: true, run: () => [{ text: 'THERE IS NO ESCAPE. TRY `help`.', kind: 'muted' }] },
   ];
@@ -110,6 +112,7 @@ export class TerminalService {
   }
 
   execute(raw: string): void {
+    this.cancelRmrf();
     const input = raw.trim();
     if (!input) {
       this.entries.update(e => [...e, { command: '', lines: [] }]);
@@ -139,6 +142,7 @@ export class TerminalService {
     }
     const lines = cmd.run?.(args);
     if (lines) { const out = lines; this.entries.update(e => [...e, { command: input, lines: out }]); }
+    if (cmd.name === 'rm -rf /') this.startRmrf(input);
   }
 
   private helpLines(): TerminalLine[] {
@@ -162,6 +166,74 @@ export class TerminalService {
     }
     this.setTheme(t);
     return [{ text: `THEME SET TO ${t.name.toUpperCase()}` }];
+  }
+
+  // ---- Easter egg: `rm -rf /`. Purely cosmetic: prints fake lines, no storage or navigation. ----
+  /** CP437 noise shown over the screen during the fake wipe; null when not glitching. */
+  readonly glitch = signal<string | null>(null);
+  private rmrfTimers: ReturnType<typeof setTimeout>[] = [];
+
+  /** True while the fake wipe is streaming (the shell auto-scrolls to follow it). */
+  readonly rmrfActive = signal(false);
+
+  private static readonly RMRF_PATHS = [
+    '/bin/bash', '/bin/ls', '/bin/cat', '/bin/sh', '/usr/bin/node', '/usr/bin/ng', '/usr/lib/angular/core',
+    '/etc/omarchy/themes/midnight', '/etc/omarchy/hyprland.conf', '/etc/hosts', '/etc/passwd', '/boot/vmlinuz',
+    '/home/jaxon/skittles/wild-berry', '/home/jaxon/skittles/tropical', '/home/jaxon/skittles/sour',
+    '/home/jaxon/playlists/spotify-wrapped-2026', '/home/jaxon/resume/volgistics', '/home/jaxon/resume/gvsu',
+    '/home/jaxon/.ssh/definitely_not_my_keys', '/home/jaxon/projects/jaxon.dev', '/home/jaxon/.config/nvim',
+    '/var/packers/hope', '/var/packers/super-bowl-2011', '/var/lions/patience', '/var/log/regrets.log',
+    '/opt/vicnet/volunteers', '/opt/victouch/time-clock', '/srv/www/jaxon.dev/index.html', '/tmp/.cursor-blink',
+    '/dev/coffee', '/proc/self/sanity', '/lib/libjoy.so.1', '/sbin/init',
+  ];
+
+  private startRmrf(command: string): void {
+    const reduced = typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    this.rmrfActive.set(true);
+    let entry: TerminalEntry = { command, lines: [] };
+    this.entries.update(e => [...e, entry]);
+    const add = (line: TerminalLine): boolean => {
+      let found = false;
+      this.entries.update(es => es.map(e => {
+        if (e !== entry) return e;
+        found = true;
+        entry = { ...e, lines: [...e.lines, line] };
+        return entry;
+      }));
+      if (!found) this.cancelRmrf(); // screen was cleared mid-animation
+      return found;
+    };
+    const later = (ms: number, fn: () => void) => this.rmrfTimers.push(setTimeout(fn, ms));
+    const paths = TerminalService.RMRF_PATHS;
+    const count = reduced ? 8 : 60, step = reduced ? 90 : 42;
+    for (let i = 0; i < count; i++) {
+      later(i * step, () => add({ text: `removed '${paths[(i * 7) % paths.length]}'`, kind: i % 9 === 8 ? 'error' : undefined }));
+    }
+    const end = count * step;
+    if (!reduced) {
+      const noise = '░▒▓█▀▄▌▐■□▪▫◘○◙♦♣♠•▬↨↑↓→←∟↔▲▼#%&@$';
+      const frame = () => {
+        let out = '';
+        for (let r = 0; r < 40; r++) {
+          for (let c = 0; c < 140; c++) out += Math.random() < 0.55 ? ' ' : noise[Math.floor(Math.random() * noise.length)];
+          out += '\n';
+        }
+        return out;
+      };
+      for (let f = 0; f < 12; f++) later(end + f * 60, () => this.glitch.set(frame()));
+      later(end + 12 * 60, () => this.glitch.set(null));
+    }
+    const done = end + (reduced ? 200 : 12 * 60 + 250);
+    later(done, () => add({ text: 'rm: it is dangerous to operate recursively on \'/\'', kind: 'muted' }));
+    later(done + 350, () => add({ text: 'just kidding. nothing was harmed. type `help` for real commands.', kind: 'accent', command: 'help' }));
+    later(done + 700, () => this.cancelRmrf());
+  }
+
+  cancelRmrf(): void {
+    this.rmrfActive.set(false);
+    this.rmrfTimers.forEach(t => clearTimeout(t));
+    this.rmrfTimers = [];
+    this.glitch.set(null);
   }
 
   setTheme(t: TerminalTheme): void {

@@ -66,6 +66,8 @@ export class AppComponent implements OnInit, OnDestroy {
     });
     // Re-type the echoed command whenever it changes.
     effect(() => this.typeEcho(this.term.routeEcho()));
+    // Follow the `rm -rf /` easter egg output as it streams.
+    effect(() => { this.term.entries(); if (this.term.rmrfActive()) setTimeout(() => { const el = this.screen?.nativeElement; if (el) el.scrollTop = el.scrollHeight; }); });
   }
 
   ngOnInit(): void {
@@ -169,6 +171,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.run('clear');
     } else if (event.key === 'c' && event.ctrlKey && !window.getSelection()?.toString()) {
       event.preventDefault();
+      this.term.cancelRmrf();
       this.term.entries.update(e => [...e, { command: this.input() + '^C', lines: [] }]);
       this.input.set('');
     }
