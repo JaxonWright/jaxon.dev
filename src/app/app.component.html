@@ -1,8 +1,8 @@
 <div class="terminal" (click)="onScreenClick($event)">
   <div class="screen" #screen>
     <header class="banner">
-      <pre class="ascii-logo cp437 desktop-only" role="img" aria-label="JW logo">{{ logo }}</pre>
-      <pre class="ascii-logo cp437 mobile-only" role="img" aria-label="JW logo">{{ logoSmall }}</pre>
+      <pre class="ascii-logo cp437 desktop-only" role="img" aria-label="JW logo">{{ logoAnim.text() }}</pre>
+      <pre class="ascii-logo cp437 mobile-only" role="img" aria-label="JW logo">{{ logoSmallAnim.text() }}</pre>
       <p class="sys">JXN_TERMINAL V{{ version.version }} &mdash; JAXON.DEV {{ year }}</p>
       <p class="sys muted">TYPE A COMMAND OR CLICK ONE &middot; ↑/↓ HISTORY &middot; TAB COMPLETE</p>
     </header>

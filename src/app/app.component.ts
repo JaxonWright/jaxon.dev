@@ -7,6 +7,7 @@ import { Subscription, filter } from 'rxjs';
 import { VERSION } from '../environments/version';
 import { TERMINAL_THEMES, TerminalService } from '@services/terminal.service';
 import { JW_LOGO, JW_LOGO_SMALL } from '@services/ascii-art';
+import { LogoAnimator } from '@services/logo-animator';
 
 const BOOT_KEY = 'jxn-terminal-booted';
 
@@ -22,8 +23,8 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('cmdInput') cmdInput?: ElementRef<HTMLInputElement>;
   @ViewChild('screen') screen?: ElementRef<HTMLElement>;
 
-  readonly logo = JW_LOGO;
-  readonly logoSmall = JW_LOGO_SMALL;
+  readonly logoAnim = new LogoAnimator(JW_LOGO);
+  readonly logoSmallAnim = new LogoAnimator(JW_LOGO_SMALL);
   readonly themes = TERMINAL_THEMES;
   readonly version = VERSION;
   readonly year = new Date().getFullYear();
@@ -68,6 +69,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.logoAnim.begin();
+    this.logoSmallAnim.begin();
     this.sub = this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: NavigationEnd) => {
       // Browser back/forward or direct links: derive the echo from the URL.
       const echo = this.term.echoForUrl(e.urlAfterRedirects);
@@ -86,6 +89,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.logoAnim.destroy();
+    this.logoSmallAnim.destroy();
     this.sub?.unsubscribe();
     this.timers.forEach(t => clearTimeout(t));
   }
