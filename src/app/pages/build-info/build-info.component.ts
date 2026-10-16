@@ -1,12 +1,38 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { VERSION } from '../../../environments/version';
-import { JW_LOGO_SMALL } from '@services/ascii-art';
+import { JW_LOGO_SMALL, OS_LOGOS } from '@services/ascii-art';
 import { TerminalService } from '@services/terminal.service';
 declare var require: any;
 
 export interface Dependency { name: string; link: string; version: string; }
 export interface Field { key: string; value: string; link?: string; }
+
+export type OsId = 'windows' | 'macos' | 'linux' | 'android' | 'ios' | 'chromeos';
+const OS_NAMES: Record<OsId, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux', android: 'Android', ios: 'iOS', chromeos: 'ChromeOS' };
+const OS_ART: Record<OsId, string> = { windows: OS_LOGOS['windows'], macos: OS_LOGOS['apple'], ios: OS_LOGOS['apple'], linux: OS_LOGOS['tux'], android: OS_LOGOS['android'], chromeos: OS_LOGOS['chrome'] };
+
+/** Detect the visitor's OS (userAgentData first, userAgent fallback). `?os=<id>` previews one; display only. */
+export function detectOs(): { id: OsId | null; name: string } {
+  if (typeof navigator === 'undefined') return { id: null, name: 'unknown' };
+  const n: any = navigator;
+  const forced = typeof location !== 'undefined' ? new URLSearchParams(location.search).get('os')?.toLowerCase() : null;
+  if (forced && forced in OS_NAMES) return { id: forced as OsId, name: OS_NAMES[forced as OsId] };
+  const plat: string = (n.userAgentData?.platform || '').toLowerCase();
+  const ua: string = n.userAgent || '';
+  let id: OsId | null = null;
+  if (plat) {
+    id = plat.includes('win') ? 'windows' : plat.includes('mac') ? 'macos' : plat.includes('android') ? 'android'
+      : plat.includes('chrome') ? 'chromeos' : plat.includes('ios') ? 'ios' : plat.includes('linux') ? 'linux' : null;
+  }
+  if (!id) {
+    id = /Windows/.test(ua) ? 'windows' : /Android/.test(ua) ? 'android' : /CrOS/.test(ua) ? 'chromeos'
+      : /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && n.maxTouchPoints > 1) ? 'ios'
+      : /Mac OS X|Macintosh/.test(ua) ? 'macos' : /Linux|X11/.test(ua) ? 'linux' : null;
+  }
+  const name = id === 'ios' && (/iPad/.test(ua) || (/Macintosh/.test(ua) && n.maxTouchPoints > 1)) ? 'iPadOS' : id ? OS_NAMES[id] : (n.platform || 'unknown');
+  return { id, name };
+}
 
 const PAGE_LOADED = performance.timeOrigin || Date.now();
 
@@ -18,9 +44,11 @@ const PAGE_LOADED = performance.timeOrigin || Date.now();
   imports: [],
 })
 export class BuildInfoComponent implements OnInit, OnDestroy {
-  // Static, shaded (▓) compact variant so it reads differently from the
-  // animated solid banner logo above it.
-  readonly logo = JW_LOGO_SMALL.replace(/█/g, '▓');
+  readonly osInfo = detectOs();
+  // Visitor's OS logo like fastfetch; unknown OS falls back to the static,
+  // shaded (▓) JW variant so it differs from the animated banner logo.
+  readonly logo = this.osInfo.id ? OS_ART[this.osInfo.id] : JW_LOGO_SMALL.replace(/█/g, '▓');
+  readonly logoLabel = this.osInfo.id ? `${this.osInfo.name} logo` : 'JW logo';
   readonly version = VERSION;
   readonly buildDate = new Date(VERSION.date).toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
   readonly commitLink = `https://github.com/JaxonWright/jaxon.dev/commit/${VERSION.hash}`;
@@ -85,8 +113,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy {
   }
 
   private os(): string {
-    const n: any = navigator;
-    return n.userAgentData?.platform || n.platform || 'unknown';
+    return this.osInfo.name;
   }
 
   private browser(): string {
