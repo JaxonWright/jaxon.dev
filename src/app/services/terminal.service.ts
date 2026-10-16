@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TERMINAL_THEMES, DEFAULT_THEME, TerminalTheme } from './omarchy-themes';
+import { RMRF_LINES } from './rmrf-paths';
 
 export interface TerminalLine {
   text: string;
@@ -176,16 +177,6 @@ export class TerminalService {
   /** True while the fake wipe is streaming (the shell auto-scrolls to follow it). */
   readonly rmrfActive = signal(false);
 
-  private static readonly RMRF_PATHS = [
-    '/bin/bash', '/bin/ls', '/bin/cat', '/bin/sh', '/usr/bin/node', '/usr/bin/ng', '/usr/lib/angular/core',
-    '/etc/omarchy/themes/midnight', '/etc/omarchy/hyprland.conf', '/etc/hosts', '/etc/passwd', '/boot/vmlinuz',
-    '/home/jaxon/skittles/wild-berry', '/home/jaxon/skittles/tropical', '/home/jaxon/skittles/sour',
-    '/home/jaxon/playlists/spotify-wrapped-2026', '/home/jaxon/resume/volgistics', '/home/jaxon/resume/gvsu',
-    '/home/jaxon/.ssh/definitely_not_my_keys', '/home/jaxon/projects/jaxon.dev', '/home/jaxon/.config/nvim',
-    '/var/packers/hope', '/var/packers/super-bowl-2011', '/var/lions/patience', '/var/log/regrets.log',
-    '/opt/vicnet/volunteers', '/opt/victouch/time-clock', '/srv/www/jaxon.dev/index.html', '/tmp/.cursor-blink',
-    '/dev/coffee', '/proc/self/sanity', '/lib/libjoy.so.1', '/sbin/init',
-  ];
 
   private startRmrf(command: string): void {
     const reduced = typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -204,10 +195,13 @@ export class TerminalService {
       return found;
     };
     const later = (ms: number, fn: () => void) => this.rmrfTimers.push(setTimeout(fn, ms));
-    const paths = TerminalService.RMRF_PATHS;
-    const count = reduced ? 8 : 60, step = reduced ? 90 : 42;
+    // ~2.5s of output (a few lines per frame), or a short sample under reduced motion.
+    const lines = reduced ? RMRF_LINES.filter((_, i) => i % Math.ceil(RMRF_LINES.length / 8) === 0) : RMRF_LINES;
+    const step = reduced ? 90 : 42;
+    const perTick = Math.max(1, Math.ceil(lines.length / (2500 / step)));
+    const count = Math.ceil(lines.length / perTick);
     for (let i = 0; i < count; i++) {
-      later(i * step, () => add({ text: `removed '${paths[(i * 7) % paths.length]}'`, kind: i % 9 === 8 ? 'error' : undefined }));
+      later(i * step, () => lines.slice(i * perTick, (i + 1) * perTick).forEach(text => add({ text })));
     }
     const end = count * step;
     if (!reduced) {
