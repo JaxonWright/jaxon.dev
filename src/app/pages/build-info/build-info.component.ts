@@ -59,7 +59,7 @@ export class BuildInfoComponent implements OnInit, OnDestroy {
   readonly palette = computed(() => this.term.theme().palette);
 
   constructor(private title: Title, public term: TerminalService) {
-    this.title.setTitle('Jaxon Wright - fastfetch');
+    this.title.setTitle('Jaxon Wright - Build Info');
   }
 
   ngOnInit(): void {
