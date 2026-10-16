@@ -1,5 +1,9 @@
 <article class="t-page fastfetch">
-  <pre class="ff-logo cp437" role="img" [attr.aria-label]="logoLabel">{{ logo }}</pre>
+  @if (tuxRows) {
+    <pre class="ff-logo cp437" role="img" [attr.aria-label]="logoLabel">@for (row of tuxRows; track $index) {@for (c of row; track $index) {<span [style.color]="c.fg" [style.background]="c.bg">{{ c.text }}</span>}{{ '\n' }}}</pre>
+  } @else {
+    <pre class="ff-logo cp437" role="img" [attr.aria-label]="logoLabel">{{ logo }}</pre>
+  }
   <div class="ff-info">
     <p class="ff-title"><span class="k">guest</span>&#64;<span class="k">jaxon.dev</span></p>
     <p class="ff-rule" aria-hidden="true">{{ '─'.repeat(15) }}</p>

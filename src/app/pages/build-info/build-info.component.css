@@ -11,3 +11,4 @@
 @media (max-width: 640px) {
   .fastfetch { flex-direction: column; gap: 14px; }
 }
+:host-context(.t-light) .ff-logo { --ff-light: #fff; }

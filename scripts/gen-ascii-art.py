@@ -6,7 +6,7 @@ Sources:
   JW logo      scripts/ascii-src/jw-logo.png (render of src/assets/img/branding/favicon.svg)
   Photo        scripts/ascii-src/github-avatar.png  (▀ half-blocks, 32 levels, theme-tinted) (github.com/u/14099593 avatar used by the old about page)
   Logos        src/assets/img/resume/{volgistics.png,configura.png,GVSU.jpg}
-  OS logos     drawn below with PIL primitives (simplified silhouettes, mono, theme-coloured)
+  OS logos     scripts/ascii-src/os/*.svg (Simple Icons, CC0) rendered to *.png at 800px
 """
 from pathlib import Path
 from PIL import Image, ImageOps, ImageFilter
@@ -98,68 +98,49 @@ def tight(mask: Image.Image) -> Image.Image:
     return mask.crop(mask.getbbox())
 
 
-def os_logos(cols: int = 24) -> dict:
-    """Compact fastfetch-style OS silhouettes drawn from primitives (no brand assets)."""
+def two_tone_cells(img: Image.Image, cols: int):
+    """Two-tone half-block cells: 1 = ink (dark pixels), 2 = light areas fully enclosed
+    by the ink (Tux's belly, face and feet), 0 = outside. Returns rows of
+    [top, bottom, count] runs, rendered as ▀/█ with per-cell fg/bg theme colours."""
     from PIL import ImageDraw
-    S = 400
-
-    def canvas():
-        m = Image.new('L', (S, S), 0)
-        return m, ImageDraw.Draw(m)
-
-    def done(m):
-        return half_blocks(tight(m), cols)
-
-    out = {}
-    # Windows: four panes.
-    m, d = canvas(); g = 24; h = (S - g) // 2
-    for x in (0, h + g):
-        for y in (0, h + g):
-            d.rectangle((x, y, x + h, y + h), fill=255)
-    out['windows'] = done(m)
-
-    # Apple: two-lobed body, bite on the right, leaf on top.
-    m, d = canvas()
-    d.ellipse((40, 110, 230, 360), fill=255); d.ellipse((170, 110, 360, 360), fill=255)
-    d.ellipse((90, 230, 310, 395), fill=255)
-    d.ellipse((290, 165, 440, 315), fill=0)
-    d.ellipse((150, 120, 250, 150), fill=0)
-    leaf = Image.new('L', (S, S), 0); ImageDraw.Draw(leaf).ellipse((165, 10, 245, 100), fill=255)
-    m.paste(255, (0, 0), leaf.rotate(-35, center=(205, 55)))
-    out['apple'] = done(m)
-
-    # Tux: head + body, belly and eye holes, beak, feet.
-    m, d = canvas()
-    d.ellipse((120, 20, 280, 170), fill=255)
-    d.ellipse((70, 110, 330, 380), fill=255)
-    d.ellipse((125, 170, 275, 360), fill=0)
-    d.ellipse((150, 60, 185, 105), fill=0); d.ellipse((215, 60, 250, 105), fill=0)
-    d.polygon([(165, 115), (235, 115), (200, 150)], fill=0)
-    d.ellipse((40, 330, 190, 395), fill=255); d.ellipse((210, 330, 360, 395), fill=255)
-    out['tux'] = done(m)
-
-    # Android robot: head dome with antennae and eyes, body, arms, legs.
-    m, d = canvas()
-    d.pieslice((90, 40, 310, 230), 180, 360, fill=255)
-    d.line((140, 70, 110, 20), fill=255, width=14); d.line((260, 70, 290, 20), fill=255, width=14)
-    d.ellipse((150, 85, 180, 115), fill=0); d.ellipse((220, 85, 250, 115), fill=0)
-    d.rounded_rectangle((90, 148, 310, 320), 30, fill=255)
-    d.rounded_rectangle((30, 148, 75, 290), 22, fill=255); d.rounded_rectangle((325, 148, 370, 290), 22, fill=255)
-    d.rounded_rectangle((130, 300, 180, 395), 22, fill=255); d.rounded_rectangle((220, 300, 270, 395), 22, fill=255)
-    out['android'] = done(m)
-
-    # Chrome: outer ring split by three spokes around an inner disc.
-    import math
-    m, d = canvas(); c = S / 2
-    d.ellipse((0, 0, S, S), fill=255)
-    d.ellipse((c - 105, c - 105, c + 105, c + 105), fill=0)
-    d.ellipse((c - 75, c - 75, c + 75, c + 75), fill=255)
-    for a in (90, 210, 330):
-        r = math.radians(a)
-        x0, y0 = c + 90 * math.cos(r - math.pi / 2), c + 90 * math.sin(r - math.pi / 2)
-        d.line((x0, y0, x0 + 260 * math.cos(r), y0 + 260 * math.sin(r)), fill=0, width=22)
-    out['chrome'] = done(m)
+    ink = tight(mask_from(img, lambda r, g, b, a: r < 128))
+    w, h = ink.size
+    rows = round(cols * h / w * CELL_ASPECT) * 2
+    pad = Image.new('L', (w + 2, h + 2), 0); pad.paste(ink, (1, 1))
+    ImageDraw.floodfill(pad, (0, 0), 128)
+    outside = pad.crop((1, 1, w + 1, h + 1)).point(lambda v: 255 if v == 128 else 0)
+    ik = ink.resize((cols, rows), Image.LANCZOS).load()
+    ou = outside.resize((cols, rows), Image.LANCZOS).load()
+    cls = lambda x, y: 1 if ik[x, y] > 110 else (0 if ou[x, y] > 127 else 2)
+    out = []
+    for y in range(0, rows, 2):
+        runs = []
+        for x in range(cols):
+            c = [cls(x, y), cls(x, y + 1)]
+            if runs and runs[-1][:2] == c:
+                runs[-1][2] += 1
+            else:
+                runs.append(c + [1])
+        if runs and runs[-1][:2] == [0, 0]:
+            runs.pop()
+        out.append(runs)
+    while out and not out[-1]:
+        out.pop()
     return out
+
+
+def os_logos() -> dict:
+    """Official OS marks (Simple Icons) as compact half-block art, fastfetch-style."""
+    src = ROOT / 'scripts/ascii-src/os'
+    def mono(name, cols):
+        return half_blocks(tight(mask_from(Image.open(src / f'{name}.png'), lambda r, g, b, a: r < 128)), cols)
+    return {
+        'windows': mono('windows', 24),
+        'apple': mono('apple', 24),
+        'tux': half_blocks(tight(mask_from(Image.open(src / 'linux.png'), lambda r, g, b, a: r < 128)), 30),
+        'android': mono('android', 28),
+        'chrome': mono('googlechrome', 26),
+    }
 
 
 def main():
@@ -190,6 +171,8 @@ def main():
         out.append(f'export const {name} = {json.dumps(art, ensure_ascii=False)};\n')
     out.append('/** Static OS silhouettes for the Build Info (fastfetch) page. */\n')
     out.append(f'export const OS_LOGOS: Record<string, string> = {json.dumps(osl, ensure_ascii=False, indent=2)};\n')
+    out.append('/** Tux, two-tone: rows of [top, bottom, count]; 0 none, 1 body (accent), 2 belly/feet (light). */\n')
+    out.append(f'export const TUX_CELLS: [number, number, number][][] = {json.dumps(two_tone_cells(Image.open(ROOT / "scripts/ascii-src/os/linux.png"), 30), separators=sep)};\n')
     out.append('/** Photo: rows of [topLevel, bottomLevel, count] runs of ▀ (levels 0-31), tinted with the theme color. */\n')
     out.append(f'export const PHOTO_LEVELS: [number, number, number][][] = {json.dumps(photo_runs, separators=sep)};\n')
     out.append('export const PHOTO_LEVEL_COUNT = 32;\n')

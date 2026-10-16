@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { VERSION } from '../../../environments/version';
-import { JW_LOGO_SMALL, OS_LOGOS } from '@services/ascii-art';
+import { JW_LOGO_SMALL, OS_LOGOS, TUX_CELLS } from '@services/ascii-art';
 import { TerminalService } from '@services/terminal.service';
 declare var require: any;
 
@@ -34,6 +34,8 @@ export function detectOs(): { id: OsId | null; name: string } {
   return { id, name };
 }
 
+const TONES = ['transparent', 'var(--t-secondary)', 'var(--ff-light, var(--t-text))'];
+
 const PAGE_LOADED = performance.timeOrigin || Date.now();
 
 @Component({
@@ -48,6 +50,10 @@ export class BuildInfoComponent implements OnInit, OnDestroy {
   // Visitor's OS logo like fastfetch; unknown OS falls back to the static,
   // shaded (▓) JW variant so it differs from the animated banner logo.
   readonly logo = this.osInfo.id ? OS_ART[this.osInfo.id] : JW_LOGO_SMALL.replace(/█/g, '▓');
+  /** Two-tone Tux cells (▀ with fg = top tone, bg = bottom tone); null for other logos. */
+  readonly tuxRows = this.osInfo.id === 'linux'
+    ? TUX_CELLS.map(row => row.map(([t, b, n]) => ({ ch: t === b ? (t ? '█' : ' ') : '▀', fg: TONES[t], bg: t === b ? '' : TONES[b], text: '' , n })).map(c => ({ ...c, text: (c.ch).repeat(c.n) })))
+    : null;
   readonly logoLabel = this.osInfo.id ? `${this.osInfo.name} logo` : 'JW logo';
   readonly version = VERSION;
   readonly buildDate = new Date(VERSION.date).toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
