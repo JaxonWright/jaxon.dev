@@ -147,3 +147,30 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   .theme-list li { padding: 9px 12px; font-size: 13px; }
   .binary { display: none; }
 }
+
+/* Footer controls: JetBrains Mono's ascent (1.02em) is much larger than its
+   descent (0.30em), so with line-height:normal the glyphs sit high in the
+   line box and padding alone can't centre them. Use a fixed-height flex box
+   with line-height:1 and trim the text box to cap-height/baseline so the
+   visible ink is what gets centred. */
+.quick button, .theme-btn, .hash {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: var(--foot-h, 22px);
+  line-height: 1;
+  padding-top: 0;
+  padding-bottom: 0;
+  text-box: trim-both cap alphabetic;
+}
+.theme-btn { gap: 1ch; }
+/* Optical nudges (measured): the ▴
+   caret rises above cap-height and the hash carries an underline. */
+.theme-btn { padding-bottom: 1px; }
+.hash { padding-bottom: 2px; }
+@media (max-width: 640px) {
+  .statusbar { --foot-h: 34px; }
+  .hash { display: none; }
+  .theme-btn { padding-bottom: 0; }
+}
