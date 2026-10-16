@@ -1,5 +1,5 @@
 .fastfetch { display: flex; gap: 3ch; align-items: flex-start; }
-.ff-logo { font-size: 10px; color: var(--t-primary); flex: none; margin: 0; }
+.ff-logo { font-size: 10px; color: var(--t-secondary); flex: none; margin: 0; }
 .ff-info { min-width: 0; }
 .ff-info p { margin: 0; line-height: 1.5; max-width: none; }
 .ff-title { color: var(--t-primary); }

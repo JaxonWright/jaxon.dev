@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { VERSION } from '../../../environments/version';
-import { JW_LOGO, JW_LOGO_SMALL } from '@services/ascii-art';
-import { LogoAnimator } from '@services/logo-animator';
+import { JW_LOGO_SMALL } from '@services/ascii-art';
 import { TerminalService } from '@services/terminal.service';
 declare var require: any;
 
@@ -19,9 +18,9 @@ const PAGE_LOADED = performance.timeOrigin || Date.now();
   imports: [],
 })
 export class BuildInfoComponent implements OnInit, OnDestroy {
-  // Same art as the home banner: full logo on desktop, small on mobile.
-  readonly logo = new LogoAnimator(JW_LOGO);
-  readonly logoSmall = new LogoAnimator(JW_LOGO_SMALL);
+  // Static, shaded (▓) compact variant so it reads differently from the
+  // animated solid banner logo above it.
+  readonly logo = JW_LOGO_SMALL.replace(/█/g, '▓');
   readonly version = VERSION;
   readonly buildDate = new Date(VERSION.date).toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
   readonly commitLink = `https://github.com/JaxonWright/jaxon.dev/commit/${VERSION.hash}`;
@@ -65,15 +64,11 @@ export class BuildInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.logo.begin();
-    this.logoSmall.begin();
     this.timer = setInterval(() => this.now.set(Date.now()), 1000);
     window.addEventListener('resize', this.onResize);
   }
 
   ngOnDestroy(): void {
-    this.logo.destroy();
-    this.logoSmall.destroy();
     clearInterval(this.timer);
     window.removeEventListener('resize', this.onResize);
   }
