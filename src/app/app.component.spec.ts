@@ -22,7 +22,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
     expect(el.querySelector('.ascii-logo')).toBeTruthy();
-    expect(el.textContent).toContain('JXN_TERMINAL');
+    expect(el.textContent).not.toContain('JXN_TERMINAL');
     expect(el.querySelector('input#cmd')).toBeTruthy();
   });
 
