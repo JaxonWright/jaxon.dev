@@ -1,15 +1,15 @@
-<article class="t-page">
-  <p>jaxon.dev {{version.raw}} angular-{{dependencies[0].version}} {{buildDate}}</p>
-  <h1>Build Info</h1>
-  <table>
-    @for (dep of buildInfo; track $index) {
-      <tr><td class="muted">{{dep.name}}</td><td>@if (dep.link) {<a [href]="dep.link" target="_blank" rel="noopener">{{dep.version}}</a>} @else {{{dep.version}}}</td></tr>
+<article class="t-page fastfetch">
+  <pre class="ff-logo cp437" role="img" aria-label="JW logo">{{ logo.text() }}</pre>
+  <div class="ff-info">
+    <p class="ff-title"><span class="k">guest</span>&#64;<span class="k">jaxon.dev</span></p>
+    <p class="ff-rule" aria-hidden="true">{{ '─'.repeat(15) }}</p>
+    @for (f of fields(); track f.key) {
+      <p class="ff-line"><span class="k">{{ f.key }}</span>: @if (f.link) {<a [href]="f.link" target="_blank" rel="noopener">{{ f.value }}</a>} @else {{{ f.value }}}</p>
     }
-  </table>
-  <h1>Dependencies</h1>
-  <table>
-    @for (dep of dependencies; track $index) {
-      <tr><td class="muted">{{dep.name}}</td><td><a [href]="dep.link" target="_blank" rel="noopener">{{dep.version}}</a></td></tr>
-    }
-  </table>
+    <div class="ff-colors" aria-label="Theme palette">
+      @for (row of palette(); track $index) {
+        <div class="ff-row cp437">@for (c of row; track $index) {<span [style.color]="c">███</span>}</div>
+      }
+    </div>
+  </div>
 </article>
