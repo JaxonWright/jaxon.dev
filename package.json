@@ -34,6 +34,7 @@
     "@angular/language-service": "^22.2.2",
     "@types/node": "^25.9.9",
     "codelyzer": "^6.0.2",
+    "entities": "^8.1.0",
     "fs-extra": "^11.4.1",
     "git-describe": "^4.1.1",
     "jsdom": "^30.1.3",
