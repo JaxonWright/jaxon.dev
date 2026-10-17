@@ -2,7 +2,7 @@ import {
   Component, ChangeDetectionStrategy, ElementRef, HostListener, OnDestroy, OnInit,
   ViewChild, effect, signal, computed,
 } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { VERSION } from '../environments/version';
 import { TERMINAL_THEMES, TerminalService } from '@services/terminal.service';
@@ -17,7 +17,7 @@ const BOOT_KEY = 'jxn-terminal-booted';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
+  imports: [RouterOutlet],
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('cmdInput') cmdInput?: ElementRef<HTMLInputElement>;
