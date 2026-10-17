@@ -162,19 +162,21 @@ export class ProjectsComponent {
 
   readonly professional: Project[] = [
     {
+      title: 'Volgistics Admin', logo: 'volgistics', unreleased: true,
+      description: 'A completely rewritten, modern administrative experience for the Volgistics platform.',
+      tags: ['Volgistics', 'Angular'], links: [],
+    },
+    {
       title: 'VicNet', logo: 'volgistics',
       description: 'The Volgistics volunteer portal, rebuilt in Angular, along with its native Android and iOS app.',
-      tags: ['Volgistics', 'Angular', 'Android', 'iOS'], links: [],
+      tags: ['Volgistics', 'Angular', 'Android', 'iOS'],
+      links: [{ title: 'Website', link: 'https://www.volgistics.com/vicnet/' }],
     },
     {
       title: 'Volgistics Help System', logo: 'volgistics',
       description: 'The help system for Volgistics.',
-      tags: ['Python', 'MkDocs Material'], links: [],
-    },
-    {
-      title: 'Volgistics Admin', logo: 'volgistics', unreleased: true,
-      description: 'A completely rewritten, modern administrative experience for the Volgistics platform.',
-      tags: ['Angular'], links: [],
+      tags: ['Volgistics', 'Python', 'MkDocs Material'],
+      links: [{ title: 'Website', link: 'https://www.volgistics.com/help/' }],
     },
     {
       title: 'Custom Shape Tool', logo: 'configura',
