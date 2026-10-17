@@ -13,7 +13,7 @@ const EXCLUDE_OWNERS = ['jaxonwright', 'arbitrari', 'dunrite', 'volgistics'];
 const MIN_STARS = 25;
 /** ...except ones Jaxon explicitly wants listed regardless of stars. */
 /** Repos never listed, whatever their stars or PRs. */
-const EXCLUDE_REPOS = ['causefx/Organizr'];
+const EXCLUDE_REPOS = ['causefx/Organizr', 'aorumbayev/awesome-omarchy'];
 const ALLOW_REPOS = ['omacom/omarchy', 'ErikBurdett/omarchy-wavebar', 'Dymstro/nova-chatmix-linux'];
 /** A PR whose changed files all match this is docs-only and skipped. */
 const DOCS_ONLY = f => /(^|\/)README[^/]*$/i.test(f) || /\.md$/i.test(f) || /^docs?\//i.test(f) || /\/docs?\//i.test(f);

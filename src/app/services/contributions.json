@@ -1,6 +1,6 @@
 {
   "author": "JaxonWright",
-  "fetchedAt": "2026-10-17T00:28:43.280Z",
+  "fetchedAt": "2026-10-17T00:29:44.816Z",
   "repos": [
     {
       "repo": "omacom/omarchy",
@@ -117,21 +117,6 @@
         }
       ],
       "stars": 51
-    },
-    {
-      "repo": "aorumbayev/awesome-omarchy",
-      "url": "https://github.com/aorumbayev/awesome-omarchy",
-      "description": "⚡A curated list of awesome omarchy resources",
-      "prs": [
-        {
-          "number": 4,
-          "title": "fix letter spacing on ascii art so there are no gaps between chars",
-          "state": "merged",
-          "url": "https://github.com/aorumbayev/awesome-omarchy/pull/4",
-          "date": "2025-08-22"
-        }
-      ],
-      "stars": 661
     },
     {
       "repo": "Cordobo/angularx-qrcode",
