@@ -1,7 +1,24 @@
-import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgTemplateOutlet } from '@angular/common';
 import { SPOTIFY_PLAYLISTS } from '@services/playlist-data';
+import { SpotifyPlaylist } from '@services/playlist';
+
+export interface PlaylistGroups { prime: SpotifyPlaylist[]; goated: SpotifyPlaylist[]; other: SpotifyPlaylist[]; }
+
+/** Everything before "We Are Friends", minus "bangers" lists, split into prime/cream, GOAT and the rest. */
+export function groupPlaylists(all: SpotifyPlaylist[]): PlaylistGroups {
+  const cutoff = all.findIndex(p => p.name.toLowerCase().includes('we are friends'));
+  const shown = (cutoff >= 0 ? all.slice(0, cutoff) : all)
+    .filter(p => !p.name.toLowerCase().replace(/\s/g, '').includes('bangers'));
+  const isPrime = (p: SpotifyPlaylist) => /prime|cream/i.test(p.name);
+  const isGoated = (p: SpotifyPlaylist) => /goat/i.test(p.name);
+  return {
+    prime: shown.filter(isPrime),
+    goated: shown.filter(p => !isPrime(p) && isGoated(p)),
+    other: shown.filter(p => !isPrime(p) && !isGoated(p)),
+  };
+}
 
 @Component({
   selector: 'app-music',
@@ -11,46 +28,13 @@ import { SPOTIFY_PLAYLISTS } from '@services/playlist-data';
   styleUrl: './music.component.scss',
 })
 export class MusicComponent {
-  playlists = signal(this.truncatedPlaylists());
-
-  private truncatedPlaylists(): typeof SPOTIFY_PLAYLISTS {
-    const cutoff = SPOTIFY_PLAYLISTS.findIndex(p =>
-      p.name.toLowerCase().includes('we are friends')
-    );
-    const result = cutoff >= 0 ? SPOTIFY_PLAYLISTS.slice(0, cutoff) : SPOTIFY_PLAYLISTS;
-    return result.filter(p => !p.name.toLowerCase().replace(/\s/g, '').includes('bangers'));
-  }
-
-  private isPrime(name: string): boolean {
-    const n = name.toLowerCase();
-    return n.includes('prime') || n.includes('cream');
-  }
+  readonly groups = groupPlaylists(SPOTIFY_PLAYLISTS);
 
   decode(value: string): string {
     const el = document.createElement('span');
     el.innerHTML = value;
     return el.textContent || value;
   }
-
-  private isGoated(name: string): boolean {
-    return name.toLowerCase().includes('goat');
-  }
-
-  primePlaylists = computed(() =>
-    this.playlists().filter(p => this.isPrime(p.name))
-  );
-
-  goatedPlaylists = computed(() =>
-    this.playlists().filter(p =>
-      !this.isPrime(p.name) && this.isGoated(p.name)
-    )
-  );
-
-  otherPlaylists = computed(() =>
-    this.playlists().filter(p =>
-      !this.isPrime(p.name) && !this.isGoated(p.name)
-    )
-  );
 
   constructor(private title: Title) {
     this.title.setTitle('Jaxon Wright - Playlists');
