@@ -1,39 +1,19 @@
-<h1 style="margin-top: 0">Build Info</h1>
-<div class="row">
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>
-        <h3>Build</h3>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list>
-        @for (dep of buildInfo; track $index) {
-          <mat-list-item>
-            <fa-icon matListItemAvatar [icon]="dep.icon"></fa-icon>
-            <h3 matListItemTitle>{{dep.name}}</h3>
-            <a [href]="dep.link" matListItemLine>{{dep.version}}</a>
-          </mat-list-item>
-        }
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>
-        <h3>Dependencies</h3>
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list>
-        @for (dep of dependencies; track $index) {
-          <mat-list-item>
-            <fa-icon matListItemAvatar [icon]="dep.icon"></fa-icon>
-            <h3 matListItemTitle>{{dep.name}}</h3>
-            <a [href]="dep.link" matListItemLine>{{dep.version}}</a>
-          </mat-list-item>
-        }
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
-</div>
+<article class="t-page fastfetch">
+  @if (tuxRows) {
+    <pre class="ff-logo cp437" role="img" [attr.aria-label]="logoLabel">@for (row of tuxRows; track $index) {@for (c of row; track $index) {<span [style.color]="c.fg" [style.background]="c.bg">{{ c.text }}</span>}{{ '\n' }}}</pre>
+  } @else {
+    <pre class="ff-logo cp437" role="img" [attr.aria-label]="logoLabel">{{ logo }}</pre>
+  }
+  <div class="ff-info">
+    <p class="ff-title"><span class="k">guest</span>&#64;<span class="k">jaxon.dev</span></p>
+    <p class="ff-rule" aria-hidden="true">{{ '─'.repeat(15) }}</p>
+    @for (f of fields(); track f.key) {
+      <p class="ff-line"><span class="k">{{ f.key }}</span>: @if (f.link) {<a [href]="f.link" target="_blank" rel="noopener">{{ f.value }}</a>} @else {{{ f.value }}}</p>
+    }
+    <div class="ff-colors" aria-label="Theme palette">
+      @for (row of palette(); track $index) {
+        <div class="ff-row cp437">@for (c of row; track $index) {<span [style.color]="c">███</span>}</div>
+      }
+    </div>
+  </div>
+</article>

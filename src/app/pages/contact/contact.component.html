@@ -1,24 +1,14 @@
-<h1 style="margin-top: 0">Contact</h1>
-<a href="https://x.com/jxn_w" target="_blank"><button mat-fab class="tertiary-fab" matTooltip="X" matTooltipPosition="below"><fa-icon [icon]="['fab', 'x-twitter']" size="lg"></fa-icon></button></a>
-<a href="mailto:j@jaxon.dev"><button mat-fab class="tertiary-fab" matTooltip="Email" matTooltipPosition="below"><fa-icon [icon]="['fas', 'envelope']" size="lg"></fa-icon></button></a>
-<a href="https://github.com/jaxonwright" target="_blank"><button mat-fab class="tertiary-fab" matTooltip="GitHub" matTooltipPosition="below"><fa-icon [icon]="['fab', 'github']" size="lg"></fa-icon></button></a>
-<a href="https://stackoverflow.com/users/3186832/jxn" target="_blank"><button mat-fab class="tertiary-fab" matTooltip="Stack Overflow" matTooltipPosition="below"><fa-icon [icon]="['fab', 'stack-overflow']" size="lg"></fa-icon></button></a>
-<a href="http://linkedin.com/in/jaxonwright" target="_blank"><button mat-fab class="tertiary-fab" matTooltip="LinkedIn" matTooltipPosition="below"><fa-icon [icon]="['fab', 'linkedin']" size="lg"></fa-icon></button></a>
-<a href="https://instagram.com/jxn.w" target="_blank"><button mat-fab class="tertiary-fab" matTooltip="Instagram" matTooltipPosition="below"><fa-icon [icon]="['fab', 'instagram']" size="lg"></fa-icon></button></a>
-<h1 id="pay">Pay</h1>
-<a href="https://venmo.com/jaxonwright" target="_blank" mat-fab class="tertiary-fab" matTooltip="Venmo" matTooltipPosition="below">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" class="svg-inline--fa fa-w-12 fa-lg">
-   <path class="st0" d="M136.8,14.9c4.8,8,7,16.2,7,26.6c0,33.2-28.3,76.2-51.3,106.5H40L19,22.1l46-4.4l11.1,89.6
-       c10.4-16.9,23.2-43.6,23.2-61.7c0-9.9-1.7-16.7-4.4-22.3L136.8,14.9z"/>
-</svg>
-</a>
-<a mat-fab class="tertiary-fab" href="https://cash.me/$jxnw" target="_blank" matTooltip="Cash App" matTooltipPosition="below"><fa-icon [icon]="['fas', 'dollar-sign']" size="lg"></fa-icon></a>
-<a mat-fab class="tertiary-fab" href="https://paypal.me/JaxonWright" target="_blank" matTooltip="PayPal" matTooltipPosition="below"><fa-icon [icon]="['fab', 'paypal']" size="lg"></fa-icon></a>
-<a mat-fab class="tertiary-fab" href="https://gpay.app.goo.gl/pay-I6sft0Ab64O" target="_blank" matTooltip="Google Pay" matTooltipPosition="below">
-    <svg viewBox="0 0 65 56" class="svg-inline--fa fa-w-24 fa-lg" xmlns="http://www.w3.org/2000/svg">
-        <path d="m59.1468 10.7271c-6.4232-3.70779-14.6368-1.50453-18.3486 4.9187l-9.3569 16.2088c-2.7075 4.6805.7781 6.316 4.6645 8.6463l9.0036 5.1965c3.0489 1.7587 6.9433.7146 8.7019-2.3303l9.6189-16.6574c3.2315-5.5975 1.314-12.7511-4.2834-15.9826z" style="opacity: 0.1"/>
-        <path d="m59.1468 10.7271c-6.4232-3.70779-14.6368-1.50453-18.3486 4.9187l-9.3569 16.2088c-2.7075 4.6805.7781 6.316 4.6645 8.6463l9.0036 5.1965c3.0489 1.7587 6.9433.7146 8.7019-2.3303l9.6189-16.6574c3.2315-5.5975 1.314-12.7511-4.2834-15.9826z" style="opacity: 0.5"/>
-        <path d="m48.5552 17.4359-9.0036-5.1965c-4.9702-2.75901-7.7848-2.94162-9.8253.3017l-13.2792 22.9973c-3.7078 6.4192-1.5006 14.6289 4.9187 18.3287 5.5974 3.2315 12.7511 1.3141 15.9825-4.2834l13.5332-23.4419c1.7666-3.0488.7225-6.9472-2.3263-8.7059z" style="opacity: 0.4"/>
-        <path d="m50.2904 5.61392-6.324-3.65224c-6.9948-4.03733-15.9389-1.643519-19.9762 5.35134l-12.0405 20.85358c-1.7785 3.0766-.7225 7.0147 2.3541 8.7892l7.0822 4.0889c3.4974 2.0207 7.9675.8218 9.9881-2.6756l13.7555-23.823c2.8503-4.93455 9.1584-6.6257 14.0929-3.7754z" style="opacity: 0.7"/>
-        <path d="m25.7013 13.2795-6.8361-3.93812c-3.0488-1.75467-6.9432-.71457-8.7019 2.32632l-8.20165 14.1723c-4.03733 6.975-1.643519 15.8992 5.35134 19.9246l5.20441 2.9973 6.3121 3.6363 2.7392 1.5761c-4.8631-3.2553-6.4073-9.7777-3.4339-14.9147l2.1238-3.6681 7.7769-13.4379c1.7547-3.033.7106-6.9195-2.3342-8.6741z" style="opacity: 1"/></svg>
-</a>
+<article class="t-page">
+  <h1>Contact</h1>
+  <table>
+    @for (l of contact; track l.name) {
+      <tr><td class="muted">{{l.name}}</td><td><a [href]="l.href" [attr.target]="l.href.startsWith('mailto') ? null : '_blank'" rel="noopener">{{l.label}}</a></td></tr>
+    }
+  </table>
+  <h1 id="pay">Pay</h1>
+  <table>
+    @for (l of pay; track l.name) {
+      <tr><td class="muted">{{l.name}}</td><td><a [href]="l.href" target="_blank" rel="noopener">{{l.label}}</a></td></tr>
+    }
+  </table>
+</article>

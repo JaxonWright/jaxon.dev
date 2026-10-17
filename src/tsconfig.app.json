@@ -14,7 +14,6 @@
   },
   "files": [
     "main.ts",
-    "polyfills.ts"
   ],
   "include": [
     "src/**/*.d.ts"

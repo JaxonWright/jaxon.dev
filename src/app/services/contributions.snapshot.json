@@ -1,0 +1,243 @@
+{
+  "author": "JaxonWright",
+  "fetchedAt": "2026-10-17T00:58:15.247Z",
+  "repos": [
+    {
+      "repo": "omacom/omarchy",
+      "url": "https://github.com/omacom/omarchy",
+      "description": "Beautiful, Modern & Opinionated Linux",
+      "prs": [
+        {
+          "number": 12719,
+          "title": "Add --branch to omarchy plugin add",
+          "state": "open",
+          "url": "https://github.com/omacom/omarchy/pull/12719",
+          "date": "2026-09-21"
+        },
+        {
+          "number": 10915,
+          "title": "Shell/UI: Expose PanelSlider corner radii as properties",
+          "state": "open",
+          "url": "https://github.com/omacom/omarchy/pull/10915",
+          "date": "2026-09-09"
+        },
+        {
+          "number": 9729,
+          "title": "Add Setup Wizard for NVIDIA DisplayPort 1.4 EDID Fix",
+          "state": "open",
+          "url": "https://github.com/omacom/omarchy/pull/9729",
+          "date": "2026-09-02"
+        },
+        {
+          "number": 447,
+          "title": "Add Hyprsunset for Blue Light Filtering / Nightlight",
+          "state": "merged",
+          "url": "https://github.com/omacom/omarchy/pull/447",
+          "date": "2025-08-03"
+        },
+        {
+          "number": 351,
+          "title": "Improvements to Bare Install",
+          "state": "merged",
+          "url": "https://github.com/omacom/omarchy/pull/351",
+          "date": "2025-07-26"
+        }
+      ],
+      "stars": 44959,
+      "languages": [
+        "Shell",
+        "QML",
+        "Python"
+      ],
+      "tags": [
+        "Omarchy",
+        "Linux",
+        "Shell",
+        "QML",
+        "Python"
+      ]
+    },
+    {
+      "repo": "mattlewis92/angular-calendar",
+      "url": "https://github.com/mattlewis92/angular-calendar",
+      "description": "A flexible calendar component for angular 20.2+ that can display events on a month, week or day view.",
+      "prs": [
+        {
+          "number": 1397,
+          "title": "fix: use locale aware day view title for moment date formatter",
+          "state": "merged",
+          "url": "https://github.com/mattlewis92/angular-calendar/pull/1397",
+          "date": "2021-01-26"
+        },
+        {
+          "number": 1033,
+          "title": "fix(day-view): when hourSegments updates, refresh view as well",
+          "state": "merged",
+          "url": "https://github.com/mattlewis92/angular-calendar/pull/1033",
+          "date": "2019-07-13"
+        }
+      ],
+      "stars": 2813,
+      "languages": [
+        "TypeScript",
+        "HTML",
+        "SCSS"
+      ],
+      "tags": [
+        "Angular",
+        "TypeScript",
+        "HTML",
+        "SCSS"
+      ]
+    },
+    {
+      "repo": "ErikBurdett/omarchy-wavebar",
+      "url": "https://github.com/ErikBurdett/omarchy-wavebar",
+      "description": "WaveBar: waveform media controller for the Omarchy bar",
+      "prs": [
+        {
+          "number": 5,
+          "title": "Capture unnamed PipeWire streams by object.serial",
+          "state": "open",
+          "url": "https://github.com/ErikBurdett/omarchy-wavebar/pull/5",
+          "date": "2026-09-17"
+        },
+        {
+          "number": 4,
+          "title": "Fix WaveBar under Omarchy 4.0.3 capability scoping",
+          "state": "closed",
+          "url": "https://github.com/ErikBurdett/omarchy-wavebar/pull/4",
+          "date": "2026-09-09"
+        },
+        {
+          "number": 1,
+          "title": "Squared Theming, Album Artwork, New Settings, and Bug Fixes",
+          "state": "merged",
+          "url": "https://github.com/ErikBurdett/omarchy-wavebar/pull/1",
+          "date": "2026-09-09"
+        }
+      ],
+      "stars": 4,
+      "languages": [
+        "QML",
+        "JavaScript",
+        "Python"
+      ],
+      "tags": [
+        "Omarchy",
+        "QML",
+        "JavaScript",
+        "Python"
+      ]
+    },
+    {
+      "repo": "Dymstro/nova-chatmix-linux",
+      "url": "https://github.com/Dymstro/nova-chatmix-linux",
+      "description": "Using ChatMix with the SteelSeries Arctis Nova Pro Wireless on Linux",
+      "prs": [
+        {
+          "number": 11,
+          "title": "Add Support For Arch",
+          "state": "closed",
+          "url": "https://github.com/Dymstro/nova-chatmix-linux/pull/11",
+          "date": "2025-07-25"
+        },
+        {
+          "number": 4,
+          "title": "Prepend python3 path in ExecStart of Service",
+          "state": "merged",
+          "url": "https://github.com/Dymstro/nova-chatmix-linux/pull/4",
+          "date": "2025-01-02"
+        }
+      ],
+      "stars": 51,
+      "languages": [
+        "Python",
+        "Shell"
+      ],
+      "tags": [
+        "Linux",
+        "SteelSeries",
+        "Python",
+        "Shell"
+      ]
+    },
+    {
+      "repo": "Cordobo/angularx-qrcode",
+      "url": "https://github.com/Cordobo/angularx-qrcode",
+      "description": "A fast and easy-to-use Angular QR Code Generator library with Ivy support",
+      "prs": [
+        {
+          "number": 274,
+          "title": "feat: angular 20 support #273",
+          "state": "merged",
+          "url": "https://github.com/Cordobo/angularx-qrcode/pull/274",
+          "date": "2025-06-04"
+        }
+      ],
+      "stars": 511,
+      "languages": [
+        "TypeScript",
+        "HTML",
+        "JavaScript"
+      ],
+      "tags": [
+        "Angular",
+        "TypeScript",
+        "HTML",
+        "JavaScript"
+      ]
+    },
+    {
+      "repo": "ypMrg/omarchy-bambu-companion",
+      "url": "https://github.com/ypMrg/omarchy-bambu-companion",
+      "description": "",
+      "prs": [
+        {
+          "number": 5,
+          "title": "fix(events): keep acknowledged HMS errors out of the bar count",
+          "state": "merged",
+          "url": "https://github.com/ypMrg/omarchy-bambu-companion/pull/5",
+          "date": "2026-09-23"
+        }
+      ],
+      "stars": 3,
+      "languages": [
+        "Ruby",
+        "QML",
+        "C++"
+      ],
+      "tags": [
+        "Omarchy",
+        "Bambu Lab",
+        "Ruby",
+        "QML",
+        "C++"
+      ]
+    },
+    {
+      "repo": "rawritude/omarchy-oled-guard",
+      "url": "https://github.com/rawritude/omarchy-oled-guard",
+      "description": "Omarchy shell plugin: attenuates the always-on status bar strip so it stops out-wearing the rest of your OLED panel",
+      "prs": [
+        {
+          "number": 3,
+          "title": "Read settings and bar hover through the scoped plugin API",
+          "state": "open",
+          "url": "https://github.com/rawritude/omarchy-oled-guard/pull/3",
+          "date": "2026-10-02"
+        }
+      ],
+      "stars": 3,
+      "languages": [
+        "QML",
+        "JavaScript"
+      ],
+      "tags": [
+        "Omarchy",
+        "QML",
+        "JavaScript"
+      ]
+    }
+  ]
+}

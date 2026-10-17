@@ -1,11 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
-.fill-remaining-space {
-  /* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
-  flex: 1 1 auto;
-}
-
 html {
   overflow-y: overlay;
 }
@@ -14,81 +6,106 @@ body {
   min-height: 100vh;
   position: relative;
   margin: 0;
-  font-family: Roboto, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
-
-h1, h2 {
-  text-transform: uppercase;
-}
-
-h1, h2, h3, h4 {
-  font-family: "Google Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
-}
-
-mat-card mat-card-title h3 {
-  margin: 0;
-}
-
-mat-card mat-card-content {
-  height: 100%;
-}
-
 
 p {
   line-height: 24px;
   margin: 0;
 }
 
-.row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  margin-bottom: 16px;
-}
-
-a, a:hover {
-  color: #0abe70;
-}
-
-.mat-button.link-active {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.qr>img {
-  width: 300px;
-}
-
-.mat-tooltip-multi {
-  white-space: pre-line !important;
-}
-
 button:focus{outline:none;}
 
-/***
- * Scrollbar 
- ***/
+/* Scrollbars follow the theme: scrollbar-color is inherited, and the ::-webkit rules cover browsers without it. */
+:root { scrollbar-color: var(--t-accent) transparent; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--t-accent); }
+::-webkit-scrollbar-thumb:hover { background: var(--t-text); }
 
-/* width */
-
-::-webkit-scrollbar {
-  width: 10px;
+/* ---- Terminal experiment ---- */
+/* JetBrains Mono Nerd Font v3.5.1 (ryanoasis/nerd-fonts) without the icons (scripts/subset-fonts.py), SIL OFL 1.1: assets/fonts/JetBrainsMonoNerdFont-OFL.txt */
+@font-face {
+  font-family: "JetBrainsMono Nerd Font";
+  src: url("/assets/fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
-
-/* Track */
-
-::-webkit-scrollbar-track {
-  background: #262626;
+@font-face {
+  font-family: "JetBrainsMono Nerd Font";
+  src: url("/assets/fonts/JetBrainsMonoNerdFont-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
-
-/* Handle */
-
-::-webkit-scrollbar-thumb {
-  background: #d3d3d3;
+:root {
+  --t-primary: #fff;
+  --t-secondary: #ccc;
+  --t-bg: #000;
+  --t-text: #fff;
+  --t-accent: #999;
+  --t-photo: #3EB489;
+  --t-photo-hi: #98FFC8;
+  --t-font: "JetBrainsMono Nerd Font", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
+html, body { background: var(--t-bg); }
+body { font-family: var(--t-font); color: var(--t-text); }
+::selection { background: var(--t-primary); color: var(--t-bg); }
 
-/* Handle on hover */
-
-::-webkit-scrollbar-thumb:hover {
-  background: #fff;
+/* Shared terminal page styles used by the routed pages. */
+.t-page { font-family: var(--t-font); }
+.t-page h1, .t-page h2, .t-page h3, .t-page h4 {
+  font-family: var(--t-font);
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 18px 0 6px;
+  font-size: 1em;
+  color: var(--t-primary);
 }
+.t-page h1 { margin-top: 4px; }
+.t-page h1::before { content: '## '; color: var(--t-accent); }
+.t-page h2::before { content: '>> '; color: var(--t-accent); }
+.t-page p { line-height: 1.5; margin: 0 0 8px; max-width: 90ch; }
+.t-page a { color: var(--t-text); text-decoration: underline; text-underline-offset: 3px; }
+.t-page a:hover, .t-page a:focus-visible { background: var(--t-primary); color: var(--t-bg); text-decoration: none; outline: none; }
+.t-page .muted { color: var(--t-accent); }
+.t-page .dim { color: var(--t-secondary); }
+.t-page .rule { color: var(--t-accent); margin: 10px 0; overflow: hidden; white-space: nowrap; }
+.t-page .tags { color: var(--t-secondary); }
+.t-page .block { border-left: 1px solid var(--t-accent); padding-left: 1.5ch; margin: 10px 0 16px; }
+.t-page table { border-collapse: collapse; }
+.t-page td { padding: 1px 2ch 1px 0; vertical-align: top; }
+.t-page .cmd-link { cursor: pointer; background: none; border: 0; padding: 0; font: inherit; color: var(--t-text); text-decoration: underline; }
+.t-page .cmd-link:hover { background: var(--t-primary); color: var(--t-bg); }
+
+/* CP437 block art: line-height 1 and no letter-spacing so ▀▄█ cells tile without gaps. */
+pre.cp437, .cp437 {
+  font-family: var(--t-font);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  margin: 0;
+  text-shadow: none;
+  font-variant-ligatures: none;
+}
+.mobile-only { display: none; }
+@media (max-width: 640px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+}
+.t-page .art { color: var(--t-primary); flex: none; }
+/* Sizes are multiples of 5px so JetBrains Mono's 0.6em advance lands on whole pixels (no seams). */
+.t-page .photo-gray {
+  /* line-height: normal makes each row exactly the font's content box, so ▀ backgrounds tile with no gaps. */
+  font-family: var(--t-font); font-size: 5px; line-height: normal; letter-spacing: 0;
+  white-space: pre; text-shadow: none; font-variant-ligatures: none;
+}
+.t-page .photo-gray .r { display: block; height: auto; }
+.t-page .logo-art { font-size: 5px; }
+.t-page .with-art { display: flex; gap: 2ch; align-items: flex-start; }
+.t-page .with-art > div:not(.art) { flex: 1; min-width: 0; }
+@media (max-width: 640px) {
+  .t-page .with-art { flex-direction: column; gap: 8px; }
+}
+/* Align entry text flush with the top of its CP437 art. */
+.t-page .with-art > div:not(.art) > :first-child { margin-top: calc(0.5em - 0.5lh); } /* trim half-leading so the first line's top is flush with the art */
