@@ -61,10 +61,8 @@ export class BuildInfoComponent implements OnInit, OnDestroy {
 
   readonly dependencies: Dependency[] = [
     { name: 'Angular', version: require('@angular/core/package.json').version, link: 'https://www.npmjs.com/package/@angular/core' },
-    { name: 'Angular Material', version: require('@angular/material/package.json').version, link: 'https://www.npmjs.com/package/@angular/material' },
     { name: 'RxJS', version: require('rxjs/package.json').version, link: 'https://www.npmjs.com/package/rxjs' },
     { name: 'TypeScript', version: require('typescript/package.json').version, link: 'https://www.npmjs.com/package/typescript' },
-    { name: 'Angular FontAwesome', version: require('@fortawesome/angular-fontawesome/package.json').version, link: 'https://www.npmjs.com/package/@fortawesome/angular-fontawesome' },
   ];
   private readonly pkg = require('../../../../package.json');
   readonly packageCount = Object.keys(this.pkg.dependencies ?? {}).length;

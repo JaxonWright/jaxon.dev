@@ -1,11 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
-.fill-remaining-space {
-  /* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
-  flex: 1 1 auto;
-}
-
 html {
   overflow-y: overlay;
 }
@@ -14,53 +6,11 @@ body {
   min-height: 100vh;
   position: relative;
   margin: 0;
-  font-family: Roboto, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
-
-h1, h2 {
-  text-transform: uppercase;
-}
-
-h1, h2, h3, h4 {
-  font-family: "Google Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
-}
-
-mat-card mat-card-title h3 {
-  margin: 0;
-}
-
-mat-card mat-card-content {
-  height: 100%;
-}
-
 
 p {
   line-height: 24px;
   margin: 0;
-}
-
-.row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  margin-bottom: 16px;
-}
-
-a, a:hover {
-  color: #0abe70;
-}
-
-.mat-button.link-active {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.qr>img {
-  width: 300px;
-}
-
-.mat-tooltip-multi {
-  white-space: pre-line !important;
 }
 
 button:focus{outline:none;}
@@ -118,7 +68,6 @@ button:focus{outline:none;}
   --t-photo: #3EB489;
   --t-photo-hi: #98FFC8;
   --t-font: "JetBrainsMono Nerd Font", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --t-help-font: "Google Sans", ui-sans-serif, system-ui, sans-serif;
 }
 html, body { background: var(--t-bg); }
 body { font-family: var(--t-font); color: var(--t-text); }

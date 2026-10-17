@@ -26,8 +26,7 @@
               "src/CNAME"
             ],
             "styles": [
-              "src/styles.css",
-              "src/theme.scss"
+              "src/styles.css"
             ],
             "scripts": [],
             "extractLicenses": false,
@@ -84,8 +83,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "src/styles.css",
-              "src/theme.scss"
+              "src/styles.css"
             ],
             "assets": [
               "src/assets",

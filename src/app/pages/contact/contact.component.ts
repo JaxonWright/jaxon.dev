@@ -7,7 +7,6 @@ export interface ContactLink { name: string; label: string; href: string; }
     selector: 'app-contact',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './contact.component.html',
-    styleUrls: ['./contact.component.css'],
     imports: []
 })
 export class ContactComponent implements OnInit {
