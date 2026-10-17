@@ -44,7 +44,7 @@ button:focus{outline:none;}
 }
 
 /* ---- Terminal experiment ---- */
-/* JetBrains Mono Nerd Font v3.5.1 (ryanoasis/nerd-fonts), SIL OFL 1.1: assets/fonts/JetBrainsMonoNerdFont-OFL.txt */
+/* JetBrains Mono Nerd Font v3.5.1 (ryanoasis/nerd-fonts) without the icons (scripts/subset-fonts.py), SIL OFL 1.1: assets/fonts/JetBrainsMonoNerdFont-OFL.txt */
 @font-face {
   font-family: "JetBrainsMono Nerd Font";
   src: url("/assets/fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
