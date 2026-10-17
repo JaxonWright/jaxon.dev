@@ -22,7 +22,7 @@ export interface Contribution { repo: string; url: string; description: string; 
 export interface Cell { text: string; fg: string; bg: string; }
 
 // Minor tone is the page background, so light details (the Volgistics V, testube's tt) read as cut-outs on every theme.
-const TONES = ['', 'var(--t-primary)', 'var(--t-bg)', 'var(--t-text)'];
+const TONES = ['', 'var(--t-primary)', 'var(--t-bg)', 'var(--t-text)', 'var(--t-secondary)'];
 
 /** Logo for a contributed-to repo; anything unknown (a new repo picked up at build time) gets the GitHub mark. */
 const CONTRIB_LOGOS: Record<string, string> = {
@@ -93,7 +93,7 @@ export class ProjectsComponent {
       links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/omarchy-midnight-theme' }],
     },
     {
-      title: 'Digalog', logo: 'wearos',
+      title: 'Digalog', logo: 'digalog',
       description: 'A Wear OS watch face that combines digital and analog in one.',
       tags: ['GPL-3.0', 'Wear OS'],
       links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/digalog' }],

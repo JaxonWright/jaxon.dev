@@ -130,7 +130,7 @@ def two_tone_cells(img: Image.Image, cols: int):
     return out
 
 
-def icon_cells(img: Image.Image, cols: int, invert: bool = False, classify=None):
+def icon_cells(img: Image.Image, cols: int, invert: bool = False, classify=None, max_rows: int = None):
     """Compact two-tone icon: background keyed away, opaque pixels split by luminance
     (Otsu) into the main tone (1, theme accent) and the minor tone (2, light text).
     Returns rows of [top, bottom, count] runs for ▀ cells (0 = empty)."""
@@ -141,7 +141,7 @@ def icon_cells(img: Image.Image, cols: int, invert: bool = False, classify=None)
     rgba = rgba.crop(rgba.getchannel('A').point(lambda a: 255 if a > 100 else 0).getbbox())
     w, h = rgba.size
     rows = max(2, round(cols * h / w * CELL_ASPECT) * 2)
-    max_rows = PROJECT_ICON_MAX_ROWS_FOR.get(id(classify), PROJECT_ICON_MAX_ROWS) if classify else PROJECT_ICON_MAX_ROWS
+    max_rows = max_rows or PROJECT_ICON_MAX_ROWS
     if rows > 2 * max_rows:  # keep tall marks (single letters) to the same height
         cols = max(4, round(cols * 2 * max_rows / rows)); rows = 2 * max_rows
     alpha = rgba.getchannel('A').resize((cols, rows), Image.LANCZOS).load()
@@ -185,7 +185,7 @@ def icon_cells(img: Image.Image, cols: int, invert: bool = False, classify=None)
 
 PROJECT_ICON_COLS = 24
 PROJECT_ICON_MAX_ROWS = 14
-PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84, 'passageway': 72, 'nowpaper': 32}  # wordmarks
+PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84, 'passageway': 72, 'nowpaper': 32, 'digalog': 120}  # wordmarks
 PROJECT_ICONS = {
     # key: (path relative to repo root, invert minor/main tones)
     'omarchy': ('scripts/ascii-src/projects/omarchy.png', False),
@@ -195,6 +195,8 @@ PROJECT_ICONS = {
     'github': ('scripts/ascii-src/projects/github.png', False),
     'delphi': ('scripts/ascii-src/projects/delphi.png', False),
     'wearos': ('scripts/ascii-src/projects/wearos.png', False),
+    # Final Digalog wordmark from Tick (dark-background variant, transparent).
+    'digalog': ('scripts/ascii-src/projects/digalog-dark.png', False),
     'jw': ('scripts/ascii-src/jw-logo.png', False),
     'testube': ('src/assets/img/projects/testube.png', False),
     'omnigear': ('scripts/ascii-src/projects/omnigear.png', False),
@@ -245,13 +247,15 @@ def fill_outlined(img: Image.Image) -> Image.Image:
     return res
 
 
-# Multi-tone icons: 1 theme primary, 2 background cut-out, 3 light text.
+# Multi-tone icons: 1 theme primary, 2 background cut-out, 3 light text, 4 theme secondary.
 PROJECT_ICON_CLASSIFY = {
     # nowPaper: sky -> primary, mountains -> cut-outs, snow caps and sun -> light.
+    # Digalog: green seven-segment 'dig' -> theme secondary (4), 'alog' -> primary (faint off-segments drop out via alpha).
+    'digalog': lambda r, g, b: 4 if g > r + 40 else 1,
     'nowpaper': lambda r, g, b: 3 if (r > 200 and g > 200) else 2 if (r + g + b) / 3 < 125 else 1,
 }
 
-PROJECT_ICON_MAX_ROWS_FOR = {id(PROJECT_ICON_CLASSIFY['nowpaper']): 20}  # detailed multi-tone art gets more height
+PROJECT_ICON_MAX_ROWS_FOR = {'nowpaper': 20, 'digalog': 18}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
 
 PROJECT_ICON_PREP = {
     # Wordmark-only sources: crop the mark / first letter, thicken hairlines.
@@ -268,7 +272,7 @@ def project_icons() -> dict:
         im = Image.open(ROOT / p)
         if k in PROJECT_ICON_PREP:
             im = PROJECT_ICON_PREP[k](im)
-        out[k] = icon_cells(im, PROJECT_ICON_WIDE.get(k, PROJECT_ICON_COLS), inv, PROJECT_ICON_CLASSIFY.get(k))
+        out[k] = icon_cells(im, PROJECT_ICON_WIDE.get(k, PROJECT_ICON_COLS), inv, PROJECT_ICON_CLASSIFY.get(k), PROJECT_ICON_MAX_ROWS_FOR.get(k))
     return out
 
 
@@ -316,7 +320,7 @@ def main():
     out.append(f'export const OS_LOGOS: Record<string, string> = {json.dumps(osl, ensure_ascii=False, indent=2)};\n')
     out.append('/** Tux, two-tone: rows of [top, bottom, count]; 0 none, 1 body (accent), 2 belly/feet (light). */\n')
     out.append(f'export const TUX_CELLS: [number, number, number][][] = {json.dumps(two_tone_cells(Image.open(ROOT / "scripts/ascii-src/os/linux.png"), 30), separators=sep)};\n')
-    out.append('/** Project logos (two-tone ▀ cells): rows of [top, bottom, count]; 0 none, 1 primary, 2 background cut-out, 3 light text. */\n')
+    out.append('/** Project logos (two-tone ▀ cells): rows of [top, bottom, count]; 0 none, 1 primary, 2 background cut-out, 3 light text, 4 secondary. */\n')
     out.append(f'export const PROJECT_LOGOS: Record<string, [number, number, number][][]> = {json.dumps(project_icons(), separators=sep)};\n')
     out.append('/** Photo: rows of [topLevel, bottomLevel, count] runs of ▀ (levels 0-31), tinted with the theme color. */\n')
     out.append(f'export const PHOTO_LEVELS: [number, number, number][][] = {json.dumps(photo_runs, separators=sep)};\n')
