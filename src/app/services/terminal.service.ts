@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TERMINAL_THEMES, DEFAULT_THEME, TerminalTheme } from './omarchy-themes';
 import { RMRF_LINES } from './rmrf-paths';
+import { prefersReducedMotion } from './motion';
 
 export interface TerminalLine {
   text: string;
@@ -175,7 +176,7 @@ export class TerminalService {
 
 
   private startRmrf(command: string): void {
-    const reduced = typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const reduced = prefersReducedMotion();
     this.rmrfActive.set(true);
     let entry: TerminalEntry = { command, lines: [] };
     this.entries.update(e => [...e, entry]);

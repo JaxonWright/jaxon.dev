@@ -1,4 +1,5 @@
 import { signal } from '@angular/core';
+import { prefersReducedMotion } from './motion';
 
 const SHADES = ['░', '▒', '▓'];
 
@@ -28,7 +29,7 @@ export class LogoAnimator {
   }
 
   begin(): void {
-    if (typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    if (prefersReducedMotion()) return;
     document.addEventListener('visibilitychange', this.onVis);
     this.run('decode');
   }

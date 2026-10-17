@@ -142,6 +142,24 @@ describe('AppComponent', () => {
     expect(el(f).querySelector('.page .routed')).not.toBeNull();
   });
 
+  it('types the echoed command out, or shows it at once under reduced motion', async () => {
+    const f = await render();
+    const term = TestBed.inject(TerminalService);
+    term.routeEcho.set('cat contact.txt');
+    await f.whenStable();
+    expect(f.componentInstance.typed()).not.toBe('cat contact.txt');
+    await vi.waitFor(() => expect(f.componentInstance.typed()).toBe('cat contact.txt'));
+
+    vi.stubGlobal('matchMedia', (q: string) => ({ matches: q.includes('reduce') }));
+    try {
+      term.routeEcho.set('ls -l ./projects');
+      await f.whenStable();
+      expect(f.componentInstance.typed()).toBe('ls -l ./projects');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('focuses the prompt when a printable key is pressed elsewhere', async () => {
     const f = await render();
     input(f).blur();

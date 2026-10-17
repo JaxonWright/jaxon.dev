@@ -8,6 +8,7 @@ import { VERSION } from '../environments/version';
 import { TERMINAL_THEMES, TerminalService } from '@services/terminal.service';
 import { JW_LOGO } from '@services/ascii-art';
 import { LogoAnimator } from '@services/logo-animator';
+import { prefersReducedMotion } from '@services/motion';
 
 const BOOT_KEY = 'jxn-terminal-booted';
 
@@ -87,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     let skip = false;
     try { skip = sessionStorage.getItem(BOOT_KEY) === '1'; } catch { /* ignore */ }
-    if (skip || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    if (skip || prefersReducedMotion()) {
       this.finishBoot();
     } else {
       this.runBoot();
@@ -128,7 +129,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private typeTimer?: ReturnType<typeof setInterval>;
   private typeEcho(text: string): void {
     clearInterval(this.typeTimer);
-    if (!text) { this.typed.set(''); return; }
+    if (!text || prefersReducedMotion()) { this.typed.set(text); return; }
     let i = 0;
     this.typed.set('');
     this.typeTimer = setInterval(() => {
