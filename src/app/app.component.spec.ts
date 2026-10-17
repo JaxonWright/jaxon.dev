@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router, provideRouter } from '@angular/router';
+import { Router, Routes, provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
+import { appRoutes } from './routes';
 import { TerminalService, TERMINAL_THEMES, DEFAULT_THEME } from '@services/terminal.service';
 
 @Component({ template: '<p class="routed">routed page</p>' })
 class Page {}
 
-async function render(booted = true): Promise<ComponentFixture<AppComponent>> {
+async function render(booted = true, routes: Routes = [{ path: '**', component: Page }]): Promise<ComponentFixture<AppComponent>> {
   sessionStorage.clear();
   if (booted) sessionStorage.setItem('jxn-terminal-booted', '1');
   window.history.replaceState(null, '', '/');
   TestBed.configureTestingModule({
-    providers: [provideRouter([{ path: '**', component: Page }])],
+    providers: [provideRouter(routes)],
   });
   const fixture = TestBed.createComponent(AppComponent);
   await fixture.whenStable();
@@ -129,6 +130,50 @@ describe('AppComponent', () => {
     input(f).blur();
     await key(f, document.body, { key: 'a' });
     await vi.waitFor(() => expect(document.activeElement).toBe(input(f)));
+  });
+
+  describe('pay', () => {
+    afterEach(() => vi.restoreAllMocks());
+
+    async function scrolledTo(f: ComponentFixture<AppComponent>, scroll: ReturnType<typeof vi.spyOn>): Promise<void> {
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(el(f).querySelector('#pay')));
+    }
+
+    it('keeps its own echo and scrolls to the payment links', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(true, appRoutes);
+      await enter(f, 'pay');
+      await vi.waitFor(() => expect(TestBed.inject(Router).url).toBe('/pay'));
+      await vi.waitFor(() => expect(f.componentInstance.typed()).toBe('cat contact.txt --pay'));
+      await f.whenStable();
+      expect(text(f)).toContain('cat contact.txt --pay');
+      await scrolledTo(f, scroll);
+    });
+
+    it('scrolls to the payment links when /pay is opened directly', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(true, appRoutes);
+      await TestBed.inject(Router).navigateByUrl('/pay');
+      await f.whenStable();
+      await vi.waitFor(() => expect(f.componentInstance.typed()).toBe('cat contact.txt --pay'));
+      await scrolledTo(f, scroll);
+    });
+
+    it('scrolls to the payment links once a first-visit boot finishes', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(false, appRoutes);
+      await TestBed.inject(Router).navigateByUrl('/pay');
+      await key(f, document.body, { key: 'x' });
+      await scrolledTo(f, scroll);
+    });
+
+    it('scrolls back to the top for other pages', async () => {
+      const f = await render(true, appRoutes);
+      const screen = el(f).querySelector<HTMLElement>('.screen')!;
+      const top = vi.spyOn(screen, 'scrollTo');
+      await TestBed.inject(Router).navigateByUrl('/contact');
+      await vi.waitFor(() => expect(top).toHaveBeenCalledWith({ top: 0 }));
+    });
   });
 
   describe('theme picker', () => {

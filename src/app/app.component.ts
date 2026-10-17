@@ -42,6 +42,8 @@ export class AppComponent implements OnInit, OnDestroy {
   });
 
   private historyIndex = -1;
+  /** Element id the current route opens at (route data `anchor`); empty for the top of the page. */
+  private anchor = '';
   private timers: any[] = [];
   private sub?: Subscription;
 
@@ -75,6 +77,9 @@ export class AppComponent implements OnInit, OnDestroy {
       // Browser back/forward or direct links: derive the echo from the URL.
       const echo = this.term.echoForUrl(e.urlAfterRedirects);
       if (echo !== this.term.routeEcho()) this.term.routeEcho.set(echo);
+      let route = this.router.routerState.snapshot.root;
+      while (route.firstChild) route = route.firstChild;
+      this.anchor = route.data['anchor'] ?? '';
       this.term.cleared.set(false);
       this.scrollSoon(true);
     });
@@ -115,6 +120,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.booting.set(false);
     try { sessionStorage.setItem(BOOT_KEY, '1'); } catch { /* ignore */ }
     this.focusInput();
+    this.scrollSoon(true);
   }
 
   private typeTimer: any;
@@ -261,7 +267,9 @@ export class AppComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       const el = this.screen?.nativeElement;
       if (!el) return;
-      if (top) el.scrollTo({ top: 0 });
+      const target = top && this.anchor ? document.getElementById(this.anchor) : null;
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      else if (top) el.scrollTo({ top: 0 });
       else el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
     }, 30);
   }

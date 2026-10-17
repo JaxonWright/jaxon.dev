@@ -49,7 +49,7 @@ export class TerminalService {
     { name: 'projects', aliases: ['ls', 'ls projects', 'cd projects'], description: 'Things I have built', route: '/projects', echo: 'ls -l ./projects' },
     { name: 'playlists', aliases: ['music', 'spotify', 'cd playlists', 'cd music'], description: 'My Spotify playlists', route: '/playlists', echo: 'spotify --list' },
     { name: 'contact', aliases: ['socials', 'email'], description: 'Ways to reach me', route: '/contact', echo: 'cat contact.txt' },
-    { name: 'pay', aliases: ['venmo', 'tip'], description: 'Send me money', hidden: true, route: '/contact', echo: 'cat contact.txt --pay' },
+    { name: 'pay', aliases: ['venmo', 'tip'], description: 'Send me money', hidden: true, route: '/pay', echo: 'cat contact.txt --pay' },
     { name: 'version', aliases: ['build-info', 'build', 'fastfetch', 'neofetch', 'uname -a'], description: 'Build + dependency info', route: '/build-info', echo: 'fastfetch' },
     { name: 'theme', description: 'List themes or switch: theme <name>', run: (a) => this.themeCommand(a) },
     { name: 'history', description: 'Show command history', run: () => this.history().map((h, i) => ({ text: `${String(i + 1).padStart(4)}  ${h}` })) },
@@ -108,7 +108,6 @@ export class TerminalService {
     const path = url.split(/[?#]/)[0].replace(/^\//, '');
     const match = this.commands.find(c => c.route && c.route.replace(/^\//, '') === path);
     if (path === '' || path === 'home' || path === 'about') return 'cat about.txt';
-    if (path === 'pay') return 'cat contact.txt --pay';
     return match?.echo ?? `cd /${path}`;
   }
 
@@ -136,9 +135,7 @@ export class TerminalService {
       this.entries.set([]);
       this.cleared.set(false);
       this.routeEcho.set(cmd.echo ?? cmd.name);
-      this.router.navigateByUrl(cmd.route).then(() => {
-        if (cmd.name === 'pay') setTimeout(() => document.getElementById('pay')?.scrollIntoView({ behavior: 'smooth' }), 50);
-      });
+      this.router.navigateByUrl(cmd.route);
       return;
     }
     const lines = cmd.run?.(args);

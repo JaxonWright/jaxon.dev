@@ -69,6 +69,13 @@ describe('TerminalService', () => {
     expect(term.routeEcho()).toBe('ls -l ./projects');
   });
 
+  it('opens contact at the payment links for pay', async () => {
+    const { term, router } = setup();
+    term.execute('venmo');
+    await vi.waitFor(() => expect(router.url).toBe('/pay'));
+    expect(term.routeEcho()).toBe('cat contact.txt --pay');
+  });
+
   it('clears the screen', () => {
     const { term } = setup();
     term.execute('date');
@@ -128,6 +135,7 @@ describe('TerminalService', () => {
     expect(term.echoForUrl('/about?x=1')).toBe('cat about.txt');
     expect(term.echoForUrl('/playlists#top')).toBe('spotify --list');
     expect(term.echoForUrl('/build-info')).toBe('fastfetch');
+    expect(term.echoForUrl('/pay')).toBe('cat contact.txt --pay');
     expect(term.echoForUrl('/nowhere')).toBe('cd /nowhere');
   });
 

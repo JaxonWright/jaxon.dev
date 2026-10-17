@@ -15,6 +15,6 @@ export const appRoutes: Routes = [
   { path: 'music', redirectTo: 'playlists' },
   { path: 'build-info', component: BuildInfoComponent },
   { path: 'contact', component: ContactComponent },
-  { path: 'pay', redirectTo: 'contact'},
+  { path: 'pay', component: ContactComponent, data: { anchor: 'pay' } },
   { path: '**', component: PageNotFoundComponent }
 ];
