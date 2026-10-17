@@ -62,7 +62,10 @@
 button.line, a.line { cursor: pointer; text-decoration: none; }
 button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t-primary); color: var(--t-bg); outline: none; }
 
-.input-line { display: flex; align-items: baseline; }
+.input-line { display: flex; align-items: baseline; flex-wrap: wrap; }
+/* Prompt and input share one line; the input only drops below when under ~8ch remain. */
+.input-line .ps1 { flex: none; white-space: nowrap; }
+.input-line .input-wrap { flex: 1 1 8ch; }
 .input-wrap { position: relative; flex: 1; min-width: 0; }
 .input-wrap input {
   position: absolute;
@@ -133,10 +136,9 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
 @media (max-width: 640px) {
   .terminal { font-size: 12px; }
   .screen { padding: 10px 10px 18px; }
-  .ascii-logo { font-size: 10px; }
+  /* Same 50-col logo as desktop: 10px (6px advance) is 300px wide, fits >=320px screens. */
+  .screen { padding-top: calc(env(safe-area-inset-top) + 46px); }
   .output { padding-left: 0; }
-  .ps1 { display: block; }
-  .input-line { display: block; }
   .statusbar { gap: 8px; padding: 6px 8px; }
   .quick { flex: 1; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 6px; }
   .quick::-webkit-scrollbar { display: none; }
@@ -146,6 +148,22 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   .theme-btn { padding: 7px 6px; font-size: 12px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
   .theme-list li { padding: 9px 12px; font-size: 13px; }
   .binary { display: none; }
+  /* Theme picker floats in the top-right corner, opening downward. */
+  .theme-pick {
+    position: fixed; z-index: 60;
+    top: calc(env(safe-area-inset-top) + 8px);
+    right: calc(env(safe-area-inset-right) + 8px);
+  }
+  .theme-btn .caret { display: inline-block; transform: rotate(180deg); } /* opens downward here */
+  .theme-list {
+    top: calc(100% + 6px); bottom: auto;
+    max-height: calc(100dvh - env(safe-area-inset-top) - 120px);
+    box-shadow: 0 6px 24px rgba(0,0,0,.4);
+  }
+}
+/* Narrower than the 300px logo + padding: drop to the 5px cell (3px advance) rather than swapping art. */
+@media (max-width: 319px) {
+  .ascii-logo { font-size: 5px; }
 }
 
 /* Footer controls: JetBrains Mono's ascent (1.02em) is much larger than its
@@ -170,7 +188,7 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
 .theme-btn { padding-bottom: 1px; }
 .hash { padding-bottom: 2px; }
 @media (max-width: 640px) {
-  .statusbar { --foot-h: 34px; }
+  .statusbar { --foot-h: 34px; padding-left: calc(env(safe-area-inset-left) + 8px); padding-right: calc(env(safe-area-inset-right) + 8px); padding-bottom: calc(env(safe-area-inset-bottom) + 6px); }
   .hash { display: none; }
   .theme-btn { padding-bottom: 0; }
 }

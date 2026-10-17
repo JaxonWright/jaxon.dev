@@ -2,8 +2,7 @@
   <div class="screen" #screen [class.rmrf-glitch]="term.glitch() !== null">
     @if (term.glitch(); as noise) {<pre class="glitch-noise cp437" aria-hidden="true">{{ noise }}</pre>}
     <header class="banner">
-      <pre class="ascii-logo cp437 desktop-only" role="img" aria-label="JW logo">{{ logoAnim.text() }}</pre>
-      <pre class="ascii-logo cp437 mobile-only" role="img" aria-label="JW logo">{{ logoSmallAnim.text() }}</pre>
+      <pre class="ascii-logo cp437" role="img" aria-label="JW logo">{{ logoAnim.text() }}</pre>
       <p class="sys muted">TYPE A COMMAND OR CLICK ONE &middot; ↑/↓ HISTORY &middot; TAB COMPLETE</p>
     </header>
 
@@ -64,7 +63,7 @@
     <div class="theme-pick" (click)="$event.stopPropagation()">
       <button #themeBtn type="button" class="theme-btn" aria-haspopup="listbox" [attr.aria-expanded]="themeOpen()"
               (click)="toggleThemes()" (keydown)="onThemeBtnKey($event)">
-        <span class="lbl">THEME</span> {{ term.theme().name }} {{ themeOpen() ? '▾' : '▴' }}
+        <span class="lbl">THEME</span> {{ term.theme().name }} <span class="caret">{{ themeOpen() ? '▾' : '▴' }}</span>
       </button>
       @if (themeOpen()) {
         <ul #themeList class="theme-list" role="listbox" tabindex="-1" aria-label="Theme"
