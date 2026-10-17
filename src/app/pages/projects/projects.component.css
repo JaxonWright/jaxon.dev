@@ -1,24 +1,12 @@
-img.title-img {
-    height: 40px;
-}
-
-.mat-mdc-card-avatar {
-    height: 80px;
-    width: 80px;
-}
-.tallyup-header-image {
-    background-image: url('../../../assets/img/apps/tallyup_green.png');
-    background-size: cover;
-}
-.pixbar-header-image {
-    background-image: url('../../../assets/img/apps/pixbar.png');
-    background-size: cover;
-}
-.xpaper-header-image {
-    background-image: url('../../../assets/img/apps/xpaper.png');
-    background-size: cover;
-}
-.nowpaper-header-image {
-    background-image: url('../../../assets/img/apps/nowPaper.png');
-    background-size: cover;
-}
+/* Logos column is a fixed width so every entry's text lines up (24 cols at 5px = 72px). */
+.proj-logo { min-width: 72px; }
+.projects h2 { margin-top: 22px; }
+.projects h3 { margin: 0 0 4px; }
+.prs { list-style: none; margin: 4px 0 0; padding: 0; }
+.prs li { margin: 0 0 2px; line-height: 1.5; padding-left: 10ch; text-indent: -10ch; }
+.st { display: inline-block; width: 9ch; text-indent: 0; }
+.st.merged { color: var(--t-primary); }
+.st.open { color: var(--t-secondary); }
+.st.closed { color: var(--t-accent); }
+.tag-archived { margin-left: 1ch; padding: 0 0.6ch; border: 1px solid var(--t-accent); color: var(--t-accent); font-size: 0.85em; letter-spacing: 0.05em; }
+.archived .proj-logo { opacity: 0.55; }

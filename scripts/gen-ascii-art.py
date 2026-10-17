@@ -6,6 +6,7 @@ Sources:
   JW logo      scripts/ascii-src/jw-logo.png (render of src/assets/img/branding/favicon.svg)
   Photo        scripts/ascii-src/github-avatar.png  (▀ half-blocks, 32 levels, theme-tinted) (github.com/u/14099593 avatar used by the old about page)
   Logos        src/assets/img/resume/{volgistics.png,configura.png,GVSU.jpg}
+  Projects     scripts/ascii-src/projects/* (Simple Icons CC0 SVG renders, project/app icons, Organizr favicon)
   OS logos     scripts/ascii-src/os/*.svg (Simple Icons, CC0) rendered to *.png at 800px
 """
 from pathlib import Path
@@ -129,6 +130,109 @@ def two_tone_cells(img: Image.Image, cols: int):
     return out
 
 
+def icon_cells(img: Image.Image, cols: int, invert: bool = False):
+    """Compact two-tone icon: background keyed away, opaque pixels split by luminance
+    (Otsu) into the main tone (1, theme accent) and the minor tone (2, light text).
+    Returns rows of [top, bottom, count] runs for ▀ cells (0 = empty)."""
+    rgba = img.convert('RGBA')
+    if rgba.getchannel('A').getextrema()[0] == 255:  # no transparency: key the flat background away
+        rgba = key_background(rgba)
+    lo, hi = ImageOps.grayscale(rgba).getextrema()
+    rgba = rgba.crop(rgba.getchannel('A').point(lambda a: 255 if a > 100 else 0).getbbox())
+    w, h = rgba.size
+    rows = max(2, round(cols * h / w * CELL_ASPECT) * 2)
+    if rows > 2 * PROJECT_ICON_MAX_ROWS:  # keep tall marks (single letters) to the same height
+        cols = max(4, round(cols * 2 * PROJECT_ICON_MAX_ROWS / rows)); rows = 2 * PROJECT_ICON_MAX_ROWS
+    alpha = rgba.getchannel('A').resize((cols, rows), Image.LANCZOS).load()
+    lum = ImageOps.grayscale(rgba.convert('RGB'))
+    opaque = [v for v, a in zip(lum.getdata(), rgba.getchannel('A').getdata()) if a > 100]
+    hist = [0] * 256
+    for v in opaque: hist[v] += 1
+    total, sum_all = len(opaque), sum(i * c for i, c in enumerate(hist))
+    best, thr, wb, sb = -1, 128, 0, 0
+    for t in range(256):
+        wb += hist[t]; sb += t * hist[t]
+        if wb == 0 or wb == total: continue
+        mb, mf = sb / wb, (sum_all - sb) / (total - wb)
+        var = wb * (total - wb) * (mb - mf) ** 2
+        if var > best: best, thr = var, t
+    spread = (max(opaque) - min(opaque)) if opaque else 0
+    small = lum.resize((cols, rows), Image.LANCZOS).load()
+    dark_n = sum(c for i, c in enumerate(hist) if i <= thr)
+    main_is_dark = (dark_n >= total - dark_n) != invert
+    def cls(x, y):
+        if alpha[x, y] < 128: return 0
+        if spread < 60: return 1
+        dark = small[x, y] <= thr
+        return 1 if dark == main_is_dark else 2
+    out = []
+    for y in range(0, rows, 2):
+        runs = []
+        for x in range(cols):
+            c = [cls(x, y), cls(x, y + 1)]
+            if runs and runs[-1][:2] == c: runs[-1][2] += 1
+            else: runs.append(c + [1])
+        if runs and runs[-1][:2] == [0, 0]: runs.pop()
+        out.append(runs)
+    while out and not out[-1]: out.pop()
+    while out and not out[0]: out.pop(0)
+    return out
+
+
+PROJECT_ICON_COLS = 24
+PROJECT_ICON_MAX_ROWS = 14
+PROJECT_ICON_WIDE = {'ciner8': 44}
+PROJECT_ICONS = {
+    # key: (path relative to repo root, invert minor/main tones)
+    'omarchy': ('scripts/ascii-src/projects/omarchy.png', False),
+    'angular': ('scripts/ascii-src/projects/angular.png', False),
+    'react': ('scripts/ascii-src/projects/react.png', False),
+    'tesla': ('scripts/ascii-src/projects/tesla.png', False),
+    'steelseries': ('scripts/ascii-src/projects/steelseries.png', False),
+    'playstation': ('scripts/ascii-src/projects/playstation.png', False),
+    'steamdeck': ('scripts/ascii-src/projects/steamdeck.png', False),
+    'messenger': ('scripts/ascii-src/projects/messenger.png', False),
+    'html5': ('scripts/ascii-src/projects/html5.png', False),
+    'github': ('scripts/ascii-src/projects/github.png', False),
+    'delphi': ('scripts/ascii-src/projects/delphi.png', False),
+    'wearos': ('scripts/ascii-src/projects/wearos.png', False),
+    'organizr': ('scripts/ascii-src/projects/organizr.png', False),
+    'scottv': ('scripts/ascii-src/projects/scottv.png', False),
+    'jw': ('scripts/ascii-src/jw-logo.png', False),
+    'testube': ('scripts/ascii-src/projects/testube-icon.png', False),
+    'sentinel': ('src/assets/img/projects/sentinel.png', False),
+    'passageway': ('scripts/ascii-src/projects/passageway-avatar.png', False),
+    'ciner8': ('scripts/ascii-src/projects/ciner8-icon.png', False),
+    'reddit': ('scripts/ascii-src/projects/reddit.png', False),
+    'tallyup': ('src/assets/img/apps/tallyup_green.png', False),
+    'pixbar': ('src/assets/img/apps/pixbar.png', False),
+    'xpaper': ('src/assets/img/apps/xpaper.png', False),
+    'nowpaper': ('src/assets/img/apps/nowPaper.png', False),
+    'configura': ('src/assets/img/resume/configura.png', False),
+    'volgistics': ('src/assets/img/resume/volgistics.png', False),
+}
+
+
+PROJECT_ICON_PREP = {
+    # Wordmark-only sources: crop the mark / first letter, thicken hairlines.
+    'sentinel': lambda im: im.crop((92, 120, 330, 441)),
+    'passageway': lambda im: ImageOps.invert(im.convert('L')).filter(ImageFilter.MaxFilter(41)).point(lambda v: 255 if v > 60 else 0).convert('L'),
+}
+
+
+def project_icons() -> dict:
+    out = {}
+    for k, (p, inv) in PROJECT_ICONS.items():
+        im = Image.open(ROOT / p)
+        if k == 'passageway':
+            m = PROJECT_ICON_PREP[k](im)
+            im = Image.new('RGBA', m.size, (0, 0, 0, 0)); im.putalpha(m)
+        elif k in PROJECT_ICON_PREP:
+            im = PROJECT_ICON_PREP[k](im)
+        out[k] = icon_cells(im, PROJECT_ICON_WIDE.get(k, PROJECT_ICON_COLS), inv)
+    return out
+
+
 def os_logos() -> dict:
     """Official OS marks (Simple Icons) as compact half-block art, fastfetch-style."""
     src = ROOT / 'scripts/ascii-src/os'
@@ -173,6 +277,8 @@ def main():
     out.append(f'export const OS_LOGOS: Record<string, string> = {json.dumps(osl, ensure_ascii=False, indent=2)};\n')
     out.append('/** Tux, two-tone: rows of [top, bottom, count]; 0 none, 1 body (accent), 2 belly/feet (light). */\n')
     out.append(f'export const TUX_CELLS: [number, number, number][][] = {json.dumps(two_tone_cells(Image.open(ROOT / "scripts/ascii-src/os/linux.png"), 30), separators=sep)};\n')
+    out.append('/** Project logos (two-tone ▀ cells): rows of [top, bottom, count]; 0 none, 1 accent, 2 light. */\n')
+    out.append(f'export const PROJECT_LOGOS: Record<string, [number, number, number][][]> = {json.dumps(project_icons(), separators=sep)};\n')
     out.append('/** Photo: rows of [topLevel, bottomLevel, count] runs of ▀ (levels 0-31), tinted with the theme color. */\n')
     out.append(f'export const PHOTO_LEVELS: [number, number, number][][] = {json.dumps(photo_runs, separators=sep)};\n')
     out.append('export const PHOTO_LEVEL_COUNT = 32;\n')
