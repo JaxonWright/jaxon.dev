@@ -1,6 +1,6 @@
 {
   "author": "JaxonWright",
-  "fetchedAt": "2026-10-17T00:23:14.943Z",
+  "fetchedAt": "2026-10-17T00:28:43.280Z",
   "repos": [
     {
       "repo": "omacom/omarchy",
@@ -134,21 +134,6 @@
       "stars": 661
     },
     {
-      "repo": "causefx/Organizr",
-      "url": "https://github.com/causefx/Organizr",
-      "description": "HTPC/Homelab Services Organizer - Written in PHP",
-      "prs": [
-        {
-          "number": 899,
-          "title": "[v2] Fix #898",
-          "state": "merged",
-          "url": "https://github.com/causefx/Organizr/pull/899",
-          "date": "2018-06-25"
-        }
-      ],
-      "stars": 5818
-    },
-    {
       "repo": "Cordobo/angularx-qrcode",
       "url": "https://github.com/Cordobo/angularx-qrcode",
       "description": "A fast and easy-to-use Angular QR Code Generator library with Ivy support",
@@ -177,21 +162,6 @@
         }
       ],
       "stars": 41
-    },
-    {
-      "repo": "AhsanAyaz/ngx-device-detector",
-      "url": "https://github.com/AhsanAyaz/ngx-device-detector",
-      "description": "An Angular v7+ library to detect the device, OS, and browser details. ",
-      "prs": [
-        {
-          "number": 290,
-          "title": "Update to Support Angular 18",
-          "state": "closed",
-          "url": "https://github.com/AhsanAyaz/ngx-device-detector/pull/290",
-          "date": "2024-05-31"
-        }
-      ],
-      "stars": 559
     }
   ]
 }

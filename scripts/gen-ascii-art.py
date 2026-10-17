@@ -6,7 +6,7 @@ Sources:
   JW logo      scripts/ascii-src/jw-logo.png (render of src/assets/img/branding/favicon.svg)
   Photo        scripts/ascii-src/github-avatar.png  (▀ half-blocks, 32 levels, theme-tinted) (github.com/u/14099593 avatar used by the old about page)
   Logos        src/assets/img/resume/{volgistics.png,configura.png,GVSU.jpg}
-  Projects     scripts/ascii-src/projects/* (Simple Icons CC0 SVG renders, project/app icons, Organizr favicon)
+  Projects     scripts/ascii-src/projects/* (Simple Icons CC0 SVG renders, project/app icons)
   OS logos     scripts/ascii-src/os/*.svg (Simple Icons, CC0) rendered to *.png at 800px
 """
 from pathlib import Path
@@ -191,7 +191,6 @@ PROJECT_ICONS = {
     'github': ('scripts/ascii-src/projects/github.png', False),
     'delphi': ('scripts/ascii-src/projects/delphi.png', False),
     'wearos': ('scripts/ascii-src/projects/wearos.png', False),
-    'organizr': ('scripts/ascii-src/projects/organizr.png', False),
     'jw': ('scripts/ascii-src/jw-logo.png', False),
     'testube': ('scripts/ascii-src/projects/testube-icon.png', False),
     'sentinel': ('src/assets/img/projects/sentinel.png', False),

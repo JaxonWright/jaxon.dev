@@ -12,6 +12,8 @@ const EXCLUDE_OWNERS = ['jaxonwright', 'arbitrari', 'dunrite', 'volgistics'];
 /** Skip small/personal repos... */
 const MIN_STARS = 25;
 /** ...except ones Jaxon explicitly wants listed regardless of stars. */
+/** Repos never listed, whatever their stars or PRs. */
+const EXCLUDE_REPOS = ['causefx/Organizr'];
 const ALLOW_REPOS = ['omacom/omarchy', 'ErikBurdett/omarchy-wavebar', 'Dymstro/nova-chatmix-linux'];
 /** A PR whose changed files all match this is docs-only and skipped. */
 const DOCS_ONLY = f => /(^|\/)README[^/]*$/i.test(f) || /\.md$/i.test(f) || /^docs?\//i.test(f) || /\/docs?\//i.test(f);
@@ -37,6 +39,7 @@ async function main() {
   for (const it of items) {
     const full = it.repository_url.replace('https://api.github.com/repos/', '');
     if (EXCLUDE_OWNERS.includes(full.split('/')[0].toLowerCase())) continue;
+    if (EXCLUDE_REPOS.some(x => x.toLowerCase() === full.toLowerCase())) continue;
     const state = it.pull_request?.merged_at ? 'merged' : it.state; // open | closed
     if (!repos.has(full)) repos.set(full, { repo: full, url: `https://github.com/${full}`, description: '', prs: [] });
     repos.get(full).prs.push({ number: it.number, title: it.title, state, url: it.html_url, date: (it.pull_request?.merged_at || it.created_at).slice(0, 10) });
@@ -57,7 +60,8 @@ async function main() {
       if (!files.length || !files.every(f => DOCS_ONLY(f.filename))) kept.push(pr);
     }
     r.prs = kept;
-    if (!kept.length) repos.delete(r.repo);
+    // Only repos with at least one merged PR (their open/closed PRs stay listed).
+    if (!kept.some(p => p.state === 'merged')) repos.delete(r.repo);
   }
   const list = [...repos.values()].sort((a, b) =>
     b.prs.filter(p => p.state === 'merged').length - a.prs.filter(p => p.state === 'merged').length
