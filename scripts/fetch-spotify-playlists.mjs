@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { readFileSync, existsSync } from 'fs';
-import { resolve } from 'path';
+import { readFileSync, existsSync, writeFileSync } from 'fs';
+import { resolve, relative } from 'path';
 
 const envPath = resolve(import.meta.dirname, '..', '.env');
 if (existsSync(envPath)) {
@@ -17,6 +17,19 @@ if (existsSync(envPath)) {
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_USER_ID = process.env.SPOTIFY_USER_ID || '1265176482';
+const FILE = resolve(import.meta.dirname, '..', 'src', 'app', 'services', 'playlist-data.ts');
+
+function writePlaylists(playlists) {
+  const content =
+`// IMPORTANT: THIS FILE IS AUTO GENERATED! DO NOT MANUALLY EDIT OR CHECKIN!
+// Run \`npm run fetch:playlists\` to regenerate from Spotify.
+import { SpotifyPlaylist } from './playlist';
+
+export const SPOTIFY_PLAYLISTS: SpotifyPlaylist[] = ${JSON.stringify(playlists, null, 2)};
+`;
+  writeFileSync(FILE, content, 'utf-8');
+  console.log(`Wrote ${playlists.length} playlists to ${relative(resolve(import.meta.dirname, '..'), FILE)}`);
+}
 
 if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
   console.warn(
@@ -24,6 +37,8 @@ if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
     '  Set them in .env or environment to fetch live playlists:\n' +
     '  SPOTIFY_CLIENT_ID=your_id SPOTIFY_CLIENT_SECRET=your_secret\n'
   );
+  // Keep a previously fetched list; otherwise write an empty one so the app still compiles.
+  if (!existsSync(FILE)) writePlaylists([]);
   process.exit(0);
 }
 
@@ -71,20 +86,7 @@ async function main() {
     trackCount: p.tracks?.total || 0,
   }));
 
-  const { writeFileSync } = await import('fs');
-  const { resolve, relative } = await import('path');
-
-  const file = resolve(import.meta.dirname, '..', 'src', 'app', 'services', 'playlist-data.ts');
-  const content =
-`// IMPORTANT: THIS FILE IS AUTO GENERATED! DO NOT MANUALLY EDIT OR CHECKIN!
-// Run \`npm run fetch:playlists\` to regenerate from Spotify.
-import { SpotifyPlaylist } from './playlist';
-
-export const SPOTIFY_PLAYLISTS: SpotifyPlaylist[] = ${JSON.stringify(playlists, null, 2)};
-`;
-
-  writeFileSync(file, content, 'utf-8');
-  console.log(`Wrote ${playlists.length} playlists to ${relative(resolve(import.meta.dirname, '..'), file)}`);
+  writePlaylists(playlists);
 }
 
 main().catch(err => {
