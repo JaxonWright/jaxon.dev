@@ -34,6 +34,12 @@ export function detectOs(): { id: OsId | null; name: string } {
   return { id, name };
 }
 
+/** Checked in order: Chromium-based browsers also carry `Chrome/`, and Chrome carries `Safari/`. */
+const BROWSERS: [RegExp, string][] = [
+  [/Edg(?:A|iOS)?\/(\d+)/, 'Edge'], [/OPR\/(\d+)/, 'Opera'], [/HeadlessChrome\/(\d+)/, 'Headless Chrome'],
+  [/(?:Firefox|FxiOS)\/(\d+)/, 'Firefox'], [/(?:Chrome|CriOS)\/(\d+)/, 'Chrome'], [/Version\/(\d+).*Safari/, 'Safari'],
+];
+
 const TONES = ['transparent', 'var(--t-secondary)', 'var(--ff-light, var(--t-text))'];
 
 const PAGE_LOADED = performance.timeOrigin || Date.now();
@@ -121,11 +127,10 @@ export class BuildInfoComponent implements OnInit, OnDestroy {
   }
 
   private browser(): string {
-    const ua = navigator.userAgent;
-    const m = ua.match(/(Edg|OPR|Firefox|FxiOS|CriOS|Chrome|Version)\/([\d.]+)/);
-    if (!m) return 'unknown';
-    const names: Record<string, string> = { Edg: 'Edge', OPR: 'Opera', FxiOS: 'Firefox', CriOS: 'Chrome', Version: 'Safari' };
-    if (/HeadlessChrome/.test(ua)) return `Headless Chrome ${m[2].split('.')[0]}`;
-    return `${names[m[1]] ?? m[1]} ${m[2].split('.')[0]}`;
+    for (const [re, name] of BROWSERS) {
+      const m = navigator.userAgent.match(re);
+      if (m) return `${name} ${m[1]}`;
+    }
+    return 'unknown';
   }
 }

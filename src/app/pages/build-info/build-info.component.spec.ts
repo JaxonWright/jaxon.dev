@@ -72,6 +72,21 @@ describe('BuildInfoComponent', () => {
     expect((fixture.nativeElement as HTMLElement).querySelector('.ff-logo')!.getAttribute('aria-label')).toBe('Linux logo');
   });
 
+  it('names the browser, including Chromium-based ones', async () => {
+    const browsers: [string, string][] = [
+      [UA.windows + ' Edg/152.0.3400.1', 'Edge 152'],
+      [UA.windows + ' OPR/128.0.0.0', 'Opera 128'],
+      [UA.windows, 'Chrome 152'],
+      [UA.mac, 'Safari 19'],
+      [UA.linux, 'Firefox 150'],
+    ];
+    for (const [ua, name] of browsers) {
+      TestBed.resetTestingModule();
+      const fixture = await render(ua);
+      expect((fixture.nativeElement as HTMLElement).textContent, ua).toContain(`Terminal: ${name}`);
+    }
+  });
+
   it('follows theme changes live', async () => {
     const fixture = await render(UA.windows);
     TestBed.inject(TerminalService).execute('theme nord');
