@@ -43,10 +43,12 @@
         <form class="prompt-line input-line" (submit)="$event.preventDefault(); submit()">
           <label for="cmd" class="ps1">guest&#64;jaxon.dev:~$</label>
           <span class="input-wrap">
-            <span class="ghost" aria-hidden="true">{{ input() }}<span class="cursor block">&#9608;</span></span>
+            @let p = prompt();
+            <span class="ghost" aria-hidden="true">{{ p.before }}@if (p.selected) {<span class="sel">{{ p.selected }}</span>} @else {<span class="cursor block" [class.on-char]="p.under">{{ p.under || '█' }}</span>}{{ p.after }}</span>
             <input #cmdInput id="cmd" name="cmd" autocomplete="off" autocapitalize="off" spellcheck="false"
                    enterkeyhint="go" aria-label="Terminal command"
-                   [value]="input()" (input)="input.set(cmdInput.value)" (keydown)="onKeydown($event)">
+                   [value]="input()" (input)="syncInput(cmdInput)" (keyup)="syncInput(cmdInput)" (click)="syncInput(cmdInput)"
+                   (select)="syncInput(cmdInput)" (selectionchange)="syncInput(cmdInput)" (keydown)="onKeydown($event)">
           </span>
         </form>
 

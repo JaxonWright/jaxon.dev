@@ -36,6 +36,17 @@ export class AppComponent implements OnInit, OnDestroy {
   /** Characters of the route echo typed so far. */
   readonly typed = signal('');
   readonly input = signal('');
+  /** Caret/selection in the hidden native input, mirrored so the drawn prompt can show it. */
+  readonly caret = signal({ start: 0, end: 0 });
+  /** The prompt as drawn: text before the caret, the selection or the character under the block cursor, the rest. */
+  readonly prompt = computed(() => {
+    const text = this.input();
+    const start = Math.min(this.caret().start, text.length);
+    const end = Math.min(this.caret().end, text.length);
+    return start === end
+      ? { before: text.slice(0, start), selected: '', under: text[start] ?? '', after: text.slice(start + 1) }
+      : { before: text.slice(0, start), selected: text.slice(start, end), under: '', after: text.slice(end) };
+  });
   readonly helpOpen = signal(false);
   readonly progressBar = computed(() => {
     const filled = Math.round(this.progress() / 5);
@@ -142,10 +153,22 @@ export class AppComponent implements OnInit, OnDestroy {
   run(command: string): void {
     if (this.booting()) this.finishBoot();
     this.term.execute(command);
-    this.input.set('');
+    this.setInput('');
     this.historyIndex = -1;
     this.scrollSoon(false);
     this.focusInput();
+  }
+
+  /** Mirrors the native input's text and selection after the visitor edits or moves the caret. */
+  syncInput(el: HTMLInputElement): void {
+    this.input.set(el.value);
+    this.caret.set({ start: el.selectionStart ?? el.value.length, end: el.selectionEnd ?? el.value.length });
+  }
+
+  /** Sets the text from code; the browser puts the caret at the end, so the drawn cursor goes there too. */
+  private setInput(text: string): void {
+    this.input.set(text);
+    this.caret.set({ start: text.length, end: text.length });
   }
 
   submit(): void {
@@ -158,18 +181,18 @@ export class AppComponent implements OnInit, OnDestroy {
       if (!hist.length) return;
       event.preventDefault();
       this.historyIndex = this.historyIndex < 0 ? hist.length - 1 : Math.max(0, this.historyIndex - 1);
-      this.input.set(hist[this.historyIndex]);
+      this.setInput(hist[this.historyIndex]);
     } else if (event.key === 'ArrowDown') {
       if (this.historyIndex < 0) return;
       event.preventDefault();
       this.historyIndex++;
-      if (this.historyIndex >= hist.length) { this.historyIndex = -1; this.input.set(''); }
-      else this.input.set(hist[this.historyIndex]);
+      if (this.historyIndex >= hist.length) { this.historyIndex = -1; this.setInput(''); }
+      else this.setInput(hist[this.historyIndex]);
     } else if (event.key === 'Tab') {
       const options = this.term.completions(this.input());
       if (options.length) {
         event.preventDefault();
-        if (options.length === 1) this.input.set(options[0]);
+        if (options.length === 1) this.setInput(options[0]);
         else this.term.entries.update(e => [...e, { command: this.input(), lines: [{ text: options.join('   '), kind: 'muted' }] }]);
       }
     } else if (event.key === 'l' && event.ctrlKey) {
@@ -179,7 +202,7 @@ export class AppComponent implements OnInit, OnDestroy {
       event.preventDefault();
       this.term.cancelRmrf();
       this.term.entries.update(e => [...e, { command: this.input() + '^C', lines: [] }]);
-      this.input.set('');
+      this.setInput('');
     }
   }
 

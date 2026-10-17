@@ -79,6 +79,10 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
   caret-color: transparent;
 }
 .ghost { white-space: pre-wrap; word-break: break-all; }
+.ghost .sel { background: var(--t-primary); color: var(--t-bg); }
+/* Over a character the block inverts it, blinking the inversion rather than hiding the character. */
+.cursor.block.on-char { background: var(--t-primary); color: var(--t-bg); animation: blink-block 1s infinite; }
+@keyframes blink-block { 51%, 100% { background: transparent; color: var(--t-text); } }
 .input-wrap:not(:focus-within) .cursor.block { opacity: .4; animation: none; }
 
 .quick { display: flex; flex-wrap: wrap; gap: 2px 10px; min-width: 0; }

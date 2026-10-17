@@ -87,6 +87,27 @@ describe('AppComponent', () => {
     expect(input(f).value).toBe('');
   });
 
+  it('draws the cursor and selection where the real input has them', async () => {
+    const f = await render();
+    const ghost = () => el(f).querySelector('.ghost')!;
+    const moveTo = async (start: number, end = start) => {
+      input(f).setSelectionRange(start, end);
+      input(f).dispatchEvent(new KeyboardEvent('keyup'));
+      await f.whenStable();
+    };
+    await type(f, 'hello');
+    expect(ghost().querySelector('.cursor')!.textContent).toBe('█');
+    await moveTo(2);
+    expect(ghost().textContent).toBe('hello');
+    expect(ghost().querySelector('.cursor')!.textContent).toBe('l');
+    await moveTo(1, 4);
+    expect(ghost().querySelector('.sel')!.textContent).toBe('ell');
+    expect(ghost().querySelector('.cursor')).toBeNull();
+    await enter(f, 'date');
+    await key(f, input(f), { key: 'ArrowUp' });
+    expect(ghost().textContent).toBe('date█');
+  });
+
   it('walks history with the arrow keys', async () => {
     const f = await render();
     await enter(f, 'date');
