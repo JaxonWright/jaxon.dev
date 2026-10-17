@@ -108,6 +108,9 @@ async function main() {
   console.log(`✓ Contributions: ${list.length} repos, ${list.reduce((n, r) => n + r.prs.length, 0)} PRs -> ${OUT}`);
 }
 
+// --if-missing only makes sure the file exists (tests, dev server) without refetching.
+if (process.argv.includes('--if-missing') && existsSync(OUT)) process.exit(0);
+
 main().catch(err => {
   const fallback = existsSync(OUT) ? 'keeping the existing contributions.json' : 'using the committed snapshot';
   if (!existsSync(OUT)) copyFileSync(SNAPSHOT, OUT);

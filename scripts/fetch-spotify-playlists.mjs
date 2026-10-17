@@ -19,6 +19,8 @@ const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_USER_ID = process.env.SPOTIFY_USER_ID || '1265176482';
 const FILE = resolve(import.meta.dirname, '..', 'src', 'app', 'services', 'playlist-data.ts');
+/** Only make sure the file exists (tests, dev server): never refetch, never fail. Builds refresh strictly. */
+const IF_MISSING = process.argv.includes('--if-missing');
 
 function writePlaylists(playlists) {
   const content =
@@ -31,6 +33,8 @@ export const SPOTIFY_PLAYLISTS: SpotifyPlaylist[] = ${JSON.stringify(playlists, 
   writeFileSync(FILE, content, 'utf-8');
   console.log(`Wrote ${playlists.length} playlists to ${relative(resolve(import.meta.dirname, '..'), FILE)}`);
 }
+
+if (IF_MISSING && existsSync(FILE)) process.exit(0);
 
 if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
   console.warn(
@@ -54,8 +58,7 @@ async function main() {
   });
 
   if (!tokenResponse.ok) {
-    console.error('Failed to get Spotify token:', await tokenResponse.text());
-    process.exit(1);
+    throw new Error(`Failed to get Spotify token: ${await tokenResponse.text()}`);
   }
 
   const { access_token } = await tokenResponse.json();
@@ -69,8 +72,7 @@ async function main() {
     });
 
     if (!response.ok) {
-      console.error('Failed to fetch playlists:', await response.text());
-      process.exit(1);
+      throw new Error(`Failed to fetch playlists: ${await response.text()}`);
     }
 
     const { items, next } = await response.json();
@@ -91,6 +93,11 @@ async function main() {
 }
 
 main().catch(err => {
+  if (IF_MISSING) {
+    console.warn(`⚠ Spotify playlist fetch failed (${err.message}); writing an empty list.`);
+    writePlaylists([]);
+    process.exit(0);
+  }
   console.error(err);
   process.exit(1);
 });
