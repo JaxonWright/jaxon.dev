@@ -14,12 +14,14 @@
     <ng-container *ngTemplateOutlet="list; context: { $implicit: groups.goated }"></ng-container>
   }
 
-  <h2>The Rest</h2>
-  <p class="muted">Large collections of songs from my favorite genres..</p>
   @if (groups.other.length) {
+    <h2>The Rest</h2>
+    <p class="muted">Large collections of songs from my favorite genres.</p>
     <ng-container *ngTemplateOutlet="list; context: { $implicit: groups.other }"></ng-container>
-  } @else {
-    <p class="empty-state">No playlists loaded yet. Set up your Spotify API credentials and run <code>npm run fetch:playlists</code> to populate.</p>
+  }
+
+  @if (!groups.prime.length && !groups.goated.length && !groups.other.length) {
+    <p class="empty-state">No playlists to show right now. <a href="https://open.spotify.com/user/1265176482" target="_blank" rel="noopener">Find them on Spotify ↗</a></p>
   }
 </article>
 

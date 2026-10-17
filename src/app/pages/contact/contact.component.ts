@@ -15,7 +15,7 @@ export class ContactComponent implements OnInit {
     { name: 'EMAIL', label: 'j@jaxon.dev', href: 'mailto:j@jaxon.dev' },
     { name: 'GITHUB', label: 'github.com/jaxonwright', href: 'https://github.com/jaxonwright' },
     { name: 'STACK OVERFLOW', label: 'stackoverflow.com/users/3186832/jxn', href: 'https://stackoverflow.com/users/3186832/jxn' },
-    { name: 'LINKEDIN', label: 'linkedin.com/in/jaxonwright', href: 'http://linkedin.com/in/jaxonwright' },
+    { name: 'LINKEDIN', label: 'linkedin.com/in/jaxonwright', href: 'https://linkedin.com/in/jaxonwright' },
     { name: 'INSTAGRAM', label: '@jxn.w', href: 'https://instagram.com/jxn.w' },
   ];
   readonly pay: ContactLink[] = [

@@ -31,6 +31,6 @@ describe('MusicComponent', () => {
     const el = fixture.nativeElement as HTMLElement;
     const { prime, goated, other } = fixture.componentInstance.groups;
     expect(el.querySelectorAll('ul.playlists li').length).toBe(prime.length + goated.length + other.length);
-    expect(!!el.querySelector('.empty-state')).toBe(other.length === 0);
+    expect(!!el.querySelector('.empty-state')).toBe(prime.length + goated.length + other.length === 0);
   });
 });
