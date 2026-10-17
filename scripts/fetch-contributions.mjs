@@ -11,21 +11,30 @@ const AUTHOR = 'JaxonWright';
 const EXCLUDE_OWNERS = ['jaxonwright', 'arbitrari', 'dunrite', 'volgistics'];
 /** Skip small/personal repos... */
 const MIN_STARS = 25;
-/** ...except ones Jaxon explicitly wants listed regardless of stars. */
+/** ...except ones Jaxon explicitly wants listed regardless of stars (and of having a merged PR). */
 /** Repos never listed, whatever their stars or PRs. */
-const EXCLUDE_REPOS = ['causefx/Organizr', 'aorumbayev/awesome-omarchy'];
-const ALLOW_REPOS = ['omacom/omarchy', 'ErikBurdett/omarchy-wavebar', 'Dymstro/nova-chatmix-linux'];
-/** A PR whose changed files all match this is docs-only and skipped. */
-const DOCS_ONLY = f => /(^|\/)README[^/]*$/i.test(f) || /\.md$/i.test(f) || /^docs?\//i.test(f) || /\/docs?\//i.test(f);
+const EXCLUDE_REPOS = ['causefx/Organizr', 'aorumbayev/awesome-omarchy', 'rob2d/use-viewport-sizes'];
+const ALLOW_REPOS = ['omacom/omarchy', 'ErikBurdett/omarchy-wavebar', 'Dymstro/nova-chatmix-linux', 'ypMrg/omarchy-bambu-companion', 'rawritude/omarchy-oled-guard'];
+const allowed = repo => ALLOW_REPOS.some(a => a.toLowerCase() === repo.toLowerCase());
+/** A PR whose changed files all match this (README, *.md, docs/, LICENSE) is docs-only and skipped. */
+const DOCS_ONLY = f => /(^|\/)(LICEN[CS]E|COPYING)[^/]*$/i.test(f) || /(^|\/)README[^/]*$/i.test(f) || /\.md$/i.test(f) || /^docs?\//i.test(f) || /\/docs?\//i.test(f);
 const OUT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
 
 const headers = { 'Accept': 'application/vnd.github+json', 'User-Agent': 'jaxon.dev-build' };
 if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 
-async function get(url) {
-  const res = await fetch(url, { headers, signal: AbortSignal.timeout(15000) });
-  if (!res.ok) throw new Error(`${res.status} ${url}`);
-  return res.json();
+async function get(url, tries = 3) {
+  for (let i = 1; ; i++) {
+    try {
+      const res = await fetch(url, { headers, signal: AbortSignal.timeout(15000) });
+      if (!res.ok) throw Object.assign(new Error(`${res.status} ${url}`), { status: res.status });
+      return await res.json();
+    } catch (err) {
+      // Retry dropped sockets/timeouts and 5xx; give up on 4xx (rate limit, not found).
+      if (i >= tries || (err.status && err.status < 500)) throw err;
+      await new Promise(r => setTimeout(r, 1000 * i));
+    }
+  }
 }
 
 async function main() {
@@ -50,7 +59,7 @@ async function main() {
     const info = await get(`https://api.github.com/repos/${r.repo}`);
     r.description = info.description || '';
     r.stars = info.stargazers_count;
-    if (r.stars < MIN_STARS && !ALLOW_REPOS.some(a => a.toLowerCase() === r.repo.toLowerCase())) repos.delete(r.repo);
+    if (r.stars < MIN_STARS && !allowed(r.repo)) repos.delete(r.repo);
   }
   // Docs-only filter: drop PRs that only touch README / *.md / docs, then empty repos.
   for (const r of [...repos.values()]) {
@@ -61,7 +70,7 @@ async function main() {
     }
     r.prs = kept;
     // Only repos with at least one merged PR (their open/closed PRs stay listed).
-    if (!kept.some(p => p.state === 'merged')) repos.delete(r.repo);
+    if (!kept.length || (!allowed(r.repo) && !kept.some(p => p.state === 'merged'))) repos.delete(r.repo);
   }
   const list = [...repos.values()].sort((a, b) =>
     b.prs.filter(p => p.state === 'merged').length - a.prs.filter(p => p.state === 'merged').length
@@ -72,6 +81,6 @@ async function main() {
 }
 
 main().catch(err => {
-  console.warn(`⚠ Contributions fetch failed (${err.message}); using committed snapshot.`);
+  console.warn(`⚠ Contributions fetch failed (${err.message}${err.cause ? `: ${err.cause.code || err.cause.message}` : ""}); using committed snapshot.`);
   process.exit(0);
 });

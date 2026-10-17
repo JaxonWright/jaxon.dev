@@ -181,18 +181,19 @@ def icon_cells(img: Image.Image, cols: int, invert: bool = False):
 
 PROJECT_ICON_COLS = 24
 PROJECT_ICON_MAX_ROWS = 14
-PROJECT_ICON_WIDE = {'ciner8': 44}
+PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96}  # wordmarks
 PROJECT_ICONS = {
     # key: (path relative to repo root, invert minor/main tones)
     'omarchy': ('scripts/ascii-src/projects/omarchy.png', False),
     'angular': ('scripts/ascii-src/projects/angular.png', False),
-    'react': ('scripts/ascii-src/projects/react.png', False),
+    'bambulab': ('scripts/ascii-src/projects/bambulab.png', False),
     'steelseries': ('scripts/ascii-src/projects/steelseries.png', False),
     'github': ('scripts/ascii-src/projects/github.png', False),
     'delphi': ('scripts/ascii-src/projects/delphi.png', False),
     'wearos': ('scripts/ascii-src/projects/wearos.png', False),
     'jw': ('scripts/ascii-src/jw-logo.png', False),
-    'testube': ('scripts/ascii-src/projects/testube-icon.png', False),
+    'testube': ('src/assets/img/projects/testube.png', False),
+    'omnigear': ('scripts/ascii-src/projects/omnigear.png', False),
     'sentinel': ('src/assets/img/projects/sentinel.png', False),
     'passageway': ('scripts/ascii-src/projects/passageway-avatar.png', False),
     'ciner8': ('scripts/ascii-src/projects/ciner8-icon.png', False),

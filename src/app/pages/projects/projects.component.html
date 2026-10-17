@@ -1,8 +1,8 @@
 <article class="t-page projects">
-  <h2>Open source contributions</h2>
+  <h2>Notable open source contributions</h2>
   <p class="muted">{{ contributions.length }} repos &middot; {{ prCount }} pull requests</p>
   @for (c of contributions; track c.repo) {
-    <section class="block with-art">
+    <section class="block with-art" [class.wide]="isWide(c.logo)">
       <ng-container *ngTemplateOutlet="art; context: { $implicit: c.logo, label: c.repo }"></ng-container>
       <div>
         <h3><a [href]="c.url" target="_blank" rel="noopener">{{ c.repo }}</a></h3>
@@ -30,7 +30,7 @@
 </article>
 
 <ng-template #project let-p>
-  <section class="block with-art" [class.archived]="p.archived">
+  <section class="block with-art" [class.archived]="p.archived" [class.wide]="isWide(p.logo)">
     <ng-container *ngTemplateOutlet="art; context: { $implicit: p.logo, label: p.title }"></ng-container>
     <div>
       <h3>{{ p.title }}@if (p.archived) { <span class="tag-archived">ARCHIVED</span>}</h3>

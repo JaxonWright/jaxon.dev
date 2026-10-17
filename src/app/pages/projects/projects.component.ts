@@ -25,7 +25,7 @@ const TONES = ['', 'var(--t-primary)', 'var(--t-bg)'];
 /** Logo for a contributed-to repo; anything unknown (a new repo picked up at build time) gets the GitHub mark. */
 const CONTRIB_LOGOS: Record<string, string> = {
   'mattlewis92/angular-calendar': 'angular', 'Cordobo/angularx-qrcode': 'angular',
-  'rob2d/use-viewport-sizes': 'react', 'Dymstro/nova-chatmix-linux': 'steelseries',
+  'Dymstro/nova-chatmix-linux': 'steelseries', 'ypMrg/omarchy-bambu-companion': 'bambulab',
 };
 const contribLogo = (repo: string) => CONTRIB_LOGOS[repo] ?? (/omarchy/i.test(repo) ? 'omarchy' : /angular/i.test(repo) ? 'angular' : 'github');
 
@@ -73,7 +73,7 @@ export class ProjectsComponent {
       links: [{ title: 'Website', link: 'https://testube.app' }, { title: 'GitHub', link: 'https://github.com/arbitrari/testube' }],
     },
     {
-      title: 'OmniGear', logo: 'omarchy',
+      title: 'OmniGear', logo: 'omnigear',
       description: 'Omarchy plugin to manage and configure peripherals across brands and product types.',
       tags: ['GPL-3.0', 'Omarchy', 'Linux'],
       links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/omarchy-omnigear' }],
@@ -175,6 +175,11 @@ export class ProjectsComponent {
       tags: ['Configura', 'CET Designer', 'CM'], links: [],
     },
   ];
+
+  /** Wordmark logos (wider than the 24-col icons) stack above their text. */
+  isWide(key: string): boolean {
+    return this.logo(key).some(row => row.reduce((n, c) => n + c.text.length, 0) > 30);
+  }
 
   readonly activeCount = this.personal.filter(p => !p.archived).length;
 

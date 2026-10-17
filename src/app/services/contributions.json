@@ -1,6 +1,6 @@
 {
   "author": "JaxonWright",
-  "fetchedAt": "2026-10-17T00:29:44.816Z",
+  "fetchedAt": "2026-10-17T00:35:02.746Z",
   "repos": [
     {
       "repo": "omacom/omarchy",
@@ -134,19 +134,34 @@
       "stars": 511
     },
     {
-      "repo": "rob2d/use-viewport-sizes",
-      "url": "https://github.com/rob2d/use-viewport-sizes",
-      "description": "tiny React hook which allows you to track visible window viewport size in your components w/ an optional debounce for updates for optimal rendering.",
+      "repo": "ypMrg/omarchy-bambu-companion",
+      "url": "https://github.com/ypMrg/omarchy-bambu-companion",
+      "description": "",
       "prs": [
         {
-          "number": 29,
-          "title": "Create LICENSE",
+          "number": 5,
+          "title": "fix(events): keep acknowledged HMS errors out of the bar count",
           "state": "merged",
-          "url": "https://github.com/rob2d/use-viewport-sizes/pull/29",
-          "date": "2023-04-25"
+          "url": "https://github.com/ypMrg/omarchy-bambu-companion/pull/5",
+          "date": "2026-09-23"
         }
       ],
-      "stars": 41
+      "stars": 3
+    },
+    {
+      "repo": "rawritude/omarchy-oled-guard",
+      "url": "https://github.com/rawritude/omarchy-oled-guard",
+      "description": "Omarchy shell plugin: attenuates the always-on status bar strip so it stops out-wearing the rest of your OLED panel",
+      "prs": [
+        {
+          "number": 3,
+          "title": "Read settings and bar hover through the scoped plugin API",
+          "state": "open",
+          "url": "https://github.com/rawritude/omarchy-oled-guard/pull/3",
+          "date": "2026-10-02"
+        }
+      ],
+      "stars": 3
     }
   ]
 }
