@@ -85,7 +85,7 @@ export class ProjectsComponent {
       links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/dotfiles' }],
     },
     {
-      title: 'Omarchy Midnight', logo: 'omarchy',
+      title: 'Omarchy Midnight', logo: 'midnight',
       description: 'A theme for Omarchy that gives you the inky black that your OLED monitor craves. It is also the default theme of this site.',
       tags: ['Omarchy', 'Theme'],
       links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/omarchy-midnight-theme' }],

@@ -49,7 +49,7 @@ export class TerminalService {
     { name: 'projects', aliases: ['ls', 'ls projects', 'cd projects'], description: 'Things I have built', route: '/projects', echo: 'ls -l ./projects' },
     { name: 'playlists', aliases: ['music', 'spotify', 'cd playlists', 'cd music'], description: 'My Spotify playlists', route: '/playlists', echo: 'spotify --list' },
     { name: 'contact', aliases: ['socials', 'email'], description: 'Ways to reach me', route: '/contact', echo: 'cat contact.txt' },
-    { name: 'pay', aliases: ['venmo', 'tip'], description: 'Send me money', route: '/contact', echo: 'cat contact.txt --pay' },
+    { name: 'pay', aliases: ['venmo', 'tip'], description: 'Send me money', hidden: true, route: '/contact', echo: 'cat contact.txt --pay' },
     { name: 'version', aliases: ['build-info', 'build', 'fastfetch', 'neofetch', 'uname -a'], description: 'Build + dependency info', route: '/build-info', echo: 'fastfetch' },
     { name: 'theme', description: 'List themes or switch: theme <name>', run: (a) => this.themeCommand(a) },
     { name: 'history', description: 'Show command history', run: () => this.history().map((h, i) => ({ text: `${String(i + 1).padStart(4)}  ${h}` })) },
@@ -78,7 +78,7 @@ export class TerminalService {
   }
 
   /** Commands shown as clickable shortcuts. */
-  readonly quickCommands = ['about', 'projects', 'playlists', 'contact', 'pay', 'version', 'help'];
+  readonly quickCommands = ['about', 'projects', 'playlists', 'contact', 'version', 'help'];
 
   completions(prefix: string): string[] {
     const p = prefix.trim().toLowerCase();

@@ -181,7 +181,7 @@ def icon_cells(img: Image.Image, cols: int, invert: bool = False):
 
 PROJECT_ICON_COLS = 24
 PROJECT_ICON_MAX_ROWS = 14
-PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96}  # wordmarks
+PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84}  # wordmarks
 PROJECT_ICONS = {
     # key: (path relative to repo root, invert minor/main tones)
     'omarchy': ('scripts/ascii-src/projects/omarchy.png', False),
@@ -195,7 +195,8 @@ PROJECT_ICONS = {
     'testube': ('src/assets/img/projects/testube.png', False),
     'omnigear': ('scripts/ascii-src/projects/omnigear.png', False),
     'sentinel': ('src/assets/img/projects/sentinel.png', False),
-    'passageway': ('scripts/ascii-src/projects/passageway-avatar.png', False),
+    'passageway': ('scripts/ascii-src/projects/passageway-launcher.png', False),
+    'midnight': ('scripts/ascii-src/projects/midnight-wordmark.png', False),
     'ciner8': ('scripts/ascii-src/projects/ciner8-icon.png', False),
     'reddit': ('scripts/ascii-src/projects/reddit.png', False),
     'tallyup': ('src/assets/img/apps/tallyup_green.png', False),
@@ -207,10 +208,43 @@ PROJECT_ICONS = {
 }
 
 
+def fill_outlined(img: Image.Image) -> Image.Image:
+    """Outlined lettering (white strokes on black) -> solid letters with counters kept.
+    Regions alternate outside / stroke / letter body / stroke / counter, so fill the
+    strokes and the black regions at nesting depth 2 (mod 4)."""
+    import numpy as np
+    from scipy import ndimage
+    a = np.array(img.getchannel('A')) > 127
+    a = np.pad(a, 1)
+    lw, nw = ndimage.label(a)
+    lb, nb = ndimage.label(~a)
+    lab = np.where(a, lw, lb + nw)
+    n = nw + nb
+    adj = [set() for _ in range(n + 1)]
+    for x, y in ((lab[:, :-1], lab[:, 1:]), (lab[:-1, :], lab[1:, :])):
+        m = x != y
+        for u, v in set(zip(x[m].tolist(), y[m].tolist())):
+            adj[u].add(v); adj[v].add(u)
+    depth = {int(lab[0, 0]): 0}
+    queue = [int(lab[0, 0])]
+    while queue:
+        u = queue.pop(0)
+        for v in adj[u]:
+            if v not in depth:
+                depth[v] = depth[u] + 1; queue.append(v)
+    keep = np.zeros(n + 1, bool)
+    for c, d in depth.items():
+        keep[c] = d % 4 != 0  # 1 outer stroke, 2 body, 3 inner stroke; 0 outside/counter
+    out = keep[lab][1:-1, 1:-1]
+    res = Image.new('RGBA', img.size, (0, 0, 0, 0))
+    res.putalpha(Image.fromarray((out * 255).astype('uint8')))
+    return res
+
+
 PROJECT_ICON_PREP = {
     # Wordmark-only sources: crop the mark / first letter, thicken hairlines.
-    'sentinel': lambda im: im.crop((92, 120, 330, 441)),
-    'passageway': lambda im: ImageOps.invert(im.convert('L')).filter(ImageFilter.MaxFilter(41)).point(lambda v: 255 if v > 60 else 0).convert('L'),
+    # Fill the outlined letters, then erode so neighbouring letters stay separate.
+    'midnight': lambda im: (lambda f: (f.putalpha(f.getchannel('A').filter(ImageFilter.MinFilter(13))), f)[1])(fill_outlined(im)),
 }
 
 
@@ -218,10 +252,7 @@ def project_icons() -> dict:
     out = {}
     for k, (p, inv) in PROJECT_ICONS.items():
         im = Image.open(ROOT / p)
-        if k == 'passageway':
-            m = PROJECT_ICON_PREP[k](im)
-            im = Image.new('RGBA', m.size, (0, 0, 0, 0)); im.putalpha(m)
-        elif k in PROJECT_ICON_PREP:
+        if k in PROJECT_ICON_PREP:
             im = PROJECT_ICON_PREP[k](im)
         out[k] = icon_cells(im, PROJECT_ICON_WIDE.get(k, PROJECT_ICON_COLS), inv)
     return out
