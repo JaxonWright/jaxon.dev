@@ -4,9 +4,10 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "node version.js && ng serve",
-    "build": "node version.js && node scripts/fetch-spotify-playlists.mjs && node scripts/fetch-contributions.mjs && ng build --configuration production --output-hashing=all",
+    "start": "node version.js && npm run data && ng serve",
+    "build": "node version.js && npm run data && ng build --configuration production --output-hashing=all",
     "build:ci": "npm run build && cp ./dist/index.html ./dist/404.html",
+    "data": "node scripts/fetch-spotify-playlists.mjs && node scripts/fetch-contributions.mjs",
     "fetch:playlists": "node scripts/fetch-spotify-playlists.mjs",
     "fetch:contributions": "node scripts/fetch-contributions.mjs",
     "test": "ng test",

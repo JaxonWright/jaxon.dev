@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 // Fetches Jaxon's pull requests to other people's repositories (GitHub search API)
-// and writes src/app/services/contributions.json for the /projects page.
-// Works unauthenticated; set GITHUB_TOKEN for higher rate limits. On any failure the
-// committed snapshot is left untouched so builds never break.
-import { writeFileSync } from 'fs';
+// and writes src/app/services/contributions.json (gitignored) for the /projects page.
+// Works unauthenticated; set GITHUB_TOKEN for higher rate limits. On any failure an
+// existing contributions.json is kept, or the committed contributions.snapshot.json is
+// copied in, so builds never break. Refresh the snapshot by copying a fresh fetch over it.
+import { copyFileSync, existsSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 const AUTHOR = 'JaxonWright';
@@ -31,6 +32,7 @@ const PLATFORM_TAGS = {
 /** How many of the repo's languages (by bytes, from the GitHub languages API) to tag. */
 const MAX_LANGS = 3;
 const OUT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
+const SNAPSHOT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.snapshot.json');
 
 const headers = { 'Accept': 'application/vnd.github+json', 'User-Agent': 'jaxon.dev-build' };
 if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
@@ -107,6 +109,8 @@ async function main() {
 }
 
 main().catch(err => {
-  console.warn(`⚠ Contributions fetch failed (${err.message}${err.cause ? `: ${err.cause.code || err.cause.message}` : ""}); using committed snapshot.`);
+  const fallback = existsSync(OUT) ? 'keeping the existing contributions.json' : 'using the committed snapshot';
+  if (!existsSync(OUT)) copyFileSync(SNAPSHOT, OUT);
+  console.warn(`⚠ Contributions fetch failed (${err.message}${err.cause ? `: ${err.cause.code || err.cause.message}` : ""}); ${fallback}.`);
   process.exit(0);
 });
