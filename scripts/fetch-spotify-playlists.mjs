@@ -2,6 +2,7 @@
 
 import { readFileSync, existsSync, writeFileSync } from 'fs';
 import { resolve, relative } from 'path';
+import { htmlToText } from './html-text.mjs';
 
 const envPath = resolve(import.meta.dirname, '..', '.env');
 if (existsSync(envPath)) {
@@ -79,8 +80,8 @@ async function main() {
 
   const playlists = allPlaylists.map(p => ({
     id: p.id,
-    name: p.name,
-    description: p.description || '',
+    name: htmlToText(p.name),
+    description: htmlToText(p.description || ''),
     url: p.external_urls.spotify,
     imageUrl: p.images?.[0]?.url || '',
     trackCount: p.tracks?.total || 0,

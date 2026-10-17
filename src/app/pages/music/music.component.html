@@ -34,10 +34,10 @@
             <img [src]="playlist.imageUrl" [alt]="playlist.name" loading="lazy">
           }
           <span class="meta">
-            <span class="name">{{ (i + 1).toString().padStart(2, '0') }} {{ decode(playlist.name) }}</span>
+            <span class="name">{{ (i + 1).toString().padStart(2, '0') }} {{ playlist.name }}</span>
             <span class="muted">{{ playlist.trackCount }} tracks &middot; open in spotify ↗</span>
             @if (playlist.description) {
-              <span class="desc">{{ decode(playlist.description) }}</span>
+              <span class="desc">{{ playlist.description }}</span>
             }
           </span>
         </a>

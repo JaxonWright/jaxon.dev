@@ -20,11 +20,6 @@ describe('groupPlaylists', () => {
 });
 
 describe('MusicComponent', () => {
-  it('decodes HTML entities from Spotify text', () => {
-    const page = TestBed.createComponent(MusicComponent).componentInstance;
-    expect(page.decode('Rock &amp; Roll &#x2F; Blues')).toBe('Rock & Roll / Blues');
-  });
-
   it('renders each group, or says none are loaded', async () => {
     const fixture = TestBed.createComponent(MusicComponent);
     await fixture.whenStable();

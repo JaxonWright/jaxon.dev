@@ -21,4 +21,5 @@ jobs:
       - run: node version.js
       - run: node scripts/fetch-spotify-playlists.mjs
       - run: npm test -- --watch=false
+      - run: npm run test:scripts
       - run: npx ng build --configuration production

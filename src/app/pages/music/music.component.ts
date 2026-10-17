@@ -30,12 +30,6 @@ export function groupPlaylists(all: SpotifyPlaylist[]): PlaylistGroups {
 export class MusicComponent {
   readonly groups = groupPlaylists(SPOTIFY_PLAYLISTS);
 
-  decode(value: string): string {
-    const el = document.createElement('span');
-    el.innerHTML = value;
-    return el.textContent || value;
-  }
-
   constructor(private title: Title) {
     this.title.setTitle('Jaxon Wright - Playlists');
   }

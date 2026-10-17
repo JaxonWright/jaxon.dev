@@ -10,6 +10,7 @@
     "fetch:playlists": "node scripts/fetch-spotify-playlists.mjs",
     "fetch:contributions": "node scripts/fetch-contributions.mjs",
     "test": "ng test",
+    "test:scripts": "node --test 'scripts/*.test.mjs'",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "inspect": "ng build --configuration production --output-hashing=all --source-map && npx source-map-explorer dist/**/*.js"
