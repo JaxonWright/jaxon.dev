@@ -1,10 +1,13 @@
-import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgTemplateOutlet } from '@angular/common';
-import { DateTime } from 'luxon';
 import { PHOTO_LEVELS, PHOTO_LEVEL_COUNT, VOLGISTICS_LOGO, CONFIGURA_LOGO, GVSU_LOGO } from '@services/ascii-art';
 
 export interface ArtRun { fg: string; bg: string; text: string; }
+
+/** Whole years since a local calendar date (month is 1-based). */
+const yearsSince = (year: number, month: number, day: number, now = new Date()): number =>
+  now.getFullYear() - year - (now.getMonth() + 1 < month || (now.getMonth() + 1 === month && now.getDate() < day) ? 1 : 0);
 
 @Component({
     selector: 'app-home',
@@ -13,8 +16,9 @@ export interface ArtRun { fg: string; bg: string; text: string; }
     styleUrls: ['./home.component.scss'],
     imports: [NgTemplateOutlet]
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-  yearsAtVolgistics : number;
+export class HomeComponent implements AfterViewInit {
+  readonly age = yearsSince(1995, 2, 25);
+  readonly yearsAtVolgistics = yearsSince(2017, 7, 13);
   /** ▀ half-block photo: top/bottom luminance per cell, tinted from near-black to the theme color. */
   readonly art = { volgistics: VOLGISTICS_LOGO, configura: CONFIGURA_LOGO, gvsu: GVSU_LOGO };
   readonly photoRows: ArtRun[][] = PHOTO_LEVELS.map(row => row.map(([fg, bg, n]) => ({
@@ -37,10 +41,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.titleServ.setTitle('Jaxon Wright - About');
   }
 
-  ngOnInit() {
-    this.yearsAtVolgistics = this.getYearsAtVolgistics();
-  }
-
   ngAfterViewInit() {
   }
 
@@ -55,20 +55,4 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (hrs >= 17 && hrs <= 24)
         return'Good Evening';
   }
-
-  getAge() : number {
-    let birthday = DateTime.fromISO('1995-02-25');
-    let now = DateTime.now();
-
-	  return Math.floor(now.diff(birthday, 'years').years);
-  }
-
-  getYearsAtVolgistics() : number {
-    let anniv = DateTime.fromISO('2017-07-13');
-    let now = DateTime.now();
-
-    return Math.floor(now.diff(anniv,'years').years);
-  }
-
-
 }
