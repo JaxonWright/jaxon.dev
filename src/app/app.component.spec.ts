@@ -108,6 +108,20 @@ describe('AppComponent', () => {
     expect(ghost().textContent).toBe('date█');
   });
 
+  it('keeps a whole emoji under the cursor', async () => {
+    const f = await render();
+    for (const emoji of ['🔥', '👨‍👩‍👧', '🇺🇸', 'é']) {
+      const text = `echo ${emoji}!`;
+      await type(f, text);
+      input(f).setSelectionRange(5, 5);
+      input(f).dispatchEvent(new KeyboardEvent('keyup'));
+      await f.whenStable();
+      const ghost = el(f).querySelector('.ghost')!;
+      expect(ghost.querySelector('.cursor')!.textContent, emoji).toBe(emoji);
+      expect(ghost.textContent, emoji).toBe(text);
+    }
+  });
+
   it('walks history with the arrow keys', async () => {
     const f = await render();
     await enter(f, 'date');

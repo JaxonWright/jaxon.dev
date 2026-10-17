@@ -11,6 +11,8 @@ import { LogoAnimator } from '@services/logo-animator';
 import { prefersReducedMotion } from '@services/motion';
 
 const BOOT_KEY = 'jxn-terminal-booted';
+/** User-perceived characters, so an emoji or flag under the cursor stays whole. */
+const GRAPHEMES = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
 
 
 @Component({
@@ -43,8 +45,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const text = this.input();
     const start = Math.min(this.caret().start, text.length);
     const end = Math.min(this.caret().end, text.length);
+    const under = start < text.length ? GRAPHEMES.segment(text).containing(start)!.segment : '';
     return start === end
-      ? { before: text.slice(0, start), selected: '', under: text[start] ?? '', after: text.slice(start + 1) }
+      ? { before: text.slice(0, start), selected: '', under, after: text.slice(start + under.length) }
       : { before: text.slice(0, start), selected: text.slice(start, end), under: '', after: text.slice(end) };
   });
   readonly helpOpen = signal(false);
