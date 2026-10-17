@@ -77,7 +77,7 @@ export class ProjectsComponent {
     {
       title: 'OmniGear', logo: 'omnigear',
       description: 'Omarchy plugin to manage and configure peripherals across brands and product types.',
-      tags: ['Go', 'QML'],
+      tags: ['GPL-3.0', 'Omarchy', 'Go', 'QML'],
       links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/omarchy-omnigear' }],
     },
     {
