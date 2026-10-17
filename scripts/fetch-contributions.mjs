@@ -49,6 +49,17 @@ async function get(url, tries = 3) {
   }
 }
 
+/** False when every file the PR changes is docs. Reads further pages only while they stay docs-only (GitHub lists up to 3,000 files). */
+async function touchesCode(repo, number) {
+  for (let page = 1; page <= 30; page++) {
+    const files = await get(`https://api.github.com/repos/${repo}/pulls/${number}/files?per_page=100&page=${page}`);
+    if (page === 1 && !files.length) return true;
+    if (!files.every(f => DOCS_ONLY(f.filename))) return true;
+    if (files.length < 100) return false;
+  }
+  return false;
+}
+
 async function main() {
   const items = [];
   for (let page = 1; page <= 5; page++) {
@@ -81,8 +92,7 @@ async function main() {
   for (const r of [...repos.values()]) {
     const kept = [];
     for (const pr of r.prs) {
-      const files = await get(`https://api.github.com/repos/${r.repo}/pulls/${pr.number}/files?per_page=100`);
-      if (!files.length || !files.every(f => DOCS_ONLY(f.filename))) kept.push(pr);
+      if (await touchesCode(r.repo, pr.number)) kept.push(pr);
     }
     r.prs = kept;
     // Only repos with at least one merged PR (their open/closed PRs stay listed).
