@@ -20,7 +20,7 @@ export interface Contribution { repo: string; url: string; description: string; 
 export interface Cell { text: string; fg: string; bg: string; }
 
 // Minor tone is the page background, so light details (the Volgistics V, testube's tt) read as cut-outs on every theme.
-const TONES = ['', 'var(--t-primary)', 'var(--t-bg)'];
+const TONES = ['', 'var(--t-primary)', 'var(--t-bg)', 'var(--t-text)'];
 
 /** Logo for a contributed-to repo; anything unknown (a new repo picked up at build time) gets the GitHub mark. */
 const CONTRIB_LOGOS: Record<string, string> = {
