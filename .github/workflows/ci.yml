@@ -19,9 +19,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: node version.js
-      - run: npm run data
+      - run: npm test -- --watch=false
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - run: npm test -- --watch=false
       - run: npm run test:scripts
       - run: npx ng build --configuration production

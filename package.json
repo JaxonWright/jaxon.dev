@@ -10,6 +10,7 @@
     "data": "node scripts/fetch-spotify-playlists.mjs && node scripts/fetch-contributions.mjs",
     "fetch:playlists": "node scripts/fetch-spotify-playlists.mjs",
     "fetch:contributions": "node scripts/fetch-contributions.mjs",
+    "pretest": "npm run data",
     "test": "ng test",
     "test:scripts": "node --test 'scripts/*.test.mjs'",
     "lint": "ng lint",
