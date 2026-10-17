@@ -96,7 +96,7 @@ export class ProjectsComponent {
       title: 'Digalog', logo: 'wearos',
       description: 'A Wear OS watch face that combines digital and analog in one.',
       tags: ['GPL-3.0', 'Wear OS'],
-      links: [], note: 'source not public yet',
+      links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/digalog' }],
     },
     {
       title: 'sentinel', logo: 'sentinel', archived: true,
