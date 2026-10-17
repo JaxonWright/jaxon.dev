@@ -33,7 +33,7 @@
   <section class="block with-art" [class.archived]="p.archived" [class.wide]="isWide(p.logo)">
     <ng-container *ngTemplateOutlet="art; context: { $implicit: p.logo, label: p.title }"></ng-container>
     <div>
-      <h3>{{ p.title }}@if (p.archived) { <span class="tag-archived">ARCHIVED</span>}</h3>
+      <h3>{{ p.title }}@if (p.archived) { <span class="tag-archived">ARCHIVED</span>}@if (p.unreleased) { <span class="tag-unreleased">UNRELEASED</span>}</h3>
       <p class="tags">@for (t of p.tags; track $index) {[{{ t }}] }</p>
       <p>{{ p.description }}</p>
       @if (p.links.length || p.note) {

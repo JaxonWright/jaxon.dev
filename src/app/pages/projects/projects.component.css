@@ -9,6 +9,7 @@
 .st.open { color: var(--t-secondary); }
 .st.closed { color: var(--t-accent); }
 .tag-archived { margin-left: 1ch; padding: 0 0.6ch; border: 1px solid var(--t-accent); color: var(--t-accent); font-size: 0.85em; letter-spacing: 0.05em; }
+.tag-unreleased { margin-left: 1ch; padding: 0 0.6ch; border: 1px dashed var(--t-primary); color: var(--t-primary); font-size: 0.85em; letter-spacing: 0.05em; }
 .archived .proj-logo { opacity: 0.55; }
 .with-art.wide { flex-direction: column; gap: 10px; }
 /* The text block sits under a wordmark, so drop the art-aligned top trim. */

@@ -12,6 +12,8 @@ export interface Project {
   tags: string[];
   links: Link[];
   archived?: boolean;
+  /** Built but not yet shipped. */
+  unreleased?: boolean;
   /** Repo is private: no public link. */
   note?: string;
 }
@@ -75,7 +77,7 @@ export class ProjectsComponent {
     {
       title: 'OmniGear', logo: 'omnigear',
       description: 'Omarchy plugin to manage and configure peripherals across brands and product types.',
-      tags: ['GPL-3.0', 'Omarchy', 'Linux'],
+      tags: ['Go', 'QML'],
       links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/omarchy-omnigear' }],
     },
     {
@@ -167,7 +169,12 @@ export class ProjectsComponent {
     {
       title: 'Volgistics Help System', logo: 'volgistics',
       description: 'The help system for Volgistics.',
-      tags: ['Volgistics'], links: [],
+      tags: ['Python', 'MkDocs Material'], links: [],
+    },
+    {
+      title: 'Volgistics Admin', logo: 'volgistics', unreleased: true,
+      description: 'A completely rewritten, modern administrative experience for the Volgistics platform.',
+      tags: ['Angular'], links: [],
     },
     {
       title: 'Custom Shape Tool', logo: 'configura',
