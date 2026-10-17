@@ -41,7 +41,6 @@ export class TerminalService {
   /** Command echoed above the currently routed page. */
   readonly routeEcho = signal<string>('');
   readonly theme = signal<TerminalTheme>(TERMINAL_THEMES.find(t => t.name === DEFAULT_THEME)!);
-  readonly helpText = signal<string>('');
 
   readonly commands: TerminalCommand[] = [
     { name: 'help', aliases: ['?', 'man'], description: 'List available commands', run: () => this.helpLines() },

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgTemplateOutlet } from '@angular/common';
 import { PHOTO_LEVELS, PHOTO_LEVEL_COUNT, VOLGISTICS_LOGO, CONFIGURA_LOGO, GVSU_LOGO } from '@services/ascii-art';
@@ -16,7 +16,7 @@ const yearsSince = (year: number, month: number, day: number, now = new Date()):
     styleUrls: ['./home.component.scss'],
     imports: [NgTemplateOutlet]
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent {
   readonly age = yearsSince(1995, 2, 25);
   readonly yearsAtVolgistics = yearsSince(2017, 7, 13);
   /** ▀ half-block photo: top/bottom luminance per cell, tinted from near-black to the theme color. */
@@ -39,9 +39,6 @@ export class HomeComponent implements AfterViewInit {
 
   constructor(private titleServ : Title) { 
     this.titleServ.setTitle('Jaxon Wright - About');
-  }
-
-  ngAfterViewInit() {
   }
 
   getTimeGreeting() : string {

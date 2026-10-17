@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private historyIndex = -1;
   /** Element id the current route opens at (route data `anchor`); empty for the top of the page. */
   private anchor = '';
-  private timers: any[] = [];
+  private timers: ReturnType<typeof setTimeout>[] = [];
   private sub?: Subscription;
 
   constructor(public term: TerminalService, private router: Router, private host: ElementRef<HTMLElement>) {
@@ -98,6 +98,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.logoAnim.destroy();
     this.sub?.unsubscribe();
     this.timers.forEach(t => clearTimeout(t));
+    clearInterval(this.typeTimer);
   }
 
   private runBoot(): void {
@@ -124,7 +125,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.scrollSoon(true);
   }
 
-  private typeTimer: any;
+  private typeTimer?: ReturnType<typeof setInterval>;
   private typeEcho(text: string): void {
     clearInterval(this.typeTimer);
     if (!text) { this.typed.set(''); return; }
@@ -167,7 +168,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const options = this.term.completions(this.input());
       if (options.length) {
         event.preventDefault();
-        if (options.length === 1) this.input.set(options[0] + (options[0].startsWith('theme ') ? '' : ''));
+        if (options.length === 1) this.input.set(options[0]);
         else this.term.entries.update(e => [...e, { command: this.input(), lines: [{ text: options.join('   '), kind: 'muted' }] }]);
       }
     } else if (event.key === 'l' && event.ctrlKey) {
@@ -259,10 +260,6 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('document:pointerdown', ['$event'])
   onDocPointer(e: PointerEvent): void {
     if (this.themeOpen() && !(e.target as HTMLElement).closest?.('.theme-pick')) this.closeThemes();
-  }
-
-  setHelp(text: string): void {
-    this.term.helpText.set(text);
   }
 
   private focusInput(preventScroll = true): void {
