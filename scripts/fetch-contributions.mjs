@@ -18,6 +18,18 @@ const ALLOW_REPOS = ['omacom/omarchy', 'ErikBurdett/omarchy-wavebar', 'Dymstro/n
 const allowed = repo => ALLOW_REPOS.some(a => a.toLowerCase() === repo.toLowerCase());
 /** A PR whose changed files all match this (README, *.md, docs/, LICENSE) is docs-only and skipped. */
 const DOCS_ONLY = f => /(^|\/)(LICEN[CS]E|COPYING)[^/]*$/i.test(f) || /(^|\/)README[^/]*$/i.test(f) || /\.md$/i.test(f) || /^docs?\//i.test(f) || /\/docs?\//i.test(f);
+/** Platform/framework tags shown before each repo's top languages (GitHub can't infer these). */
+const PLATFORM_TAGS = {
+  'omacom/omarchy': ['Omarchy', 'Linux'],
+  'mattlewis92/angular-calendar': ['Angular'],
+  'ErikBurdett/omarchy-wavebar': ['Omarchy'],
+  'Dymstro/nova-chatmix-linux': ['Linux', 'SteelSeries'],
+  'Cordobo/angularx-qrcode': ['Angular'],
+  'ypMrg/omarchy-bambu-companion': ['Omarchy', 'Bambu Lab'],
+  'rawritude/omarchy-oled-guard': ['Omarchy'],
+};
+/** How many of the repo's languages (by bytes, from the GitHub languages API) to tag. */
+const MAX_LANGS = 3;
 const OUT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
 
 const headers = { 'Accept': 'application/vnd.github+json', 'User-Agent': 'jaxon.dev-build' };
@@ -59,7 +71,11 @@ async function main() {
     const info = await get(`https://api.github.com/repos/${r.repo}`);
     r.description = info.description || '';
     r.stars = info.stargazers_count;
-    if (r.stars < MIN_STARS && !allowed(r.repo)) repos.delete(r.repo);
+    if (r.stars < MIN_STARS && !allowed(r.repo)) { repos.delete(r.repo); continue; }
+    const langs = await get(`https://api.github.com/repos/${r.repo}/languages`);
+    r.languages = Object.entries(langs).sort((a, b) => b[1] - a[1]).slice(0, MAX_LANGS).map(([l]) => l);
+    const platform = Object.entries(PLATFORM_TAGS).find(([k]) => k.toLowerCase() === r.repo.toLowerCase())?.[1] ?? [];
+    r.tags = [...platform, ...r.languages.filter(l => !platform.includes(l))];
   }
   // Docs-only filter: drop PRs that only touch README / *.md / docs, then empty repos.
   for (const r of [...repos.values()]) {

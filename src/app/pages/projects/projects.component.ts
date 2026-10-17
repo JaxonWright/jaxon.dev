@@ -18,7 +18,7 @@ export interface Project {
   note?: string;
 }
 export interface PullRequest { number: number; title: string; state: 'merged' | 'open' | 'closed'; url: string; date: string; }
-export interface Contribution { repo: string; url: string; description: string; prs: PullRequest[]; }
+export interface Contribution { repo: string; url: string; description: string; prs: PullRequest[]; languages?: string[]; tags?: string[]; }
 export interface Cell { text: string; fg: string; bg: string; }
 
 // Minor tone is the page background, so light details (the Volgistics V, testube's tt) read as cut-outs on every theme.

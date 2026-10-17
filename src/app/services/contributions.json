@@ -1,6 +1,6 @@
 {
   "author": "JaxonWright",
-  "fetchedAt": "2026-10-17T00:35:02.746Z",
+  "fetchedAt": "2026-10-17T00:58:15.247Z",
   "repos": [
     {
       "repo": "omacom/omarchy",
@@ -43,7 +43,19 @@
           "date": "2025-07-26"
         }
       ],
-      "stars": 44958
+      "stars": 44959,
+      "languages": [
+        "Shell",
+        "QML",
+        "Python"
+      ],
+      "tags": [
+        "Omarchy",
+        "Linux",
+        "Shell",
+        "QML",
+        "Python"
+      ]
     },
     {
       "repo": "mattlewis92/angular-calendar",
@@ -65,7 +77,18 @@
           "date": "2019-07-13"
         }
       ],
-      "stars": 2813
+      "stars": 2813,
+      "languages": [
+        "TypeScript",
+        "HTML",
+        "SCSS"
+      ],
+      "tags": [
+        "Angular",
+        "TypeScript",
+        "HTML",
+        "SCSS"
+      ]
     },
     {
       "repo": "ErikBurdett/omarchy-wavebar",
@@ -94,7 +117,18 @@
           "date": "2026-09-09"
         }
       ],
-      "stars": 4
+      "stars": 4,
+      "languages": [
+        "QML",
+        "JavaScript",
+        "Python"
+      ],
+      "tags": [
+        "Omarchy",
+        "QML",
+        "JavaScript",
+        "Python"
+      ]
     },
     {
       "repo": "Dymstro/nova-chatmix-linux",
@@ -116,7 +150,17 @@
           "date": "2025-01-02"
         }
       ],
-      "stars": 51
+      "stars": 51,
+      "languages": [
+        "Python",
+        "Shell"
+      ],
+      "tags": [
+        "Linux",
+        "SteelSeries",
+        "Python",
+        "Shell"
+      ]
     },
     {
       "repo": "Cordobo/angularx-qrcode",
@@ -131,7 +175,18 @@
           "date": "2025-06-04"
         }
       ],
-      "stars": 511
+      "stars": 511,
+      "languages": [
+        "TypeScript",
+        "HTML",
+        "JavaScript"
+      ],
+      "tags": [
+        "Angular",
+        "TypeScript",
+        "HTML",
+        "JavaScript"
+      ]
     },
     {
       "repo": "ypMrg/omarchy-bambu-companion",
@@ -146,7 +201,19 @@
           "date": "2026-09-23"
         }
       ],
-      "stars": 3
+      "stars": 3,
+      "languages": [
+        "Ruby",
+        "QML",
+        "C++"
+      ],
+      "tags": [
+        "Omarchy",
+        "Bambu Lab",
+        "Ruby",
+        "QML",
+        "C++"
+      ]
     },
     {
       "repo": "rawritude/omarchy-oled-guard",
@@ -161,7 +228,16 @@
           "date": "2026-10-02"
         }
       ],
-      "stars": 3
+      "stars": 3,
+      "languages": [
+        "QML",
+        "JavaScript"
+      ],
+      "tags": [
+        "Omarchy",
+        "QML",
+        "JavaScript"
+      ]
     }
   ]
 }
