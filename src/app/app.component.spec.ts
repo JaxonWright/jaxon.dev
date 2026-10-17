@@ -56,6 +56,23 @@ describe('AppComponent', () => {
     expect(sessionStorage.getItem('jxn-terminal-booted')).toBe('1');
   });
 
+  it('lets browser shortcuts through while skipping the boot sequence', async () => {
+    for (const init of [{ key: 'r', ctrlKey: true }, { key: 'F5' }, { key: 'l', ctrlKey: true }, { key: 'r', metaKey: true }, { key: 'ArrowLeft', altKey: true }]) {
+      TestBed.resetTestingModule();
+      const f = await render(false);
+      const event = await key(f, document.body, init);
+      expect(event.defaultPrevented, JSON.stringify(init)).toBe(false);
+      expect(input(f), JSON.stringify(init)).not.toBeNull();
+    }
+  });
+
+  it('swallows plain keys that skip the boot sequence', async () => {
+    const f = await render(false);
+    const event = await key(f, document.body, { key: ' ' });
+    expect(event.defaultPrevented).toBe(true);
+    expect(input(f)).not.toBeNull();
+  });
+
   it('skips the boot sequence later in the same session', async () => {
     const f = await render();
     expect(el(f).querySelector('.boot')).toBeNull();

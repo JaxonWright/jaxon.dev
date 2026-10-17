@@ -184,7 +184,12 @@ export class AppComponent implements OnInit, OnDestroy {
   /** Any key while booting skips the boot; clicking the screen focuses the prompt. */
   @HostListener('document:keydown', ['$event'])
   onDocKey(event: KeyboardEvent): void {
-    if (this.booting()) { this.finishBoot(); event.preventDefault(); return; }
+    if (this.booting()) {
+      this.finishBoot();
+      // Leave browser shortcuts (Ctrl+R, F5, Alt+Left...) working.
+      if (!event.ctrlKey && !event.metaKey && !event.altKey && !/^F\d+$/.test(event.key)) event.preventDefault();
+      return;
+    }
     const target = event.target as HTMLElement;
     if (this.themeOpen() || target?.closest?.('.statusbar')) return;
     if (target?.tagName !== 'INPUT' && event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
