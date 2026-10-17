@@ -178,6 +178,17 @@ describe('AppComponent', () => {
 
   describe('theme picker', () => {
     const css = (name: string) => document.documentElement.style.getPropertyValue(name);
+    const meta = (name: string) => document.querySelector(`meta[name="${name}"]`)?.getAttribute('content');
+
+    beforeAll(() => {
+      for (const [name, content] of [['color-scheme', 'dark'], ['theme-color', '#000']]) {
+        if (document.querySelector(`meta[name="${name}"]`)) continue;
+        const m = document.createElement('meta');
+        m.name = name;
+        m.content = content;
+        document.head.append(m);
+      }
+    });
     const button = (f: ComponentFixture<AppComponent>) => el(f).querySelector<HTMLButtonElement>('.theme-btn')!;
 
     it('applies the current theme to the page', async () => {
@@ -187,6 +198,10 @@ describe('AppComponent', () => {
       TestBed.inject(TerminalService).execute('theme flexoki-light');
       await vi.waitFor(() => expect(css('--t-bg')).toBe('#FFFCF0'));
       expect(document.documentElement.classList.contains('t-light')).toBe(true);
+      expect(meta('color-scheme')).toBe('light');
+      expect(meta('theme-color')).toBe('#FFFCF0');
+      TestBed.inject(TerminalService).execute('theme nord');
+      await vi.waitFor(() => expect(meta('color-scheme')).toBe('dark'));
     });
 
     it('picks a theme from the keyboard', async () => {

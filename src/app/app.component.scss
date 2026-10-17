@@ -19,7 +19,6 @@
   flex: 1;
   overflow-y: auto;
   padding: 16px 16px 24px;
-  scrollbar-color: var(--t-accent) transparent;
 }
 
 .banner { margin-bottom: 18px; }
@@ -119,7 +118,7 @@ button.line:hover, a.line:hover, button.line:focus-visible { background: var(--t
 .theme-list {
   position: absolute; bottom: calc(100% + 6px); right: 0; z-index: 50;
   margin: 0; padding: 4px 0; list-style: none; min-width: 190px;
-  max-height: min(60vh, 420px); overflow-y: auto; overscroll-behavior: contain;
+  max-height: min(60vh, 420px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
   background: var(--t-bg); border: 1px solid var(--t-text); outline: none;
   font-size: 12px; text-transform: lowercase;
   box-shadow: 0 -6px 24px rgba(0,0,0,.4);

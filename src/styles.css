@@ -15,33 +15,12 @@ p {
 
 button:focus{outline:none;}
 
-/***
- * Scrollbar 
- ***/
-
-/* width */
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-
-::-webkit-scrollbar-track {
-  background: #262626;
-}
-
-/* Handle */
-
-::-webkit-scrollbar-thumb {
-  background: #d3d3d3;
-}
-
-/* Handle on hover */
-
-::-webkit-scrollbar-thumb:hover {
-  background: #fff;
-}
+/* Scrollbars follow the theme: scrollbar-color is inherited, and the ::-webkit rules cover browsers without it. */
+:root { scrollbar-color: var(--t-accent) transparent; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--t-accent); }
+::-webkit-scrollbar-thumb:hover { background: var(--t-text); }
 
 /* ---- Terminal experiment ---- */
 /* JetBrains Mono Nerd Font v3.5.1 (ryanoasis/nerd-fonts) without the icons (scripts/subset-fonts.py), SIL OFL 1.1: assets/fonts/JetBrainsMonoNerdFont-OFL.txt */

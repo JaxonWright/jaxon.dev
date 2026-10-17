@@ -64,6 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
       s.setProperty('--t-photo-hi', t.name === 'midnight' ? '#98FFC8' : (dark ? t.bright : t.background));
       document.documentElement.classList.toggle('t-light', !dark);
       document.querySelector('meta[name="theme-color"]')?.setAttribute('content', t.background);
+      document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', t.mode);
     });
     // Re-type the echoed command whenever it changes.
     effect(() => this.typeEcho(this.term.routeEcho()));
