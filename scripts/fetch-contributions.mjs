@@ -3,12 +3,18 @@
 // and writes src/app/services/contributions.json for the /projects page.
 // Works unauthenticated; set GITHUB_TOKEN for higher rate limits. On any failure the
 // committed snapshot is left untouched so builds never break.
-import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 const AUTHOR = 'JaxonWright';
 /** His own account and the orgs he leads/works for (shown elsewhere on the page). */
 const EXCLUDE_OWNERS = ['jaxonwright', 'arbitrari', 'dunrite', 'volgistics'];
+/** Skip small/personal repos... */
+const MIN_STARS = 25;
+/** ...except ones Jaxon explicitly wants listed regardless of stars. */
+const ALLOW_REPOS = ['omacom/omarchy', 'ErikBurdett/omarchy-wavebar', 'Dymstro/nova-chatmix-linux'];
+/** A PR whose changed files all match this is docs-only and skipped. */
+const DOCS_ONLY = f => /(^|\/)README[^/]*$/i.test(f) || /\.md$/i.test(f) || /^docs?\//i.test(f) || /\/docs?\//i.test(f);
 const OUT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
 
 const headers = { 'Accept': 'application/vnd.github+json', 'User-Agent': 'jaxon.dev-build' };
@@ -35,11 +41,23 @@ async function main() {
     if (!repos.has(full)) repos.set(full, { repo: full, url: `https://github.com/${full}`, description: '', prs: [] });
     repos.get(full).prs.push({ number: it.number, title: it.title, state, url: it.html_url, date: (it.pull_request?.merged_at || it.created_at).slice(0, 10) });
   }
-  // Descriptions are nice-to-have; keep the previous one if the lookup is rate limited.
-  const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : { repos: [] };
-  for (const r of repos.values()) {
-    try { r.description = (await get(`https://api.github.com/repos/${r.repo}`)).description || ''; }
-    catch { r.description = prev.repos.find(p => p.repo === r.repo)?.description || ''; }
+  // Star filter (repo lookups also give the description). Fails the whole fetch on
+  // error so a rate-limited run never publishes an unfiltered list.
+  for (const r of [...repos.values()]) {
+    const info = await get(`https://api.github.com/repos/${r.repo}`);
+    r.description = info.description || '';
+    r.stars = info.stargazers_count;
+    if (r.stars < MIN_STARS && !ALLOW_REPOS.some(a => a.toLowerCase() === r.repo.toLowerCase())) repos.delete(r.repo);
+  }
+  // Docs-only filter: drop PRs that only touch README / *.md / docs, then empty repos.
+  for (const r of [...repos.values()]) {
+    const kept = [];
+    for (const pr of r.prs) {
+      const files = await get(`https://api.github.com/repos/${r.repo}/pulls/${pr.number}/files?per_page=100`);
+      if (!files.length || !files.every(f => DOCS_ONLY(f.filename))) kept.push(pr);
+    }
+    r.prs = kept;
+    if (!kept.length) repos.delete(r.repo);
   }
   const list = [...repos.values()].sort((a, b) =>
     b.prs.filter(p => p.state === 'merged').length - a.prs.filter(p => p.state === 'merged').length

@@ -25,11 +25,7 @@ const TONES = ['', 'var(--t-primary)', 'var(--t-bg)'];
 /** Logo for a contributed-to repo; anything unknown (a new repo picked up at build time) gets the GitHub mark. */
 const CONTRIB_LOGOS: Record<string, string> = {
   'mattlewis92/angular-calendar': 'angular', 'AhsanAyaz/ngx-device-detector': 'angular', 'Cordobo/angularx-qrcode': 'angular',
-  'tomasbulva/angular2-jwt-simple': 'angular', 'froala/angular-froala-wysiwyg': 'angular',
-  'rob2d/use-viewport-sizes': 'react', 'timdorr/tesla-api': 'tesla', 'rjoo/teslacam-manager': 'tesla',
-  'Dymstro/nova-chatmix-linux': 'steelseries', 'Tustin/PlayStationDiscord': 'playstation',
-  'SteamDeckHomebrew/decky-plugin-store': 'steamdeck', 'causefx/Organizr': 'organizr', 'amillman/charcoal': 'messenger',
-  'JoshuaJoppie/HelloWorld': 'html5', 'vandents/scottv.dev': 'scottv',
+  'rob2d/use-viewport-sizes': 'react', 'Dymstro/nova-chatmix-linux': 'steelseries', 'causefx/Organizr': 'organizr',
 };
 const contribLogo = (repo: string) => CONTRIB_LOGOS[repo] ?? (/omarchy/i.test(repo) ? 'omarchy' : /angular/i.test(repo) ? 'angular' : 'github');
 

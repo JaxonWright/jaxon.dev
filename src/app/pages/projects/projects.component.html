@@ -1,6 +1,6 @@
 <article class="t-page projects">
   <h2>Open source contributions</h2>
-  <p class="muted">{{ contributions.length }} repos &middot; {{ prCount }} pull requests &middot; fetched from GitHub at build time</p>
+  <p class="muted">{{ contributions.length }} repos &middot; {{ prCount }} pull requests</p>
   @for (c of contributions; track c.repo) {
     <section class="block with-art">
       <ng-container *ngTemplateOutlet="art; context: { $implicit: c.logo, label: c.repo }"></ng-container>

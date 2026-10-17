@@ -1,6 +1,6 @@
 {
   "author": "JaxonWright",
-  "fetchedAt": "2026-10-16T23:58:18.248Z",
+  "fetchedAt": "2026-10-17T00:23:14.943Z",
   "repos": [
     {
       "repo": "omacom/omarchy",
@@ -42,7 +42,8 @@
           "url": "https://github.com/omacom/omarchy/pull/351",
           "date": "2025-07-26"
         }
-      ]
+      ],
+      "stars": 44958
     },
     {
       "repo": "mattlewis92/angular-calendar",
@@ -63,49 +64,8 @@
           "url": "https://github.com/mattlewis92/angular-calendar/pull/1033",
           "date": "2019-07-13"
         }
-      ]
-    },
-    {
-      "repo": "rob2d/use-viewport-sizes",
-      "url": "https://github.com/rob2d/use-viewport-sizes",
-      "description": "tiny React hook which allows you to track visible window viewport size in your components w/ an optional debounce for updates for optimal rendering.",
-      "prs": [
-        {
-          "number": 29,
-          "title": "Create LICENSE",
-          "state": "merged",
-          "url": "https://github.com/rob2d/use-viewport-sizes/pull/29",
-          "date": "2023-04-25"
-        },
-        {
-          "number": 28,
-          "title": "fix badge links in README",
-          "state": "merged",
-          "url": "https://github.com/rob2d/use-viewport-sizes/pull/28",
-          "date": "2023-04-25"
-        }
-      ]
-    },
-    {
-      "repo": "timdorr/tesla-api",
-      "url": "https://github.com/timdorr/tesla-api",
-      "description": "🚘 A Ruby gem and unofficial documentation of Tesla's JSON API for the Model S, 3, X, and Y.",
-      "prs": [
-        {
-          "number": 130,
-          "title": "Added 18\" Aero Wheels to Option Codes",
-          "state": "merged",
-          "url": "https://github.com/timdorr/tesla-api/pull/130",
-          "date": "2019-04-10"
-        },
-        {
-          "number": 129,
-          "title": "Added Autopilot Hardware 3.0 (APH4) to Option Codes",
-          "state": "merged",
-          "url": "https://github.com/timdorr/tesla-api/pull/129",
-          "date": "2019-04-09"
-        }
-      ]
+      ],
+      "stars": 2813
     },
     {
       "repo": "ErikBurdett/omarchy-wavebar",
@@ -133,28 +93,8 @@
           "url": "https://github.com/ErikBurdett/omarchy-wavebar/pull/1",
           "date": "2026-09-09"
         }
-      ]
-    },
-    {
-      "repo": "AhsanAyaz/ngx-device-detector",
-      "url": "https://github.com/AhsanAyaz/ngx-device-detector",
-      "description": "An Angular v7+ library to detect the device, OS, and browser details. ",
-      "prs": [
-        {
-          "number": 290,
-          "title": "Update to Support Angular 18",
-          "state": "closed",
-          "url": "https://github.com/AhsanAyaz/ngx-device-detector/pull/290",
-          "date": "2024-05-31"
-        },
-        {
-          "number": 165,
-          "title": "Update README to reflect that library no longer supports Angular 5",
-          "state": "merged",
-          "url": "https://github.com/AhsanAyaz/ngx-device-detector/pull/165",
-          "date": "2020-08-27"
-        }
-      ]
+      ],
+      "stars": 4
     },
     {
       "repo": "Dymstro/nova-chatmix-linux",
@@ -175,7 +115,8 @@
           "url": "https://github.com/Dymstro/nova-chatmix-linux/pull/4",
           "date": "2025-01-02"
         }
-      ]
+      ],
+      "stars": 51
     },
     {
       "repo": "aorumbayev/awesome-omarchy",
@@ -189,21 +130,8 @@
           "url": "https://github.com/aorumbayev/awesome-omarchy/pull/4",
           "date": "2025-08-22"
         }
-      ]
-    },
-    {
-      "repo": "bjarneo/omarchy-snow-theme",
-      "url": "https://github.com/bjarneo/omarchy-snow-theme",
-      "description": "This is the Snow Theme for Omarchy.org, providing a cohesive and visually appealing configuration set for your Linux desktop environment.",
-      "prs": [
-        {
-          "number": 1,
-          "title": "Update README.md with correct install command",
-          "state": "merged",
-          "url": "https://github.com/bjarneo/omarchy-snow-theme/pull/1",
-          "date": "2025-07-26"
-        }
-      ]
+      ],
+      "stars": 661
     },
     {
       "repo": "causefx/Organizr",
@@ -217,7 +145,8 @@
           "url": "https://github.com/causefx/Organizr/pull/899",
           "date": "2018-06-25"
         }
-      ]
+      ],
+      "stars": 5818
     },
     {
       "repo": "Cordobo/angularx-qrcode",
@@ -231,147 +160,38 @@
           "url": "https://github.com/Cordobo/angularx-qrcode/pull/274",
           "date": "2025-06-04"
         }
-      ]
+      ],
+      "stars": 511
     },
     {
-      "repo": "JoshuaJoppie/HelloWorld",
-      "url": "https://github.com/JoshuaJoppie/HelloWorld",
-      "description": "Testing github for the first time.",
+      "repo": "rob2d/use-viewport-sizes",
+      "url": "https://github.com/rob2d/use-viewport-sizes",
+      "description": "tiny React hook which allows you to track visible window viewport size in your components w/ an optional debounce for updates for optimal rendering.",
       "prs": [
         {
-          "number": 1,
-          "title": "Updated index.html to follow HTML conventions",
+          "number": 29,
+          "title": "Create LICENSE",
           "state": "merged",
-          "url": "https://github.com/JoshuaJoppie/HelloWorld/pull/1",
-          "date": "2018-06-01"
+          "url": "https://github.com/rob2d/use-viewport-sizes/pull/29",
+          "date": "2023-04-25"
         }
-      ]
+      ],
+      "stars": 41
     },
     {
-      "repo": "rjoo/teslacam-manager",
-      "url": "https://github.com/rjoo/teslacam-manager",
-      "description": "Electron based software to manage TeslaCam dashcam, saved and sentry mode recordings",
+      "repo": "AhsanAyaz/ngx-device-detector",
+      "url": "https://github.com/AhsanAyaz/ngx-device-detector",
+      "description": "An Angular v7+ library to detect the device, OS, and browser details. ",
       "prs": [
         {
-          "number": 3,
-          "title": "Fix typo in README",
-          "state": "merged",
-          "url": "https://github.com/rjoo/teslacam-manager/pull/3",
-          "date": "2019-08-04"
-        }
-      ]
-    },
-    {
-      "repo": "tomasbulva/angular2-jwt-simple",
-      "url": "https://github.com/tomasbulva/angular2-jwt-simple",
-      "description": "JWT(JSON Web Token) encode and decode module for node.js",
-      "prs": [
-        {
-          "number": 1,
-          "title": "Support for Angular 6",
-          "state": "merged",
-          "url": "https://github.com/tomasbulva/angular2-jwt-simple/pull/1",
-          "date": "2018-05-10"
-        }
-      ]
-    },
-    {
-      "repo": "Tustin/PlayStationDiscord",
-      "url": "https://github.com/Tustin/PlayStationDiscord",
-      "description": "Discord Rich Presence for PlayStation 4, PlayStation 3, and PlayStation Vita games.",
-      "prs": [
-        {
-          "number": 121,
-          "title": "Update README with PS5 Information",
-          "state": "merged",
-          "url": "https://github.com/Tustin/PlayStationDiscord/pull/121",
-          "date": "2021-01-20"
-        }
-      ]
-    },
-    {
-      "repo": "vandents/scottv.dev",
-      "url": "https://github.com/vandents/scottv.dev",
-      "description": "My personal website!",
-      "prs": [
-        {
-          "number": 2,
-          "title": "Fix #1",
-          "state": "merged",
-          "url": "https://github.com/vandents/scottv.dev/pull/2",
-          "date": "2019-07-22"
-        }
-      ]
-    },
-    {
-      "repo": "ypMrg/omarchy-bambu-companion",
-      "url": "https://github.com/ypMrg/omarchy-bambu-companion",
-      "description": "",
-      "prs": [
-        {
-          "number": 5,
-          "title": "fix(events): keep acknowledged HMS errors out of the bar count",
-          "state": "merged",
-          "url": "https://github.com/ypMrg/omarchy-bambu-companion/pull/5",
-          "date": "2026-09-23"
-        }
-      ]
-    },
-    {
-      "repo": "amillman/charcoal",
-      "url": "https://github.com/amillman/charcoal",
-      "description": "Messenger Dark Mode Chrome Extension",
-      "prs": [
-        {
-          "number": 5,
-          "title": "update to use dark scrollbar",
+          "number": 290,
+          "title": "Update to Support Angular 18",
           "state": "closed",
-          "url": "https://github.com/amillman/charcoal/pull/5",
-          "date": "2023-05-09"
+          "url": "https://github.com/AhsanAyaz/ngx-device-detector/pull/290",
+          "date": "2024-05-31"
         }
-      ]
-    },
-    {
-      "repo": "froala/angular-froala-wysiwyg",
-      "url": "https://github.com/froala/angular-froala-wysiwyg",
-      "description": "Angular 4, 5, 6, 7, 8 and 9 plugin for Froala WYSIWYG HTML Rich Text Editor.",
-      "prs": [
-        {
-          "number": 366,
-          "title": "Update Froala dependency to v3.1.0",
-          "state": "closed",
-          "url": "https://github.com/froala/angular-froala-wysiwyg/pull/366",
-          "date": "2020-01-13"
-        }
-      ]
-    },
-    {
-      "repo": "rawritude/omarchy-oled-guard",
-      "url": "https://github.com/rawritude/omarchy-oled-guard",
-      "description": "Omarchy shell plugin: attenuates the always-on status bar strip so it stops out-wearing the rest of your OLED panel",
-      "prs": [
-        {
-          "number": 3,
-          "title": "Read settings and bar hover through the scoped plugin API",
-          "state": "open",
-          "url": "https://github.com/rawritude/omarchy-oled-guard/pull/3",
-          "date": "2026-10-02"
-        }
-      ]
-    },
-    {
-      "repo": "SteamDeckHomebrew/decky-plugin-store",
-      "url": "https://github.com/SteamDeckHomebrew/decky-plugin-store",
-      "description": "",
-      "prs": [
-        {
-          "number": 23,
-          "title": "FIx plugin installing",
-          "state": "closed",
-          "url": "https://github.com/SteamDeckHomebrew/decky-plugin-store/pull/23",
-          "date": "2022-09-22"
-        }
-      ]
+      ],
+      "stars": 559
     }
   ]
 }
