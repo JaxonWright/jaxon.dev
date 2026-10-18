@@ -220,6 +220,8 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     const target = event.target as HTMLElement;
     if (this.themeOpen() || target?.closest?.('.statusbar')) return;
+    // Space belongs to the focused control: moving focus before keyup cancels a button click.
+    if (event.key === ' ' && target?.closest?.('a, button, select, summary, [role="button"]')) return;
     if (target?.tagName !== 'INPUT' && event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
       this.focusInput();
     }

@@ -202,6 +202,21 @@ describe('AppComponent', () => {
     await vi.waitFor(() => expect(document.activeElement).toBe(input(f)));
   });
 
+  it('leaves Space to the focused button or link so it can activate it', async () => {
+    const f = await render();
+    await vi.waitFor(() => expect(document.activeElement).toBe(input(f)));
+    for (const tag of ['button', 'a']) {
+      const control = el(f).appendChild(document.createElement(tag));
+      if (tag === 'a') control.setAttribute('href', '#');
+      control.focus();
+      await key(f, control, { key: ' ' });
+      await new Promise(r => setTimeout(r, 10));
+      expect(document.activeElement).toBe(control);
+      await key(f, control, { key: 'a' });
+      await vi.waitFor(() => expect(document.activeElement).toBe(input(f)));
+    }
+  });
+
   describe('pay', () => {
     afterEach(() => vi.restoreAllMocks());
 
