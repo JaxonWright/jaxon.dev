@@ -211,6 +211,8 @@ PROJECT_ICONS = {
     'nowpaper': ('src/assets/img/apps/nowPaper.png', False),
     # Penny (Grok Bot): the avatar from the bot's x.ai share card (og:image), cropped to the circle.
     'penny': ('scripts/ascii-src/projects/penny.png', False),
+    # Larry (Grok Bot): avatar from the bot's x.ai share card, cropped to the cloud.
+    'larry': ('scripts/ascii-src/projects/larry.png', False),
     'configura': ('src/assets/img/resume/configura.png', False),
     'volgistics': ('src/assets/img/resume/volgistics.png', False),
 }

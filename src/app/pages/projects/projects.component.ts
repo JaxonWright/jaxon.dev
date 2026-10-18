@@ -168,6 +168,12 @@ export class ProjectsComponent {
       tags: ['Grok Bot'],
       links: [{ title: 'Try it', link: 'https://x.ai/bot/xYeE15lS-qomwX0uWkqYJ' }],
     },
+    {
+      title: 'Larry', logo: 'larry',
+      description: 'Sends you an original, never-aired Seinfeld episode, as if the show never ended. Every episode is period-accurate, from the \'90s to the near future, with neat caveats around the holidays. More nothing from the show about nothing.',
+      tags: ['Grok Bot'],
+      links: [{ title: 'Try it', link: 'https://x.ai/bot/-KMOoE7O15K9grZvG1cFF' }],
+    },
   ];
 
   readonly professional: Project[] = [
