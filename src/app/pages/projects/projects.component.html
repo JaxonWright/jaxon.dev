@@ -19,9 +19,16 @@
 
   <h2>Personal projects</h2>
   <p class="muted">lead developer &middot; {{ activeCount }} active, {{ personal.length - activeCount }} archived</p>
-  @for (p of personal; track p.title) {
+  @for (p of activePersonal; track p.title) {
     <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
   }
+  <button type="button" class="archive-toggle" aria-controls="archived-projects" [attr.aria-expanded]="showArchived()"
+          (click)="showArchived.set(!showArchived())"><span class="caret" aria-hidden="true">{{ showArchived() ? '▼' : '►' }}</span><span class="lbl">archived ({{ archivedPersonal.length }})</span></button>
+  <div id="archived-projects" [hidden]="!showArchived()">
+    @for (p of archivedPersonal; track p.title) {
+      <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
+    }
+  </div>
 
   <h2>Grok Bots</h2>
   <p class="muted">bots I've built and shared publicly</p>

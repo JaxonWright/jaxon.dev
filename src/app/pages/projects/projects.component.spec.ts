@@ -28,6 +28,26 @@ describe('ProjectsComponent', () => {
     expect(el.querySelector('.tag-unreleased')?.closest('h3')?.textContent).toContain('Volgistics Admin');
   });
 
+  it('keeps archived projects collapsed until the toggle is pressed', async () => {
+    const fixture = TestBed.createComponent(ProjectsComponent);
+    await fixture.whenStable();
+    const el = fixture.nativeElement as HTMLElement;
+    const archived = fixture.componentInstance.personal.filter(p => p.archived).length;
+    const toggle = el.querySelector<HTMLButtonElement>('.archive-toggle')!;
+    const panel = el.querySelector<HTMLElement>('#archived-projects')!;
+    expect(toggle.getAttribute('aria-controls')).toBe('archived-projects');
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(toggle.querySelector('.caret')?.textContent).toBe('►');
+    expect(toggle.querySelector('.lbl')?.textContent).toBe(`archived (${archived})`);
+    expect(panel.hidden).toBe(true);
+    expect(panel.querySelectorAll('.tag-archived').length).toBe(archived);
+    toggle.click();
+    await fixture.whenStable();
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(toggle.querySelector('.caret')?.textContent).toBe('▼');
+    expect(panel.hidden).toBe(false);
+  });
+
   it('opens every project link in a new tab', async () => {
     const { el } = await render();
     const links = [...el.querySelectorAll<HTMLAnchorElement>('a')];

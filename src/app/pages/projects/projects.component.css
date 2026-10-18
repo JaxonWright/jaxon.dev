@@ -14,3 +14,11 @@
 .with-art.wide { flex-direction: column; gap: 10px; }
 /* The text block sits under a wordmark, so drop the art-aligned top trim. */
 .with-art.wide > div:not(.art) > :first-child { margin-top: 0; }
+/* Collapsed archive: a terminal-style toggle row (CP437 ► / ▼ caret). */
+.archive-toggle {
+  display: block; margin: 4px 0 10px; padding: 6px 0; min-height: 32px;
+  font: inherit; color: var(--t-accent); background: none; border: 0; cursor: pointer; text-align: left;
+}
+.archive-toggle .caret { display: inline-block; width: 2ch; color: var(--t-primary); }
+.archive-toggle:hover, .archive-toggle:focus-visible { color: var(--t-text); outline: none; }
+.archive-toggle:hover .lbl, .archive-toggle:focus-visible .lbl { text-decoration: underline; }

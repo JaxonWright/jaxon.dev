@@ -217,7 +217,11 @@ export class ProjectsComponent {
     return this.logo(key).some(row => row.reduce((n, c) => n + c.text.length, 0) > 30);
   }
 
-  readonly activeCount = this.personal.filter(p => !p.archived).length;
+  readonly activePersonal = this.personal.filter(p => !p.archived);
+  /** Archived personal projects sit collapsed behind the "► archived (n)" toggle. */
+  readonly archivedPersonal = this.personal.filter(p => p.archived);
+  readonly showArchived = signal(false);
+  readonly activeCount = this.activePersonal.length;
 
   constructor(private title: Title) {
     this.title.setTitle('Jaxon Wright - Projects');
