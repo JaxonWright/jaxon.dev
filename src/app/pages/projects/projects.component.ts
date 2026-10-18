@@ -160,6 +160,16 @@ export class ProjectsComponent {
     },
   ];
 
+  /** Grok Bots I've shared publicly: one entry per bot (logo key from gen-ascii-art.py, link to its x.ai page). */
+  readonly grokBots: Project[] = [
+    {
+      title: 'Penny', logo: 'penny',
+      description: 'Hunts down every subscription you\'re paying for. Reads your bank charges and receipt emails, sorts everything into "likely cancel / worth a look / keep," links each cancel page, and cancels the ones you pick.',
+      tags: ['Grok Bot'],
+      links: [{ title: 'Try it', link: 'https://x.ai/bot/xYeE15lS-qomwX0uWkqYJ' }],
+    },
+  ];
+
   readonly professional: Project[] = [
     {
       title: 'Volgistics Admin', logo: 'volgistics', unreleased: true,

@@ -23,6 +23,12 @@
     <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
   }
 
+  <h2>Grok Bots</h2>
+  <p class="muted">bots I've built and shared publicly</p>
+  @for (p of grokBots; track p.title) {
+    <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
+  }
+
   <h2>Professional work</h2>
   <p class="muted">paid work</p>
   @for (p of professional; track p.title) {

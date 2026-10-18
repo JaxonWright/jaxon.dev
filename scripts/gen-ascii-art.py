@@ -209,6 +209,8 @@ PROJECT_ICONS = {
     'pixbar': ('src/assets/img/apps/pixbar.png', False),
     'xpaper': ('src/assets/img/apps/xpaper.png', False),
     'nowpaper': ('src/assets/img/apps/nowPaper.png', False),
+    # Penny (Grok Bot): the avatar from the bot's x.ai share card (og:image), cropped to the circle.
+    'penny': ('scripts/ascii-src/projects/penny.png', False),
     'configura': ('src/assets/img/resume/configura.png', False),
     'volgistics': ('src/assets/img/resume/volgistics.png', False),
 }
