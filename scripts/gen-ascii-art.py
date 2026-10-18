@@ -290,7 +290,8 @@ def _encode(grid):
 
 def face_frames(cells):
     """Eyes are the background cut-outs (tone 2) inside the face. Returns frames:
-    half (lids half down), blink (a 1-px line), left/right (eyes shifted one column)."""
+    half (lids half down), blink (a 1-px line), left/right (eyes shifted one column),
+    down (eyes shifted one text row, so the glyph shapes survive)."""
     import numpy as np
     from scipy import ndimage
     g = np.array(_decode(cells))
@@ -309,12 +310,13 @@ def face_frames(cells):
     def blink(a, ys, xs):
         row = (ys.min() + ys.max() * 2) // 3  # lids meet just below the middle
         a[row, xs.min():xs.max() + 1] = 2
-    def shift(dx):
+    def shift(dx, dy=0):
         def f(a, ys, xs):
-            ok = g[ys, xs + dx] != 0  # stay inside the face
-            a[ys[ok], (xs + dx)[ok]] = 2
+            ok = g[ys + dy, xs + dx] != 0  # stay inside the face
+            a[(ys + dy)[ok], (xs + dx)[ok]] = 2
         return f
-    return {'half': frame(half), 'blink': frame(blink), 'left': frame(shift(-1)), 'right': frame(shift(1))}
+    return {'half': frame(half), 'blink': frame(blink), 'left': frame(shift(-1)), 'right': frame(shift(1)),
+            'down': frame(shift(0, 2))}
 
 
 PROJECT_ICON_PREP = {
@@ -383,7 +385,7 @@ def main():
     out.append('/** Project logos (two-tone ▀ cells): rows of [top, bottom, count]; 0 none, 1 primary, 2 background cut-out, 3 light text, 4 secondary. */\n')
     out.append(f'export const PROJECT_LOGOS: Record<string, [number, number, number][][]> = {json.dumps(project_icons(), separators=sep)};\n')
     icons = project_icons()
-    out.append('/** Alternate same-size frames (eyes half-shut, blink, glance left/right) for the animated Grok Bot faces. */\n')
+    out.append('/** Alternate same-size frames (eyes half-shut, blink, glance left/right/down) for the animated Grok Bot faces. */\n')
     out.append(f'export const PROJECT_LOGO_FRAMES: Record<string, Record<string, [number, number, number][][]>> = {json.dumps({k: face_frames(icons[k]) for k in ANIMATED_FACES}, separators=sep)};\n')
     out.append('/** Photo: rows of [topLevel, bottomLevel, count] runs of ▀ (levels 0-31), tinted with the theme color. */\n')
     out.append(f'export const PHOTO_LEVELS: [number, number, number][][] = {json.dumps(photo_runs, separators=sep)};\n')

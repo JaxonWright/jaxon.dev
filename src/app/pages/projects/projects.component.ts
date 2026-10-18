@@ -51,10 +51,12 @@ export class ProjectsComponent {
 
   /** Current eye frame per animated face ('' = eyes open); see animateFaces(). */
   private readonly faceFrame = signal<Record<string, string>>({});
+  /** The hovered face looks down at the pointer, like the Grok Bot app; it wins over blinks and glances. */
+  readonly lookingDown = signal<string | null>(null);
 
   /** Two-tone ▀▄█ cells; a background colour is only needed where both halves are inked. */
   logo(key: string): Cell[][] {
-    const frame = PROJECT_LOGO_FRAMES[key] ? this.faceFrame()[key] || '' : '';
+    const frame = !PROJECT_LOGO_FRAMES[key] ? '' : this.lookingDown() === key ? 'down' : this.faceFrame()[key] || '';
     const id = frame ? `${key}:${frame}` : key;
     let rows = this.cache.get(id);
     if (!rows) {

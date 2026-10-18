@@ -58,6 +58,23 @@ describe('ProjectsComponent', () => {
     }
   });
 
+  it('turns a Grok Bot face to look down while it is hovered', async () => {
+    const fixture = TestBed.createComponent(ProjectsComponent);
+    await fixture.whenStable();
+    const el = fixture.nativeElement as HTMLElement;
+    const face = el.querySelector<HTMLElement>('[aria-label="Penny logo"]')!;
+    const other = el.querySelector<HTMLElement>('[aria-label="Larry logo"]')!;
+    const [resting, otherResting] = [face.textContent, other.textContent];
+    face.dispatchEvent(new MouseEvent('mouseenter'));
+    await fixture.whenStable();
+    expect(face.textContent).not.toBe(resting);
+    expect(face.textContent!.length).toBe(resting!.length);
+    expect(other.textContent).toBe(otherResting);
+    face.dispatchEvent(new MouseEvent('mouseleave'));
+    await fixture.whenStable();
+    expect(face.textContent).toBe(resting);
+  });
+
   it('draws a logo for every project, falling back to the GitHub mark', async () => {
     const { page, el } = await render();
     expect(page.logo('not-a-logo')).toEqual(page.logo('github'));
