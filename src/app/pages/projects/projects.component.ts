@@ -89,12 +89,6 @@ export class ProjectsComponent {
       links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/omarchy-omnigear' }],
     },
     {
-      title: 'dotfiles', logo: 'omarchy',
-      description: 'Dotfiles for my Omarchy configuration, managed using GNU Stow, plus scripts to install programs, packages and plugins.',
-      tags: ['MIT', 'Omarchy', 'Lua', 'Shell'],
-      links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/dotfiles' }],
-    },
-    {
       title: 'Omarchy Midnight', logo: 'midnight',
       description: 'A theme for Omarchy that gives you the inky black that your OLED monitor craves. It\'s also the default theme for this site.',
       tags: ['Omarchy', 'Theme'],
@@ -105,6 +99,12 @@ export class ProjectsComponent {
       description: 'A Wear OS watch face that combines digital and analog in one.',
       tags: ['GPL-3.0', 'Wear OS'],
       links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/digalog' }],
+    },
+    {
+      title: 'dotfiles', logo: 'omarchy',
+      description: 'Dotfiles for my Omarchy configuration, managed using GNU Stow, plus scripts to install programs, packages and plugins.',
+      tags: ['MIT', 'Omarchy', 'Lua', 'Shell'],
+      links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/dotfiles' }],
     },
     {
       title: 'sentinel', logo: 'sentinel', archived: true,
