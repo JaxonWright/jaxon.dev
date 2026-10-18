@@ -261,6 +261,62 @@ PROJECT_ICON_CLASSIFY = {
 
 PROJECT_ICON_MAX_ROWS_FOR = {'nowpaper': 20, 'digalog': 18}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
 
+# Grok Bot faces: same-size eye frames for the blink/glance animation on /projects.
+ANIMATED_FACES = ['penny', 'larry']
+
+
+def _decode(cells):
+    w = max(sum(n for *_, n in r) for r in cells)
+    grid = []
+    for r in cells:
+        top, bot = [], []
+        for t, b, n in r: top += [t] * n; bot += [b] * n
+        grid += [top + [0] * (w - len(top)), bot + [0] * (w - len(bot))]
+    return grid
+
+
+def _encode(grid):
+    out = []
+    for y in range(0, len(grid), 2):
+        runs = []
+        for x in range(len(grid[0])):
+            c = [grid[y][x], grid[y + 1][x]]
+            if runs and runs[-1][:2] == c: runs[-1][2] += 1
+            else: runs.append(c + [1])
+        if runs and runs[-1][:2] == [0, 0]: runs.pop()
+        out.append(runs)
+    return out
+
+
+def face_frames(cells):
+    """Eyes are the background cut-outs (tone 2) inside the face. Returns frames:
+    half (lids half down), blink (a 1-px line), left/right (eyes shifted one column)."""
+    import numpy as np
+    from scipy import ndimage
+    g = np.array(_decode(cells))
+    lab, n = ndimage.label(g == 2)
+    eyes = [i + 1 for i in range(n) if (lab == i + 1).sum() >= 4]  # skip anti-aliased edge specks
+    def frame(fn):
+        a = g.copy()
+        for e in eyes:
+            ys, xs = np.where(lab == e)
+            a[ys, xs] = 1
+            fn(a, ys, xs)
+        return _encode(a.tolist())
+    def half(a, ys, xs):
+        mid = (ys.min() + ys.max() + 1) // 2
+        k = ys >= mid; a[ys[k], xs[k]] = 2
+    def blink(a, ys, xs):
+        row = (ys.min() + ys.max() * 2) // 3  # lids meet just below the middle
+        a[row, xs.min():xs.max() + 1] = 2
+    def shift(dx):
+        def f(a, ys, xs):
+            ok = g[ys, xs + dx] != 0  # stay inside the face
+            a[ys[ok], (xs + dx)[ok]] = 2
+        return f
+    return {'half': frame(half), 'blink': frame(blink), 'left': frame(shift(-1)), 'right': frame(shift(1))}
+
+
 PROJECT_ICON_PREP = {
     # Wordmark-only sources: crop the mark / first letter, thicken hairlines.
     # Fill the outlined letters, then erode so neighbouring letters stay separate.
@@ -326,6 +382,9 @@ def main():
     out.append(f'export const TUX_CELLS: [number, number, number][][] = {json.dumps(two_tone_cells(Image.open(ROOT / "scripts/ascii-src/os/linux.png"), 30), separators=sep)};\n')
     out.append('/** Project logos (two-tone ▀ cells): rows of [top, bottom, count]; 0 none, 1 primary, 2 background cut-out, 3 light text, 4 secondary. */\n')
     out.append(f'export const PROJECT_LOGOS: Record<string, [number, number, number][][]> = {json.dumps(project_icons(), separators=sep)};\n')
+    icons = project_icons()
+    out.append('/** Alternate same-size frames (eyes half-shut, blink, glance left/right) for the animated Grok Bot faces. */\n')
+    out.append(f'export const PROJECT_LOGO_FRAMES: Record<string, Record<string, [number, number, number][][]>> = {json.dumps({k: face_frames(icons[k]) for k in ANIMATED_FACES}, separators=sep)};\n')
     out.append('/** Photo: rows of [topLevel, bottomLevel, count] runs of ▀ (levels 0-31), tinted with the theme color. */\n')
     out.append(f'export const PHOTO_LEVELS: [number, number, number][][] = {json.dumps(photo_runs, separators=sep)};\n')
     out.append('export const PHOTO_LEVEL_COUNT = 32;\n')

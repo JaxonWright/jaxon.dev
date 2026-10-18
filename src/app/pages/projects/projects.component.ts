@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgTemplateOutlet } from '@angular/common';
-import { PROJECT_LOGOS } from '@services/ascii-art';
+import { PROJECT_LOGOS, PROJECT_LOGO_FRAMES } from '@services/ascii-art';
+import { prefersReducedMotion } from '@services/motion';
 declare var require: any;
 
 export interface Link { title: string; link: string; }
@@ -48,15 +49,20 @@ export class ProjectsComponent {
 
   private readonly cache = new Map<string, Cell[][]>();
 
+  /** Current eye frame per animated face ('' = eyes open); see animateFaces(). */
+  private readonly faceFrame = signal<Record<string, string>>({});
+
   /** Two-tone ▀▄█ cells; a background colour is only needed where both halves are inked. */
   logo(key: string): Cell[][] {
-    let rows = this.cache.get(key);
+    const frame = PROJECT_LOGO_FRAMES[key] ? this.faceFrame()[key] || '' : '';
+    const id = frame ? `${key}:${frame}` : key;
+    let rows = this.cache.get(id);
     if (!rows) {
-      rows = (PROJECT_LOGOS[key] ?? PROJECT_LOGOS['github']).map(row => row.map(([t, b, n]) => {
+      rows = (frame ? PROJECT_LOGO_FRAMES[key][frame] : PROJECT_LOGOS[key] ?? PROJECT_LOGOS['github']).map(row => row.map(([t, b, n]) => {
         const ch = t && b ? (t === b ? '█' : '▀') : t ? '▀' : b ? '▄' : ' ';
         return { text: ch.repeat(n), fg: TONES[t || b], bg: t && b && t !== b ? TONES[b] : '' };
       }));
-      this.cache.set(key, rows);
+      this.cache.set(id, rows);
     }
     return rows;
   }
@@ -201,6 +207,11 @@ export class ProjectsComponent {
     },
   ];
 
+  /** Animated faces get a fixed width in cells so swapping eye frames can't nudge the text beside them. */
+  faceCols(key: string): number | null {
+    return PROJECT_LOGO_FRAMES[key] ? Math.max(...PROJECT_LOGOS[key].map(r => r.reduce((n, [, , c]) => n + c, 0))) : null;
+  }
+
   /** Wordmark logos (wider than the 24-col icons) stack above their text. */
   isWide(key: string): boolean {
     return this.logo(key).some(row => row.reduce((n, c) => n + c.text.length, 0) > 30);
@@ -210,5 +221,35 @@ export class ProjectsComponent {
 
   constructor(private title: Title) {
     this.title.setTitle('Jaxon Wright - Projects');
+    this.animateFaces();
+  }
+
+  /**
+   * Grok Bot faces blink at random 2.5-7s intervals (each bot on its own clock) and now
+   * and then glance left or right. Frames are pre-generated and the same size as the
+   * resting face, so only glyphs change. Static under prefers-reduced-motion.
+   */
+  private animateFaces(): void {
+    if (typeof window === 'undefined' || prefersReducedMotion()) return;
+    const timers = new Set<ReturnType<typeof setTimeout>>();
+    const later = (ms: number, fn: () => void) => {
+      const t = setTimeout(() => { timers.delete(t); fn(); }, ms);
+      timers.add(t);
+    };
+    const set = (key: string, frame: string) => this.faceFrame.update(f => ({ ...f, [key]: frame }));
+    const play = (key: string, steps: [string, number][], done: () => void) => {
+      const [[frame, ms], ...rest] = steps;
+      set(key, frame);
+      later(ms, () => rest.length ? play(key, rest, done) : done());
+    };
+    const tick = (key: string) => later(2500 + Math.random() * 4500, () => {
+      if (document.hidden) return tick(key);
+      const blink: [string, number][] = [['half', 50], ['blink', 90], ['half', 50], ['', 0]];
+      const glance: [string, number] = [Math.random() < 0.5 ? 'left' : 'right', 900 + Math.random() * 700];
+      // ~1 in 4 turns is a glance, which ends with a blink as the eyes come back.
+      play(key, Math.random() < 0.25 ? [glance, ...blink] : blink, () => tick(key));
+    });
+    Object.keys(PROJECT_LOGO_FRAMES).forEach(tick);
+    inject(DestroyRef).onDestroy(() => timers.forEach(clearTimeout));
   }
 }
