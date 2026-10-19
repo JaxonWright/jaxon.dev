@@ -185,7 +185,7 @@ def icon_cells(img: Image.Image, cols: int, invert: bool = False, classify=None,
 
 PROJECT_ICON_COLS = 24
 PROJECT_ICON_MAX_ROWS = 14
-PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84, 'passageway': 72, 'nowpaper': 32, 'digalog': 120}  # wordmarks
+PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84, 'passageway': 72, 'digalog': 120}  # wordmarks
 PROJECT_ICONS = {
     # key: (path relative to repo root, invert minor/main tones)
     'omarchy': ('scripts/ascii-src/projects/omarchy.png', False),
@@ -259,7 +259,7 @@ PROJECT_ICON_CLASSIFY = {
     'nowpaper': lambda r, g, b: 3 if (r > 200 and g > 200) else 2 if (r + g + b) / 3 < 125 else 1,
 }
 
-PROJECT_ICON_MAX_ROWS_FOR = {'nowpaper': 20, 'digalog': 18}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
+PROJECT_ICON_MAX_ROWS_FOR = {'digalog': 18}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
 
 # Grok Bot faces: same-size eye frames for the blink/glance animation on /projects.
 ANIMATED_FACES = ['penny', 'larry']
