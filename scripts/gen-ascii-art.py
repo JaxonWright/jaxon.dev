@@ -251,6 +251,32 @@ def fill_outlined(img: Image.Image) -> Image.Image:
     return res
 
 
+def fill_shadow_gaps(img: Image.Image, letters: set) -> Image.Image:
+    """OmniGear's letters carry translucent drop-shadow strips. Inside the M and N they only
+    shade the steps but drop out as holes, so make a translucent run with opaque pixels on both
+    sides opaque in those letters. A and R use the same strips for real counters, so they're left."""
+    import numpy as np
+    a = np.array(img.getchannel('A'))
+    clear = (a == 0).all(axis=0)
+    starts = [x for x in range(len(clear)) if not clear[x] and (x == 0 or clear[x - 1])]
+    for i, x0 in enumerate(starts):
+        if i not in letters: continue
+        x1 = starts[i + 1] if i + 1 < len(starts) else len(clear)
+        for row in a[:, x0:x1]:
+            x = 1
+            while x < len(row):
+                if 0 < row[x] < 255 and row[x - 1] == 255:
+                    end = x
+                    while end < len(row) and 0 < row[end] < 255: end += 1
+                    if end < len(row) and row[end] == 255: row[x:end] = 255
+                    x = end
+                else:
+                    x += 1
+    res = img.copy()
+    res.putalpha(Image.fromarray(a))
+    return res
+
+
 # Multi-tone icons: 1 theme primary, 2 background cut-out, 3 light text, 4 theme secondary.
 PROJECT_ICON_CLASSIFY = {
     # nowPaper: sky -> primary, mountains -> cut-outs, snow caps and sun -> light.
@@ -325,6 +351,7 @@ PROJECT_ICON_PREP = {
     # Passageway's README wordmark is a hairline font: thicken the strokes.
     'passageway': lambda im: (lambda f: (f.putalpha(f.getchannel('A').filter(ImageFilter.MaxFilter(13))), f)[1])(im.convert('RGBA')),
     'midnight': lambda im: (lambda f: (f.putalpha(f.getchannel('A').filter(ImageFilter.MinFilter(13))), f)[1])(fill_outlined(im)),
+    'omnigear': lambda im: fill_shadow_gaps(im.convert('RGBA'), letters={1, 2}),  # M, N
 }
 
 
