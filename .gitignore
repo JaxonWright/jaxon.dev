@@ -27,6 +27,7 @@
 
 # auto-generated data
 /src/app/services/playlist-data.ts
+/src/app/services/contributions.json
 
 # environment config
 .env

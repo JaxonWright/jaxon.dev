@@ -1,4 +1,66 @@
-<h1 style="margin-top: 0">Projects</h1>
-@for (project of projects; track $index) {
-  <app-project-card [project]="project"></app-project-card>
-}
+<article class="t-page projects">
+  <h2>Notable open source contributions</h2>
+  <p class="muted">{{ contributions.length }} repos &middot; {{ prCount }} pull requests</p>
+  @for (c of contributions; track c.repo) {
+    <section class="block with-art" [class.wide]="isWide(c.logo)">
+      <ng-container *ngTemplateOutlet="art; context: { $implicit: c.logo, label: c.repo }"></ng-container>
+      <div>
+        <h3><a [href]="c.url" target="_blank" rel="noopener">{{ c.repo }}</a></h3>
+        @if (c.tags?.length) { <p class="tags">@for (t of c.tags; track $index) {[{{ t }}] }</p> }
+        @if (c.description) { <p>{{ c.description }}</p> }
+        <ul class="prs">
+          @for (pr of c.prs; track pr.number) {
+            <li><span class="st" [class]="pr.state">[{{ pr.state }}]</span> <a [href]="pr.url" target="_blank" rel="noopener">#{{ pr.number }}</a> {{ pr.title }}</li>
+          }
+        </ul>
+      </div>
+    </section>
+  }
+
+  <h2>Personal projects</h2>
+  <p class="muted">lead developer &middot; {{ activeCount }} active, {{ personal.length - activeCount }} archived</p>
+  @for (p of activePersonal; track p.title) {
+    <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
+  }
+  <button type="button" class="archive-toggle" aria-controls="archived-projects" [attr.aria-expanded]="showArchived()"
+          (click)="showArchived.set(!showArchived())"><span class="caret" aria-hidden="true">{{ showArchived() ? '▼' : '►' }}</span><span class="lbl">archived ({{ archivedPersonal.length }})</span></button>
+  <div id="archived-projects" [hidden]="!showArchived()">
+    @for (p of archivedPersonal; track p.title) {
+      <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
+    }
+  </div>
+
+  <h2>Grok Bots</h2>
+  <p class="muted">bots I've built and shared publicly</p>
+  @for (p of grokBots; track p.title) {
+    <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
+  }
+
+  <h2>Professional work</h2>
+  <p class="muted">paid work</p>
+  @for (p of professional; track p.title) {
+    <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
+  }
+</article>
+
+<ng-template #project let-p>
+  <section class="block with-art" [class.archived]="p.archived" [class.wide]="isWide(p.logo)">
+    <ng-container *ngTemplateOutlet="art; context: { $implicit: p.logo, label: p.title }"></ng-container>
+    <div>
+      <h3>{{ p.title }}@if (p.archived) { <span class="tag-archived">ARCHIVED</span>}@if (p.unreleased) { <span class="tag-unreleased">UNRELEASED</span>}</h3>
+      <p class="tags">@for (t of p.tags; track $index) {[{{ t }}] }</p>
+      <p>{{ p.description }}</p>
+      @if (p.links.length || p.note) {
+        <p>
+          @for (l of p.links; track $index) {<a [href]="l.link" target="_blank" rel="noopener">{{ l.title }} ↗</a>&nbsp;&nbsp;}
+          @if (p.note) {<span class="muted">({{ p.note }})</span>}
+        </p>
+      }
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #art let-key let-label="label">
+  <pre class="art cp437 logo-art proj-logo" role="img" [attr.aria-label]="label + ' logo'" [style.width.ch]="faceCols(key)"
+       (mouseenter)="lookingDown.set(key)" (mouseleave)="lookingDown.set(null)">@for (row of logo(key); track $index) {@for (c of row; track $index) {<span [style.color]="c.fg" [style.background-color]="c.bg">{{ c.text }}</span>}{{ '\n' }}}</pre>
+</ng-template>

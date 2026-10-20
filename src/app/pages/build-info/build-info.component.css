@@ -1,0 +1,14 @@
+.fastfetch { display: flex; gap: 3ch; align-items: flex-start; }
+.ff-logo { font-size: 10px; color: var(--t-secondary); flex: none; margin: 0; }
+.ff-info { min-width: 0; }
+.ff-info p { margin: 0; line-height: 1.5; max-width: none; }
+.ff-title { color: var(--t-primary); }
+.k { color: var(--t-secondary); font-weight: 700; }
+.ff-rule { color: var(--t-text); }
+.ff-line { white-space: pre-wrap; word-break: break-word; }
+.ff-colors { margin-top: 12px; }
+.ff-row { font-size: 20px; line-height: 1; letter-spacing: 0; } /* 12px advance: whole-pixel cells */
+@media (max-width: 640px) {
+  .fastfetch { flex-direction: column; gap: 14px; }
+}
+:host-context(.t-light) .ff-logo { --ff-light: #fff; }

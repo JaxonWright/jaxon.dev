@@ -1,25 +1,11 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
 import { PageNotFoundComponent } from './page-not-found.component';
 
 describe('PageNotFoundComponent', () => {
-  let component: PageNotFoundComponent;
-  let fixture: ComponentFixture<PageNotFoundComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [PageNotFoundComponent]
-})
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PageNotFoundComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('names the missing path like a shell would', async () => {
+    window.history.replaceState(null, '', '/secret/plans');
+    const fixture = TestBed.createComponent(PageNotFoundComponent);
+    await fixture.whenStable();
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('bash: /secret/plans: No such file or directory');
   });
 });
