@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgTemplateOutlet } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { PHOTO_LEVELS, PHOTO_LEVEL_COUNT, VOLGISTICS_LOGO, CONFIGURA_LOGO, GVSU_LOGO } from '@services/ascii-art';
 
 export interface ArtRun { fg: string; bg: string; text: string; }
@@ -14,7 +15,7 @@ const yearsSince = (year: number, month: number, day: number, now = new Date()):
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    imports: [NgTemplateOutlet]
+    imports: [NgTemplateOutlet, RouterLink]
 })
 export class HomeComponent {
   readonly age = yearsSince(1995, 2, 25);
