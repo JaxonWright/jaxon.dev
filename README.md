@@ -1,4 +1,4 @@
-<img src="https://jaxon.dev/assets/img/branding/graph.png" width="600px"/>
+<img src="src/assets/img/branding/graph.png" width="600px"/>
 
 [![Website status](https://img.shields.io/website?url=https%3A%2F%2Fjaxon.dev&style=flat-square)](https://jaxon.dev)
 [![GitHub license](https://img.shields.io/github/license/JaxonWright/jaxon.dev?style=flat-square)](https://github.com/JaxonWright/jaxon.dev/blob/master/LICENSE)
