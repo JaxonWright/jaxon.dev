@@ -35,7 +35,7 @@ Run `npm install`, then `npm start` to serve locally. `npm test` runs the unit t
 
 ### Generated assets
 These are committed, so rerun them only when their source changes.
-- `python3 scripts/gen-ascii-art.py` regenerates the block art in `src/app/services/ascii-art.ts`. It needs Pillow.
+- `python3 scripts/gen-ascii-art.py` regenerates the block art in `src/app/services/ascii-art.ts`. It needs Pillow, NumPy, and SciPy.
 - `python3 scripts/subset-fonts.py` rebuilds the font files. It needs fonttools and brotli.
 - `node scripts/gen-social-card.mjs` renders the Open Graph image (the one above) with headless Chromium. The X bio it prints is hardcoded in the script.
 - `node scripts/gen-rmrf-paths.mjs` regenerates the output of a certain hidden command.
