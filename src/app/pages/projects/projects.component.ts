@@ -83,7 +83,7 @@ export class ProjectsComponent {
       links: [{ title: 'Website', link: 'https://testube.app' }, { title: 'GitHub', link: 'https://github.com/arbitrari/testube' }],
     },
     {
-      title: 'OmniGear', logo: 'omnigear',
+      title: 'OmniGear', logo: 'omnigear', unreleased: true,
       description: 'Omarchy plugin to manage and configure peripherals across brands and product types.',
       tags: ['GPL-3.0', 'Omarchy', 'Go', 'QML'],
       links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/omarchy-omnigear' }],
