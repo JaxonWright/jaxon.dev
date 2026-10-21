@@ -25,7 +25,8 @@ describe('ProjectsComponent', () => {
     const archived = page.personal.filter(p => p.archived).length;
     expect(el.textContent).toContain(`${page.personal.length - archived} active, ${archived} archived`);
     expect(el.querySelectorAll('.tag-archived').length).toBe(archived);
-    expect(el.querySelector('.tag-unreleased')?.closest('h3')?.textContent).toContain('Volgistics Admin');
+    const unreleased = [...page.personal, ...page.grokBots, ...page.professional].filter(p => p.unreleased).map(p => p.title);
+    expect([...el.querySelectorAll('.tag-unreleased')].map(t => t.closest('h3')?.textContent?.replace('UNRELEASED', '').trim())).toEqual(unreleased);
   });
 
   it('keeps archived projects collapsed until the toggle is pressed', async () => {
