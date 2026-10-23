@@ -77,6 +77,15 @@ export class ProjectsComponent {
       links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/jaxon.dev' }],
     },
     {
+      title: 'Bot Catalog for Grok Bot', logo: 'bot-catalog', unreleased: true,
+      description: 'A template for building your own shareable catalog of Grok Bots that keep themselves up to date. Every bot checks its catalog daily for a newer release of itself, shows you the changelog, and updates only if you say so. The Catalog Manager bot sets up your catalog and runs it for you.',
+      tags: ['GPL-3.0', 'Grok Bot', 'GitHub Actions', 'Python'],
+      links: [
+        { title: 'Template', link: 'https://github.com/JaxonWright/bot-catalog-for-grok-bot-template' },
+        { title: 'My Catalog', link: 'https://github.com/JaxonWright/bot-catalog-for-grok-bot' },
+      ],
+    },
+    {
       title: 'testube', logo: 'testube',
       description: `Used by more than 3,000 people every month, testube provides Tesla drivers with seamless access to a wide range of media services while their vehicle is parked. What sets it apart is its ability to activate Tesla's "Theater Mode," allowing any application or content to be displayed in full screen, enhancing the overall viewing experience.`,
       tags: ['GPL-3.0', 'Angular', 'TypeScript', 'HTML', 'CSS'],

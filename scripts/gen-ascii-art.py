@@ -185,7 +185,7 @@ def icon_cells(img: Image.Image, cols: int, invert: bool = False, classify=None,
 
 PROJECT_ICON_COLS = 24
 PROJECT_ICON_MAX_ROWS = 14
-PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84, 'passageway': 72, 'digalog': 120}  # wordmarks
+PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84, 'passageway': 72, 'digalog': 120, 'bot-catalog': 84}  # wordmarks
 PROJECT_ICONS = {
     # key: (path relative to repo root, invert minor/main tones)
     'omarchy': ('scripts/ascii-src/projects/omarchy.png', False),
@@ -213,6 +213,8 @@ PROJECT_ICONS = {
     'penny': ('scripts/ascii-src/projects/penny.png', False),
     # Larry (Grok Bot): avatar from the bot's x.ai share card, cropped to the cloud.
     'larry': ('scripts/ascii-src/projects/larry.png', False),
+    # Bot Catalog for Grok Bot: the template README's header-dark.svg without the "for Grok Bot" line, rendered at 4x.
+    'bot-catalog': ('scripts/ascii-src/projects/bot-catalog.png', False),
     'configura': ('src/assets/img/resume/configura.png', False),
     'volgistics': ('src/assets/img/resume/volgistics.png', False),
 }
@@ -282,10 +284,13 @@ PROJECT_ICON_CLASSIFY = {
     # nowPaper: sky -> primary, mountains -> cut-outs, snow caps and sun -> light.
     # Digalog: green seven-segment 'dig' -> theme secondary (4), 'alog' -> primary (faint off-segments drop out via alpha).
     'digalog': lambda r, g, b: 4 if g > r + 40 else 1,
+    # Bot Catalog: orange and violet bots -> primary, blue and green -> secondary, white faces and lettering -> light,
+    # eyes -> cut-outs. Grays split by brightness, since edge pixels darken as they're averaged with the transparency.
+    'bot-catalog': lambda r, g, b: (3 if r > 90 else 2) if max(r, g, b) - min(r, g, b) < 40 else 4 if g > r else 1,
     'nowpaper': lambda r, g, b: 3 if (r > 200 and g > 200) else 2 if (r + g + b) / 3 < 125 else 1,
 }
 
-PROJECT_ICON_MAX_ROWS_FOR = {'digalog': 18}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
+PROJECT_ICON_MAX_ROWS_FOR = {'digalog': 18, 'bot-catalog': 17}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
 
 # Grok Bot faces: same-size eye frames for the blink/glance animation on /projects.
 ANIMATED_FACES = ['penny', 'larry']
