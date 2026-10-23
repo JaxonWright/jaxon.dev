@@ -71,16 +71,19 @@ export class ProjectsComponent {
 
   readonly personal: Project[] = [
     {
-      title: 'jaxon.dev', logo: 'jw',
-      description: 'The website that you are currently on. This is my personal website.',
-      tags: ['MIT', 'Angular', 'TypeScript', 'HTML', 'CSS'],
-      links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/jaxon.dev' }],
-    },
-    {
       title: 'testube', logo: 'testube',
       description: `Used by more than 3,000 people every month, testube provides Tesla drivers with seamless access to a wide range of media services while their vehicle is parked. What sets it apart is its ability to activate Tesla's "Theater Mode," allowing any application or content to be displayed in full screen, enhancing the overall viewing experience.`,
       tags: ['GPL-3.0', 'Angular', 'TypeScript', 'HTML', 'CSS'],
       links: [{ title: 'Website', link: 'https://testube.app' }, { title: 'GitHub', link: 'https://github.com/arbitrari/testube' }],
+    },
+    {
+      title: 'Bot Catalog for Grok Bot', logo: 'bot-catalog', unreleased: true,
+      description: 'A template for building your own shareable catalog of Grok Bots that keep themselves up to date. Every bot checks its catalog daily for a newer release of itself, shows you the changelog, and updates only if you say so. The Catalog Manager bot sets up your catalog and runs it for you.',
+      tags: ['GPL-3.0', 'Grok Bot', 'GitHub Actions', 'Python'],
+      links: [
+        { title: 'Template', link: 'https://github.com/JaxonWright/bot-catalog-for-grok-bot-template' },
+        { title: 'My Catalog', link: 'https://github.com/JaxonWright/bot-catalog-for-grok-bot' },
+      ],
     },
     {
       title: 'OmniGear', logo: 'omnigear', unreleased: true,
@@ -99,6 +102,12 @@ export class ProjectsComponent {
       description: 'A Wear OS watch face that combines digital and analog in one.',
       tags: ['GPL-3.0', 'Wear OS'],
       links: [{ title: 'Google Play', link: 'https://play.google.com/store/apps/details?id=com.arbitrary.digalog' }, { title: 'GitHub', link: 'https://github.com/arbitrari/digalog' }],
+    },
+    {
+      title: 'jaxon.dev', logo: 'jw',
+      description: 'The website that you are currently on. This is my personal website.',
+      tags: ['MIT', 'Angular', 'TypeScript', 'HTML', 'CSS'],
+      links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/jaxon.dev' }],
     },
     {
       title: 'dotfiles', logo: 'omarchy',
