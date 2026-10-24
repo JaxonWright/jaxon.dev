@@ -185,7 +185,7 @@ def icon_cells(img: Image.Image, cols: int, invert: bool = False, classify=None,
 
 PROJECT_ICON_COLS = 24
 PROJECT_ICON_MAX_ROWS = 14
-PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84, 'passageway': 72, 'digalog': 120}  # wordmarks
+PROJECT_ICON_WIDE = {'ciner8': 48, 'testube': 60, 'omnigear': 96, 'sentinel': 60, 'midnight': 84, 'passageway': 72, 'digalog': 120, 'bot-catalog': 84}  # wordmarks
 PROJECT_ICONS = {
     # key: (path relative to repo root, invert minor/main tones)
     'omarchy': ('scripts/ascii-src/projects/omarchy.png', False),
@@ -213,6 +213,8 @@ PROJECT_ICONS = {
     'penny': ('scripts/ascii-src/projects/penny.png', False),
     # Larry (Grok Bot): avatar from the bot's x.ai share card, cropped to the cloud.
     'larry': ('scripts/ascii-src/projects/larry.png', False),
+    # Bot Catalog for Grok Bot: the template README's header-dark.svg without the "for Grok Bot" line, rendered at 4x.
+    'bot-catalog': ('scripts/ascii-src/projects/bot-catalog.png', False),
     'configura': ('src/assets/img/resume/configura.png', False),
     'volgistics': ('src/assets/img/resume/volgistics.png', False),
 }
@@ -282,13 +284,18 @@ PROJECT_ICON_CLASSIFY = {
     # nowPaper: sky -> primary, mountains -> cut-outs, snow caps and sun -> light.
     # Digalog: green seven-segment 'dig' -> theme secondary (4), 'alog' -> primary (faint off-segments drop out via alpha).
     'digalog': lambda r, g, b: 4 if g > r + 40 else 1,
+    # Bot Catalog: orange and violet bots -> primary, blue and green -> secondary, white faces and lettering -> light,
+    # eyes -> cut-outs. Grays split by brightness, since edge pixels darken as they're averaged with the transparency.
+    'bot-catalog': lambda r, g, b: (3 if r > 90 else 2) if max(r, g, b) - min(r, g, b) < 40 else 4 if g > r else 1,
     'nowpaper': lambda r, g, b: 3 if (r > 200 and g > 200) else 2 if (r + g + b) / 3 < 125 else 1,
 }
 
-PROJECT_ICON_MAX_ROWS_FOR = {'digalog': 18}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
+PROJECT_ICON_MAX_ROWS_FOR = {'digalog': 18, 'bot-catalog': 17}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
 
 # Grok Bot faces: same-size eye frames for the blink/glance animation on /projects.
-ANIMATED_FACES = ['penny', 'larry']
+ANIMATED_FACES = ['penny', 'larry', 'bot-catalog']
+# Smallest tone-2 blob that counts as an eye. Stamped eyes (see stamp_eyes) are clean, so any size goes.
+FACE_MIN_EYE = {'bot-catalog': 2}
 
 
 def _decode(cells):
@@ -314,7 +321,7 @@ def _encode(grid):
     return out
 
 
-def face_frames(cells):
+def face_frames(cells, min_eye=4):
     """Eyes are the background cut-outs (tone 2) inside the face. Returns frames:
     half (lids half down), blink (a 1-px line), left/right (eyes shifted one column),
     down (eyes shifted one text row, so the glyph shapes survive)."""
@@ -322,12 +329,16 @@ def face_frames(cells):
     from scipy import ndimage
     g = np.array(_decode(cells))
     lab, n = ndimage.label(g == 2)
-    eyes = [i + 1 for i in range(n) if (lab == i + 1).sum() >= 4]  # skip anti-aliased edge specks
+    eyes = [i + 1 for i in range(n) if (lab == i + 1).sum() >= min_eye]  # skip anti-aliased edge specks
+    def skin(e):  # a shut eye takes its face's tone (Bot Catalog has light and secondary faces too)
+        ring = g[ndimage.binary_dilation(lab == e) & (lab != e)]
+        return np.bincount(ring[(ring != 0) & (ring != 2)]).argmax()
+    skins = {e: skin(e) for e in eyes}
     def frame(fn):
         a = g.copy()
         for e in eyes:
             ys, xs = np.where(lab == e)
-            a[ys, xs] = 1
+            a[ys, xs] = skins[e]
             fn(a, ys, xs)
         return _encode(a.tolist())
     def half(a, ys, xs):
@@ -355,13 +366,50 @@ PROJECT_ICON_PREP = {
 }
 
 
+def stamp_eyes(img: Image.Image, cols: int, invert: bool, classify, max_rows: int):
+    """icon_cells for logos whose eyes are thinner than a cell (Bot Catalog), where resampling smears
+    them, merges a pair, or drops them (the wordmark's o faces). Paints the black eyes out of the source
+    with the nearest face colour, then stamps each one back as a 1-column cut-out bar where it falls on
+    the grid, at least 2 half-rows tall, so face_frames has clean eyes to blink."""
+    import numpy as np
+    from scipy import ndimage
+    rgba = np.array(img.convert('RGBA'))
+    a = rgba[..., 3]
+    x0, y0, x1, y1 = Image.fromarray(a).point(lambda v: 255 if v > 100 else 0).getbbox()
+    eyes = (rgba[..., :3].mean(axis=2) < 60) & (a > 200)
+    rim = ndimage.binary_dilation(eyes, iterations=3) & (a > 0)  # take the anti-aliased edge too
+    _, (iy, ix) = ndimage.distance_transform_edt(rim, return_indices=True)
+    rgba[rim] = rgba[iy[rim], ix[rim]]
+    grid = np.array(_decode(icon_cells(Image.fromarray(rgba), cols, invert, classify, max_rows)))
+    # The same scale icon_cells used (its crop is the same alpha bbox).
+    w, h = x1 - x0, y1 - y0
+    rows = max(2, round(cols * h / w * CELL_ASPECT) * 2)
+    if rows > 2 * max_rows:
+        cols = max(4, round(cols * 2 * max_rows / rows)); rows = 2 * max_rows
+    lab, _ = ndimage.label(eyes)
+    stamped = np.zeros_like(grid, bool)
+    for ys, xs in sorted(ndimage.find_objects(lab), key=lambda s: s[1].start):
+        x = int(((xs.start + xs.stop) / 2 - x0) * cols / w)
+        top = round((ys.start - y0) * rows / h)
+        bot = max(top + 2, round((ys.stop - y0) * rows / h))
+        if stamped[top:bot, x - 1].any():  # the pair in a small face landed side by side: keep a gap
+            x += 1
+        stamped[top:bot, x] = grid[top:bot, x] != 0
+    grid[stamped] = 2
+    return _encode(grid.tolist())
+
+
+PROJECT_ICON_BUILD = {'bot-catalog': stamp_eyes}  # default: icon_cells
+
+
 def project_icons() -> dict:
     out = {}
     for k, (p, inv) in PROJECT_ICONS.items():
         im = Image.open(ROOT / p)
         if k in PROJECT_ICON_PREP:
             im = PROJECT_ICON_PREP[k](im)
-        out[k] = icon_cells(im, PROJECT_ICON_WIDE.get(k, PROJECT_ICON_COLS), inv, PROJECT_ICON_CLASSIFY.get(k), PROJECT_ICON_MAX_ROWS_FOR.get(k))
+        build = PROJECT_ICON_BUILD.get(k, icon_cells)
+        out[k] = build(im, PROJECT_ICON_WIDE.get(k, PROJECT_ICON_COLS), inv, PROJECT_ICON_CLASSIFY.get(k), PROJECT_ICON_MAX_ROWS_FOR.get(k))
     return out
 
 
@@ -413,7 +461,7 @@ def main():
     out.append(f'export const PROJECT_LOGOS: Record<string, [number, number, number][][]> = {json.dumps(project_icons(), separators=sep)};\n')
     icons = project_icons()
     out.append('/** Alternate same-size frames (eyes half-shut, blink, glance left/right/down) for the animated Grok Bot faces. */\n')
-    out.append(f'export const PROJECT_LOGO_FRAMES: Record<string, Record<string, [number, number, number][][]>> = {json.dumps({k: face_frames(icons[k]) for k in ANIMATED_FACES}, separators=sep)};\n')
+    out.append(f'export const PROJECT_LOGO_FRAMES: Record<string, Record<string, [number, number, number][][]>> = {json.dumps({k: face_frames(icons[k], FACE_MIN_EYE.get(k, 4)) for k in ANIMATED_FACES}, separators=sep)};\n')
     out.append('/** Photo: rows of [topLevel, bottomLevel, count] runs of ▀ (levels 0-31), tinted with the theme color. */\n')
     out.append(f'export const PHOTO_LEVELS: [number, number, number][][] = {json.dumps(photo_runs, separators=sep)};\n')
     out.append('export const PHOTO_LEVEL_COUNT = 32;\n')
