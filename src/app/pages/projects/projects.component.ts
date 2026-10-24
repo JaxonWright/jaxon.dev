@@ -77,7 +77,7 @@ export class ProjectsComponent {
       links: [{ title: 'Website', link: 'https://testube.app' }, { title: 'GitHub', link: 'https://github.com/arbitrari/testube' }],
     },
     {
-      title: 'Bot Catalog for Grok Bot', logo: 'bot-catalog', unreleased: true,
+      title: 'Bot Catalog for Grok Bot', logo: 'bot-catalog',
       description: 'A template for building your own shareable catalog of Grok Bots that keep themselves up to date. Every bot checks its catalog daily for a newer release of itself, shows you the changelog, and updates only if you say so. The Catalog Manager bot sets up your catalog and runs it for you.',
       tags: ['GPL-3.0', 'Grok Bot', 'GitHub Actions', 'Python'],
       links: [
