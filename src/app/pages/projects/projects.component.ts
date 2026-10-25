@@ -177,8 +177,20 @@ export class ProjectsComponent {
     },
   ];
 
-  /** Grok Bots I've shared publicly: one entry per bot (logo key from gen-ascii-art.py, link to its x.ai page). */
+  /** Grok Bots from my Bot Catalog, in catalog order: one entry per bot (logo key from gen-ascii-art.py, link to its x.ai page). */
   readonly grokBots: Project[] = [
+    {
+      title: 'Beet', logo: 'beet',
+      description: 'Sends you a short news briefing every morning and afternoon, built around what you\'re into, as a clickable reader-style page. Pulls from X, RSS feeds, and the web, and stays quiet when nothing\'s new.',
+      tags: ['Grok Bot'],
+      links: [{ title: 'Try it', link: 'https://x.ai/bot/uAXoYTM5ZsMb59OwxqiT3' }],
+    },
+    {
+      title: 'Larry', logo: 'larry',
+      description: 'Sends you an original, never-aired Seinfeld episode, as if the show never ended. Every episode is period-accurate, from the \'90s to the near future, with neat caveats around the holidays. More nothing from the show about nothing.',
+      tags: ['Grok Bot'],
+      links: [{ title: 'Try it', link: 'https://x.ai/bot/-KMOoE7O15K9grZvG1cFF' }],
+    },
     {
       title: 'Penny', logo: 'penny',
       description: 'Hunts down every subscription you\'re paying for. Reads your bank charges and receipt emails, sorts everything into "likely cancel / worth a look / keep," links each cancel page, and cancels the ones you pick.',
@@ -186,10 +198,10 @@ export class ProjectsComponent {
       links: [{ title: 'Try it', link: 'https://x.ai/bot/xYeE15lS-qomwX0uWkqYJ' }],
     },
     {
-      title: 'Larry', logo: 'larry',
-      description: 'Sends you an original, never-aired Seinfeld episode, as if the show never ended. Every episode is period-accurate, from the \'90s to the near future, with neat caveats around the holidays. More nothing from the show about nothing.',
+      title: 'Spud', logo: 'spud',
+      description: 'A potato with exactly two things to say. Every reply is either "I am a poteto" or "I want to be french fries," no matter how hard you try to get anything else out of it.',
       tags: ['Grok Bot'],
-      links: [{ title: 'Try it', link: 'https://x.ai/bot/-KMOoE7O15K9grZvG1cFF' }],
+      links: [{ title: 'Try it', link: 'https://x.ai/bot/m_6wVETSdYfrJ8JWk501X' }],
     },
   ];
 

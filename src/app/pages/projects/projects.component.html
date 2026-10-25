@@ -31,7 +31,7 @@
   </div>
 
   <h2>Grok Bots</h2>
-  <p class="muted">bots I've built and shared publicly</p>
+  <p class="muted">from my <a href="https://github.com/JaxonWright/bot-catalog-for-grok-bot" target="_blank" rel="noopener">Bot Catalog</a> &middot; once you add one, it keeps itself up to date</p>
   @for (p of grokBots; track p.title) {
     <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
   }
