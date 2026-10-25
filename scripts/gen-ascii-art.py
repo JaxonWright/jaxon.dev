@@ -211,9 +211,9 @@ PROJECT_ICONS = {
     'nowpaper': ('src/assets/img/apps/nowPaper.png', False),
     # Beet (Grok Bot): the bot's catalog avatar (bots/beet), resting pose rendered at 396px, cropped to the circle.
     'beet': ('scripts/ascii-src/projects/beet.png', False),
-    # Penny (Grok Bot): the avatar from the bot's x.ai share card (og:image), cropped to the circle.
+    # Penny (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the circle.
     'penny': ('scripts/ascii-src/projects/penny.png', False),
-    # Larry (Grok Bot): avatar from the bot's x.ai share card, cropped to the cloud.
+    # Larry (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the cloud.
     'larry': ('scripts/ascii-src/projects/larry.png', False),
     # Spud (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the rounded rectangle.
     'spud': ('scripts/ascii-src/projects/spud.png', False),
