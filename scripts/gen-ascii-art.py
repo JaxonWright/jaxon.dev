@@ -209,10 +209,14 @@ PROJECT_ICONS = {
     'pixbar': ('src/assets/img/apps/pixbar.png', False),
     'xpaper': ('src/assets/img/apps/xpaper.png', False),
     'nowpaper': ('src/assets/img/apps/nowPaper.png', False),
-    # Penny (Grok Bot): the avatar from the bot's x.ai share card (og:image), cropped to the circle.
+    # Beet (Grok Bot): the bot's catalog avatar (bots/beet), resting pose rendered at 396px, cropped to the circle.
+    'beet': ('scripts/ascii-src/projects/beet.png', False),
+    # Penny (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the circle.
     'penny': ('scripts/ascii-src/projects/penny.png', False),
-    # Larry (Grok Bot): avatar from the bot's x.ai share card, cropped to the cloud.
+    # Larry (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the cloud.
     'larry': ('scripts/ascii-src/projects/larry.png', False),
+    # Spud (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the rounded rectangle.
+    'spud': ('scripts/ascii-src/projects/spud.png', False),
     # Bot Catalog for Grok Bot: the template README's header-dark.svg without the "for Grok Bot" line, rendered at 4x.
     'bot-catalog': ('scripts/ascii-src/projects/bot-catalog.png', False),
     'configura': ('src/assets/img/resume/configura.png', False),
@@ -293,7 +297,7 @@ PROJECT_ICON_CLASSIFY = {
 PROJECT_ICON_MAX_ROWS_FOR = {'digalog': 18, 'bot-catalog': 17}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
 
 # Grok Bot faces: same-size eye frames for the blink/glance animation on /projects.
-ANIMATED_FACES = ['penny', 'larry', 'bot-catalog']
+ANIMATED_FACES = ['penny', 'larry', 'bot-catalog', 'beet', 'spud']
 # Smallest tone-2 blob that counts as an eye. Stamped eyes (see stamp_eyes) are clean, so any size goes.
 FACE_MIN_EYE = {'bot-catalog': 2}
 
