@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, HostListener, inject, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgTemplateOutlet } from '@angular/common';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
@@ -265,10 +265,19 @@ export class ProjectsComponent {
     if (this.router.parseUrl(this.router.url).fragment === 'archived') this.showArchived.set(true);
   }
 
-  /** A plain click still opens the list when the URL already has the fragment. */
-  openArchived(event: MouseEvent): void {
-    if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-    this.showArchived.set(true);
+  /**
+   * RouterLink ignores a click whose fragment is already the URL, so no navigation
+   * event fires and the shell never scrolls. Bring that heading back to the top anyway.
+   */
+  @HostListener('click', ['$event'])
+  onSectionClick(event: MouseEvent): void {
+    const link = (event.target as Element | null)?.closest?.('a.section-anchor');
+    if (!link || event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const id = (link as HTMLAnchorElement).hash.slice(1);
+    if (!id) return;
+    if (id === 'archived') this.showArchived.set(true);
+    if (this.router.parseUrl(this.router.url).fragment !== id) return;
+    document.getElementById(id)?.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
   }
 
   /**

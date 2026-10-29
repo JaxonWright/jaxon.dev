@@ -115,6 +115,18 @@ describe('ProjectsComponent', () => {
     expect(el.querySelector('.archive-toggle')!.getAttribute('aria-expanded')).toBe('true');
   });
 
+  it('reopens archived projects when their heading link is clicked again', async () => {
+    const { el, fixture } = await render();
+    await TestBed.inject(Router).navigateByUrl('/projects#archived');
+    await fixture.whenStable();
+    el.querySelector<HTMLButtonElement>('.archive-toggle')!.click();
+    await fixture.whenStable();
+    expect(el.querySelector<HTMLElement>('#archived-projects')!.hidden).toBe(true);
+    el.querySelector<HTMLAnchorElement>('#archived .section-anchor')!.click();
+    await fixture.whenStable();
+    expect(el.querySelector<HTMLElement>('#archived-projects')!.hidden).toBe(false);
+  });
+
   it('expands archived projects when navigated to #archived', async () => {
     const { el, fixture } = await render();
     expect(el.querySelector<HTMLElement>('#archived-projects')!.hidden).toBe(true);

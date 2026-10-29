@@ -275,6 +275,22 @@ describe('AppComponent', () => {
       expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'smooth', block: 'start' }));
     });
 
+    it('scrolls again when a heading link is clicked for the fragment already in the URL', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(true, appRoutes);
+      const router = TestBed.inject(Router);
+      await router.navigateByUrl('/projects#grok-bots');
+      const heading = () => el(f).querySelector('#grok-bots');
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(heading()));
+      scroll.mockClear();
+      vi.stubGlobal('matchMedia', (q: string) => ({ matches: q.includes('reduce') }));
+      el(f).querySelector<HTMLAnchorElement>('#grok-bots .section-anchor')!.click();
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(heading()));
+      expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'auto', block: 'start' }));
+      expect(router.url).toBe('/projects#grok-bots');
+      expect(el(f).querySelector('app-projects')).not.toBeNull();
+    });
+
     it('scrolls to a section from its heading link without leaving the app', async () => {
       const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
       const f = await render(true, appRoutes);
