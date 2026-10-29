@@ -1,14 +1,22 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
 import { ProjectsComponent } from './projects.component';
 import contributions from '../../services/contributions.json';
 
 async function render() {
   const fixture = TestBed.createComponent(ProjectsComponent);
   await fixture.whenStable();
-  return { page: fixture.componentInstance, el: fixture.nativeElement as HTMLElement };
+  return { page: fixture.componentInstance, el: fixture.nativeElement as HTMLElement, fixture };
 }
 
 describe('ProjectsComponent', () => {
+  beforeEach(() => {
+    window.history.replaceState(null, '', '/');
+    TestBed.configureTestingModule({
+      providers: [provideRouter([{ path: 'projects', component: ProjectsComponent }])],
+    });
+  });
+
   it('lists every fetched contribution with its PRs', async () => {
     const { el } = await render();
     const prs = contributions.repos.reduce((n, r) => n + r.prs.length, 0);
@@ -51,7 +59,7 @@ describe('ProjectsComponent', () => {
 
   it('opens every project link in a new tab', async () => {
     const { el } = await render();
-    const links = [...el.querySelectorAll<HTMLAnchorElement>('a')];
+    const links = [...el.querySelectorAll<HTMLAnchorElement>('a:not(.section-anchor)')];
     expect(links.length).toBeGreaterThan(10);
     for (const a of links) {
       expect(a.target).toBe('_blank');
@@ -74,6 +82,46 @@ describe('ProjectsComponent', () => {
     face.dispatchEvent(new MouseEvent('mouseleave'));
     await fixture.whenStable();
     expect(face.textContent).toBe(resting);
+  });
+
+  it('gives every section a stable fragment id and heading link', async () => {
+    const { el } = await render();
+    const sections: [string, RegExp][] = [
+      ['open-source', /Notable open source contributions/],
+      ['personal-projects', /Personal projects/],
+      ['archived', /archived \(\d+\)/],
+      ['grok-bots', /Grok Bots/],
+      ['professional-work', /Professional work/],
+    ];
+    for (const [id, heading] of sections) {
+      const section = el.querySelector<HTMLElement>(`#${id}`);
+      expect(section, id).not.toBeNull();
+      expect(section!.textContent).toMatch(heading);
+      const link = section!.querySelector<HTMLAnchorElement>('a.section-anchor');
+      expect(link?.getAttribute('href'), id).toBe(`/projects#${id}`);
+      expect(link?.textContent).toBe('#');
+      expect(link?.target).toBe('');
+    }
+  });
+
+  it('expands archived projects when opened at #archived', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/projects#archived');
+    const fixture = TestBed.createComponent(ProjectsComponent);
+    await fixture.whenStable();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(fixture.componentInstance.showArchived()).toBe(true);
+    expect(el.querySelector<HTMLElement>('#archived-projects')!.hidden).toBe(false);
+    expect(el.querySelector('.archive-toggle')!.getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('expands archived projects when navigated to #archived', async () => {
+    const { el, fixture } = await render();
+    expect(el.querySelector<HTMLElement>('#archived-projects')!.hidden).toBe(true);
+    await TestBed.inject(Router).navigateByUrl('/projects#archived');
+    await fixture.whenStable();
+    expect(fixture.componentInstance.showArchived()).toBe(true);
+    expect(el.querySelector<HTMLElement>('#archived-projects')!.hidden).toBe(false);
   });
 
   it('draws a logo for every project, falling back to the GitHub mark', async () => {

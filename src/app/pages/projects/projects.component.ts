@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgTemplateOutlet } from '@angular/common';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { PROJECT_LOGOS, PROJECT_LOGO_FRAMES } from '@services/ascii-art';
 import { prefersReducedMotion } from '@services/motion';
 declare var require: any;
@@ -37,7 +38,7 @@ const contribLogo = (repo: string) => CONTRIB_LOGOS[repo] ?? (/omarchy/i.test(re
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css'],
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, RouterLink],
 })
 export class ProjectsComponent {
   /** Fetched at build time by scripts/fetch-contributions.mjs (committed snapshot as fallback). */
@@ -246,9 +247,28 @@ export class ProjectsComponent {
   readonly showArchived = signal(false);
   readonly activeCount = this.activePersonal.length;
 
+  private readonly router = inject(Router);
+
   constructor(private title: Title) {
     this.title.setTitle('Jaxon Wright - Projects');
     this.animateFaces();
+    // The routed URL is already committed when this component is created.
+    this.revealArchived();
+    const sub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) this.revealArchived();
+    });
+    inject(DestroyRef).onDestroy(() => sub.unsubscribe());
+  }
+
+  /** /projects#archived opens the collapsed list on a fresh load and on later navigations. */
+  private revealArchived(): void {
+    if (this.router.parseUrl(this.router.url).fragment === 'archived') this.showArchived.set(true);
+  }
+
+  /** A plain click still opens the list when the URL already has the fragment. */
+  openArchived(event: MouseEvent): void {
+    if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    this.showArchived.set(true);
   }
 
   /**
