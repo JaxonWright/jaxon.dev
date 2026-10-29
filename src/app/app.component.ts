@@ -57,8 +57,9 @@ export class AppComponent implements OnInit, OnDestroy {
   });
 
   private historyIndex = -1;
-  /** Element id the current route opens at (route data `anchor`); empty for the top of the page. */
+  /** Element id the current route opens at: the URL fragment, else route data `anchor`. */
   private anchor = '';
+  private scrollTimer?: ReturnType<typeof setTimeout>;
   private timers: ReturnType<typeof setTimeout>[] = [];
   private sub?: Subscription;
 
@@ -95,7 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (echo !== this.term.routeEcho()) this.term.routeEcho.set(echo);
       let route = this.router.routerState.snapshot.root;
       while (route.firstChild) route = route.firstChild;
-      this.anchor = route.data['anchor'] ?? '';
+      this.anchor = this.router.parseUrl(e.urlAfterRedirects).fragment || route.data['anchor'] || '';
       this.term.cleared.set(false);
       this.scrollSoon(true);
     });
@@ -113,6 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.logoAnim.destroy();
     this.sub?.unsubscribe();
     this.timers.forEach(t => clearTimeout(t));
+    clearTimeout(this.scrollTimer);
     clearInterval(this.typeTimer);
   }
 
@@ -295,14 +297,26 @@ export class AppComponent implements OnInit, OnDestroy {
     setTimeout(() => this.cmdInput?.nativeElement.focus({ preventScroll }), 0);
   }
 
-  private scrollSoon(top: boolean): void {
-    setTimeout(() => {
+  /**
+   * Scroll the screen to the route anchor, or to the top/bottom. A missing anchor is
+   * retried: the page can still be booting, or the section can render after navigation.
+   * Smooth unless the visitor prefers reduced motion. scroll-margin on the target
+   * keeps the heading clear of the floating theme control.
+   */
+  private scrollSoon(top: boolean, attempt = 0): void {
+    if (attempt === 0) clearTimeout(this.scrollTimer);
+    this.scrollTimer = setTimeout(() => {
       const el = this.screen?.nativeElement;
       if (!el) return;
       const target = top && this.anchor ? document.getElementById(this.anchor) : null;
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      if (top && this.anchor && !target && attempt < 30) {
+        this.scrollSoon(top, attempt + 1);
+        return;
+      }
+      const behavior: ScrollBehavior = prefersReducedMotion() ? 'auto' : 'smooth';
+      if (target) target.scrollIntoView({ behavior, block: 'start' });
       else if (top) el.scrollTo({ top: 0 });
-      else el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-    }, 30);
+      else el.scrollTo({ top: el.scrollHeight, behavior });
+    }, attempt === 0 ? 30 : 50);
   }
 }

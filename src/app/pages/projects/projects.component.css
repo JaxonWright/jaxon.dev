@@ -22,3 +22,15 @@
 .archive-toggle .caret { display: inline-block; width: 2ch; color: var(--t-primary); }
 .archive-toggle:hover, .archive-toggle:focus-visible { color: var(--t-text); outline: none; }
 .archive-toggle:hover .lbl, .archive-toggle:focus-visible .lbl { text-decoration: underline; }
+.archive-head { display: flex; align-items: center; }
+.archive-head .archive-toggle { flex: none; }
+/* Dim fragment marker. It stays in the line so the heading doesn't jump when it appears. */
+.section-anchor { margin-left: 0.8ch; color: var(--t-accent); text-decoration: none; opacity: 0; }
+h2:hover > .section-anchor, h2:focus-within > .section-anchor,
+.archive-head:hover .section-anchor, .archive-head:focus-within .section-anchor { opacity: 1; }
+/* Keep a jumped-to heading below the screen edge, and below the fixed theme control
+   on narrow viewports (same offset as the screen's top padding). */
+.projects h2[id], #archived { scroll-margin-top: 8px; }
+@media (max-width: 640px) {
+  .projects h2[id], #archived { scroll-margin-top: calc(env(safe-area-inset-top) + 46px); }
+}

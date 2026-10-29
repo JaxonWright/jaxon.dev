@@ -261,6 +261,74 @@ describe('AppComponent', () => {
     });
   });
 
+  describe('project fragments', () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+      vi.unstubAllGlobals();
+    });
+
+    it('scrolls to a section when /projects#id is opened directly', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(true, appRoutes);
+      await TestBed.inject(Router).navigateByUrl('/projects#grok-bots');
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(el(f).querySelector('#grok-bots')));
+      expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'smooth', block: 'start' }));
+    });
+
+    it('scrolls again when a heading link is clicked for the fragment already in the URL', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(true, appRoutes);
+      const router = TestBed.inject(Router);
+      await router.navigateByUrl('/projects#grok-bots');
+      const heading = () => el(f).querySelector('#grok-bots');
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(heading()));
+      scroll.mockClear();
+      vi.stubGlobal('matchMedia', (q: string) => ({ matches: q.includes('reduce') }));
+      el(f).querySelector<HTMLAnchorElement>('#grok-bots .section-anchor')!.click();
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(heading()));
+      expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'auto', block: 'start' }));
+      expect(router.url).toBe('/projects#grok-bots');
+      expect(el(f).querySelector('app-projects')).not.toBeNull();
+    });
+
+    it('scrolls to a section from its heading link without leaving the app', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(true, appRoutes);
+      const router = TestBed.inject(Router);
+      await router.navigateByUrl('/projects');
+      await f.whenStable();
+      const link = el(f).querySelector<HTMLAnchorElement>('#grok-bots .section-anchor')!;
+      expect(link.getAttribute('href')).toBe('/projects#grok-bots');
+      link.click();
+      await vi.waitFor(() => expect(router.url).toBe('/projects#grok-bots'));
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(el(f).querySelector('#grok-bots')));
+      expect(el(f).querySelector('app-projects')).not.toBeNull();
+    });
+
+    it('scrolls instantly when reduced motion is requested', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(true, appRoutes);
+      vi.stubGlobal('matchMedia', (q: string) => ({ matches: q.includes('reduce') }));
+      await TestBed.inject(Router).navigateByUrl('/projects#open-source');
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(el(f).querySelector('#open-source')));
+      expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'auto' }));
+    });
+
+    it('scrolls to a section once a first-visit boot finishes', async () => {
+      const scroll = vi.spyOn(Element.prototype, 'scrollIntoView');
+      const f = await render(false, appRoutes);
+      await TestBed.inject(Router).navigateByUrl('/projects#professional-work');
+      await key(f, document.body, { key: 'x' });
+      await vi.waitFor(() => expect(scroll.mock.contexts).toContain(el(f).querySelector('#professional-work')));
+    });
+
+    it('expands archived projects for #archived', async () => {
+      const f = await render(true, appRoutes);
+      await TestBed.inject(Router).navigateByUrl('/projects#archived');
+      await vi.waitFor(() => expect(el(f).querySelector<HTMLElement>('#archived-projects')!.hidden).toBe(false));
+    });
+  });
+
   describe('theme picker', () => {
     const css = (name: string) => document.documentElement.style.getPropertyValue(name);
     const meta = (name: string) => document.querySelector(`meta[name="${name}"]`)?.getAttribute('content');

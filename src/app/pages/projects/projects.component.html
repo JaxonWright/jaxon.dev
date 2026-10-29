@@ -1,5 +1,5 @@
 <article class="t-page projects">
-  <h2>Notable open source contributions</h2>
+  <h2 id="open-source">Notable open source contributions<a class="section-anchor" routerLink="/projects" fragment="open-source" queryParamsHandling="preserve" aria-label="Link to notable open source contributions">#</a></h2>
   <p class="muted">{{ contributions.length }} repos &middot; {{ prCount }} pull requests</p>
   @for (c of contributions; track c.repo) {
     <section class="block with-art" [class.wide]="isWide(c.logo)">
@@ -17,26 +17,31 @@
     </section>
   }
 
-  <h2>Personal projects</h2>
+  <h2 id="personal-projects">Personal projects<a class="section-anchor" routerLink="/projects" fragment="personal-projects" queryParamsHandling="preserve" aria-label="Link to personal projects">#</a></h2>
   <p class="muted">lead developer &middot; {{ activeCount }} active, {{ personal.length - activeCount }} archived</p>
   @for (p of activePersonal; track p.title) {
     <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
   }
-  <button type="button" class="archive-toggle" aria-controls="archived-projects" [attr.aria-expanded]="showArchived()"
-          (click)="showArchived.set(!showArchived())"><span class="caret" aria-hidden="true">{{ showArchived() ? '▼' : '►' }}</span><span class="lbl">archived ({{ archivedPersonal.length }})</span></button>
-  <div id="archived-projects" [hidden]="!showArchived()">
-    @for (p of archivedPersonal; track p.title) {
-      <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
-    }
-  </div>
+  <section id="archived">
+    <div class="archive-head">
+      <button type="button" class="archive-toggle" aria-controls="archived-projects" [attr.aria-expanded]="showArchived()"
+              (click)="showArchived.set(!showArchived())"><span class="caret" aria-hidden="true">{{ showArchived() ? '▼' : '►' }}</span><span class="lbl">archived ({{ archivedPersonal.length }})</span></button>
+      <a class="section-anchor" routerLink="/projects" fragment="archived" queryParamsHandling="preserve" aria-label="Link to archived projects">#</a>
+    </div>
+    <div id="archived-projects" [hidden]="!showArchived()">
+      @for (p of archivedPersonal; track p.title) {
+        <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
+      }
+    </div>
+  </section>
 
-  <h2>Grok Bots</h2>
+  <h2 id="grok-bots">Grok Bots<a class="section-anchor" routerLink="/projects" fragment="grok-bots" queryParamsHandling="preserve" aria-label="Link to Grok Bots">#</a></h2>
   <p class="muted">from my <a href="https://github.com/JaxonWright/bot-catalog-for-grok-bot" target="_blank" rel="noopener">Bot Catalog</a> &middot; once you add one, it keeps itself up to date</p>
   @for (p of grokBots; track p.title) {
     <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
   }
 
-  <h2>Professional work</h2>
+  <h2 id="professional-work">Professional work<a class="section-anchor" routerLink="/projects" fragment="professional-work" queryParamsHandling="preserve" aria-label="Link to professional work">#</a></h2>
   <p class="muted">paid work</p>
   @for (p of professional; track p.title) {
     <ng-container *ngTemplateOutlet="project; context: { $implicit: p }"></ng-container>
