@@ -187,6 +187,12 @@ export class ProjectsComponent {
       links: [{ title: 'Try it', link: 'https://x.ai/bot/uAXoYTM5ZsMb59OwxqiT3' }],
     },
     {
+      title: 'Clipper', logo: 'clipper',
+      description: 'Clips digital coupons at your grocery stores for the things you buy most, and tells you when and how to spend your rewards points.',
+      tags: ['Grok Bot'],
+      links: [{ title: 'Try it', link: 'https://x.ai/bot/OmQl-O-9WfvmuAtgF1Olc' }],
+    },
+    {
       title: 'Larry', logo: 'larry',
       description: 'Sends you an original, never-aired Seinfeld episode, as if the show never ended. Every episode is period-accurate, from the \'90s to the near future, with neat caveats around the holidays. More nothing from the show about nothing.',
       tags: ['Grok Bot'],
