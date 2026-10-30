@@ -217,6 +217,8 @@ PROJECT_ICONS = {
     'penny': ('scripts/ascii-src/projects/penny.png', False),
     # Larry (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the cloud.
     'larry': ('scripts/ascii-src/projects/larry.png', False),
+    # Polly (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the star.
+    'polly': ('scripts/ascii-src/projects/polly.png', False),
     # Spud (Grok Bot): catalog avatar, rendered the same way as Beet, cropped to the rounded rectangle.
     'spud': ('scripts/ascii-src/projects/spud.png', False),
     # Bot Catalog for Grok Bot: the template README's header-dark.svg without the "for Grok Bot" line, rendered at 4x.
@@ -299,7 +301,7 @@ PROJECT_ICON_CLASSIFY = {
 PROJECT_ICON_MAX_ROWS_FOR = {'digalog': 18, 'bot-catalog': 17}  # detailed multi-tone art gets more height (digalog: 103 cols, 309px, fits a 360px phone)
 
 # Grok Bot faces: same-size eye frames for the blink/glance animation on /projects.
-ANIMATED_FACES = ['penny', 'larry', 'bot-catalog', 'beet', 'spud', 'clipper']
+ANIMATED_FACES = ['penny', 'larry', 'bot-catalog', 'beet', 'spud', 'clipper', 'polly']
 # Smallest tone-2 blob that counts as an eye. Stamped eyes (see stamp_eyes) are clean, so any size goes.
 FACE_MIN_EYE = {'bot-catalog': 2}
 

@@ -205,6 +205,12 @@ export class ProjectsComponent {
       links: [{ title: 'Try it', link: 'https://x.ai/bot/xYeE15lS-qomwX0uWkqYJ' }],
     },
     {
+      title: 'Polly', logo: 'polly',
+      description: 'Builds your personal ballot guide: where, when, and how to vote at your address, plus sourced suggestions for every race and ballot measure, matched to the values and priorities you give her.',
+      tags: ['Grok Bot'],
+      links: [{ title: 'Try it', link: 'https://x.ai/bot/6XOZsuuQ_dYEyNLVkTmLD' }],
+    },
+    {
       title: 'Spud', logo: 'spud',
       description: 'A potato with exactly two things to say. Every reply is either "I am a poteto" or "I want to be french fries," no matter how hard you try to get anything else out of it.',
       tags: ['Grok Bot'],
