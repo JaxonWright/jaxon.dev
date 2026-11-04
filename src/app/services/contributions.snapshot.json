@@ -1,6 +1,6 @@
 {
   "author": "JaxonWright",
-  "fetchedAt": "2026-10-17T00:58:15.247Z",
+  "fetchedAt": "2026-11-04T00:52:04.654Z",
   "repos": [
     {
       "repo": "omacom/omarchy",
@@ -43,7 +43,7 @@
           "date": "2025-07-26"
         }
       ],
-      "stars": 44959,
+      "stars": 46184,
       "languages": [
         "Shell",
         "QML",
@@ -77,7 +77,7 @@
           "date": "2019-07-13"
         }
       ],
-      "stars": 2813,
+      "stars": 2811,
       "languages": [
         "TypeScript",
         "HTML",
@@ -131,6 +131,45 @@
       ]
     },
     {
+      "repo": "LawnchairLauncher/lawnchair",
+      "url": "https://github.com/LawnchairLauncher/lawnchair",
+      "description": "No clever tagline needed.",
+      "prs": [
+        {
+          "number": 7462,
+          "title": "feat(folder): add a setting to show a folder as its first app's icon",
+          "state": "open",
+          "url": "https://github.com/LawnchairLauncher/lawnchair/pull/7462",
+          "date": "2026-10-29"
+        },
+        {
+          "number": 7461,
+          "title": "feat(folder): add a setting so tapping a folder opens its first app",
+          "state": "open",
+          "url": "https://github.com/LawnchairLauncher/lawnchair/pull/7461",
+          "date": "2026-10-29"
+        },
+        {
+          "number": 7460,
+          "title": "fix(backup): restore into the database that gets opened",
+          "state": "merged",
+          "url": "https://github.com/LawnchairLauncher/lawnchair/pull/7460",
+          "date": "2026-11-02"
+        }
+      ],
+      "stars": 13851,
+      "languages": [
+        "Java",
+        "Kotlin",
+        "AIDL"
+      ],
+      "tags": [
+        "Java",
+        "Kotlin",
+        "AIDL"
+      ]
+    },
+    {
       "repo": "Dymstro/nova-chatmix-linux",
       "url": "https://github.com/Dymstro/nova-chatmix-linux",
       "description": "Using ChatMix with the SteelSeries Arctis Nova Pro Wireless on Linux",
@@ -175,7 +214,7 @@
           "date": "2025-06-04"
         }
       ],
-      "stars": 511,
+      "stars": 512,
       "languages": [
         "TypeScript",
         "HTML",
