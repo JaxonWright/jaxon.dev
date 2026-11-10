@@ -1,6 +1,6 @@
 {
   "author": "JaxonWright",
-  "fetchedAt": "2026-11-04T00:52:04.654Z",
+  "fetchedAt": "2026-11-10T05:34:49.839Z",
   "repos": [
     {
       "repo": "omacom/omarchy",
@@ -43,7 +43,7 @@
           "date": "2025-07-26"
         }
       ],
-      "stars": 46184,
+      "stars": 46691,
       "languages": [
         "Shell",
         "QML",
@@ -157,7 +157,7 @@
           "date": "2026-11-02"
         }
       ],
-      "stars": 13851,
+      "stars": 13907,
       "languages": [
         "Java",
         "Kotlin",
@@ -214,7 +214,7 @@
           "date": "2025-06-04"
         }
       ],
-      "stars": 512,
+      "stars": 513,
       "languages": [
         "TypeScript",
         "HTML",
@@ -276,6 +276,32 @@
         "Omarchy",
         "QML",
         "JavaScript"
+      ]
+    },
+    {
+      "repo": "thisisgm/flea",
+      "url": "https://github.com/thisisgm/flea",
+      "description": "The fastest GUI file manager on Omarchy.",
+      "prs": [
+        {
+          "number": 442,
+          "title": "feat(plugins): draw a send-target's own mark on its menu row",
+          "state": "open",
+          "url": "https://github.com/thisisgm/flea/pull/442",
+          "date": "2026-11-10"
+        }
+      ],
+      "stars": 1136,
+      "languages": [
+        "Rust",
+        "Shell",
+        "QML"
+      ],
+      "tags": [
+        "Omarchy",
+        "Rust",
+        "Shell",
+        "QML"
       ]
     }
   ]
