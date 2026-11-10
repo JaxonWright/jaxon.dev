@@ -225,6 +225,10 @@ PROJECT_ICONS = {
     'bot-catalog': ('scripts/ascii-src/projects/bot-catalog.png', False),
     'configura': ('src/assets/img/resume/configura.png', False),
     'volgistics': ('src/assets/img/resume/volgistics.png', False),
+    # quickshare: Quick Share mark (circle and arrows) from the project's README.
+    'quickshare': ('scripts/ascii-src/projects/quickshare.png', False),
+    # Flea, the Omarchy file manager: its spiral, from docs/images/icon.svg (MIT, Copyright (c) 2026 GM).
+    'flea': ('scripts/ascii-src/projects/flea.png', False),
 }
 
 
