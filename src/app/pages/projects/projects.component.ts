@@ -30,6 +30,7 @@ const TONES = ['', 'var(--t-primary)', 'var(--t-bg)', 'var(--t-text)', 'var(--t-
 const CONTRIB_LOGOS: Record<string, string> = {
   'mattlewis92/angular-calendar': 'angular', 'Cordobo/angularx-qrcode': 'angular',
   'Dymstro/nova-chatmix-linux': 'steelseries', 'ypMrg/omarchy-bambu-companion': 'bambulab',
+  'thisisgm/flea': 'flea',
 };
 const contribLogo = (repo: string) => CONTRIB_LOGOS[repo] ?? (/omarchy/i.test(repo) ? 'omarchy' : /angular/i.test(repo) ? 'angular' : 'github');
 
@@ -91,6 +92,18 @@ export class ProjectsComponent {
       description: 'Omarchy plugin to manage and configure peripherals across brands and product types.',
       tags: ['GPL-3.0', 'Omarchy', 'Go', 'QML'],
       links: [{ title: 'GitHub', link: 'https://github.com/arbitrari/omarchy-omnigear' }],
+    },
+    {
+      title: 'quickshare', logo: 'quickshare',
+      description: 'A command-line client for Android Quick Share on Linux. It sends and receives files, and can print a JSON event stream so a file manager or script can drive it.',
+      tags: ['GPL-3.0', 'Linux', 'Rust'],
+      links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/quickshare' }],
+    },
+    {
+      title: 'flea-quickshare', logo: 'flea',
+      description: 'A plugin for Flea, the Omarchy file manager, that sends files to nearby Android devices with Quick Share.',
+      tags: ['GPL-3.0', 'Omarchy', 'Python'],
+      links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/flea-quickshare' }],
     },
     {
       title: 'Omarchy Midnight', logo: 'midnight',

@@ -13,7 +13,7 @@ const EXCLUDE_OWNERS = ['jaxonwright', 'arbitrari', 'dunrite', 'volgistics'];
 /** Skip small/personal repos... */
 const MIN_STARS = 25;
 /** ...except ones Jaxon explicitly wants listed regardless of stars (and of having a merged PR). */
-const ALLOW_REPOS = ['omacom/omarchy', 'ErikBurdett/omarchy-wavebar', 'Dymstro/nova-chatmix-linux', 'ypMrg/omarchy-bambu-companion', 'rawritude/omarchy-oled-guard'];
+const ALLOW_REPOS = ['omacom/omarchy', 'ErikBurdett/omarchy-wavebar', 'Dymstro/nova-chatmix-linux', 'ypMrg/omarchy-bambu-companion', 'rawritude/omarchy-oled-guard', 'thisisgm/flea'];
 const allowed = repo => ALLOW_REPOS.some(a => a.toLowerCase() === repo.toLowerCase());
 /** Repos never listed, whatever their stars or PRs. */
 const EXCLUDE_REPOS = ['causefx/Organizr', 'aorumbayev/awesome-omarchy', 'rob2d/use-viewport-sizes'];
@@ -28,6 +28,7 @@ const PLATFORM_TAGS = {
   'Cordobo/angularx-qrcode': ['Angular'],
   'ypMrg/omarchy-bambu-companion': ['Omarchy', 'Bambu Lab'],
   'rawritude/omarchy-oled-guard': ['Omarchy'],
+  'thisisgm/flea': ['Omarchy'],
 };
 /** How many of the repo's languages (by bytes, from the GitHub languages API) to tag. */
 const MAX_LANGS = 3;

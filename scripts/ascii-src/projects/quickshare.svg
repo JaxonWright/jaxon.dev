@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>quickshare</title>
+  <!-- Quick Share mark from JaxonWright/quickshare (assets/logo.png) and
+       JaxonWright/flea-quickshare (assets/header.svg). A tracing of Google's
+       icon. quickshare is not affiliated with Google. -->
+  <circle cx="256" cy="256" r="256" fill="#4287f4"/>
+  <g fill="none" stroke="#fff" stroke-width="36" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M419.8 243.4A164 164 0 0 0 97.0 212.0H256M216 174l40 38-40 38"/>
+    <path d="M93.6 274.8A164 164 0 0 0 414.0 296.0H256M296 258l-40 38 40 38"/>
+  </g>
+</svg>
