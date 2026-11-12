@@ -106,6 +106,12 @@ export class ProjectsComponent {
       links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/flea-quickshare' }],
     },
     {
+      title: 'folio-quickshare', logo: 'folio',
+      description: 'A plugin for Folio, Omarchy\'s file manager, that sends and receives files with nearby Android devices over Quick Share.',
+      tags: ['GPL-3.0', 'Omarchy', 'Shell'],
+      links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/folio-quickshare' }],
+    },
+    {
       title: 'Omarchy Midnight', logo: 'midnight',
       description: 'A theme for Omarchy that gives you the inky black that your OLED monitor craves. It\'s also the default theme for this site.',
       tags: ['Omarchy', 'Theme'],
