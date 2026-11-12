@@ -229,6 +229,8 @@ PROJECT_ICONS = {
     'quickshare': ('scripts/ascii-src/projects/quickshare.png', False),
     # Flea, the Omarchy file manager: its spiral, from docs/images/icon.svg (MIT, Copyright (c) 2026 GM).
     'flea': ('scripts/ascii-src/projects/flea.png', False),
+    # Folio, Omarchy's file manager: its folder, from share/folio.svg (MIT, Copyright (c) 2026 David Heinemeier Hansson).
+    'folio': ('scripts/ascii-src/projects/folio.png', False),
 }
 
 
@@ -299,6 +301,9 @@ PROJECT_ICON_CLASSIFY = {
     # Bot Catalog: orange and violet bots -> primary, blue and green -> secondary, white faces and lettering -> light,
     # eyes -> cut-outs. Grays split by brightness, since edge pixels darken as they're averaged with the transparency.
     'bot-catalog': lambda r, g, b: (3 if r > 90 else 2) if max(r, g, b) - min(r, g, b) < 40 else 4 if g > r else 1,
+    # Folio's folder: the lilac back and blue front are the accent, the pale sheet is a cut-out,
+    # and the two rules on the sheet stay ink.
+    'folio': lambda r, g, b: 1 if (lum := 0.3 * r + 0.59 * g + 0.11 * b) < 155 and b < 210 else 2 if r > 160 and g > 170 and b > 210 and lum > 175 else 1,
     'nowpaper': lambda r, g, b: 3 if (r > 200 and g > 200) else 2 if (r + g + b) / 3 < 125 else 1,
 }
 

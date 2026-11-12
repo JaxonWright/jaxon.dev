@@ -100,8 +100,14 @@ export class ProjectsComponent {
       links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/quickshare' }],
     },
     {
+      title: 'folio-quickshare', logo: 'folio',
+      description: 'A plugin for Folio, Omarchy\'s file manager, that sends and receives files with nearby Android devices over Quick Share.',
+      tags: ['GPL-3.0', 'Omarchy', 'Shell'],
+      links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/folio-quickshare' }],
+    },
+    {
       title: 'flea-quickshare', logo: 'flea',
-      description: 'A plugin for Flea, the Omarchy file manager, that sends files to nearby Android devices with Quick Share.',
+      description: 'A plugin for Flea, an unofficial Omarchy file manager, that sends files to nearby Android devices over Quick Share.',
       tags: ['GPL-3.0', 'Omarchy', 'Python'],
       links: [{ title: 'GitHub', link: 'https://github.com/JaxonWright/flea-quickshare' }],
     },
