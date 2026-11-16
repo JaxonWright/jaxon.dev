@@ -31,8 +31,10 @@ const CONTRIB_LOGOS: Record<string, string> = {
   'mattlewis92/angular-calendar': 'angular', 'Cordobo/angularx-qrcode': 'angular',
   'Dymstro/nova-chatmix-linux': 'steelseries', 'ypMrg/omarchy-bambu-companion': 'bambulab',
   'thisisgm/flea': 'flea',
+  // Same Folio app icon as folio-quickshare (vendored share/folio.svg, block tones).
+  'omacom/folio': 'folio',
 };
-const contribLogo = (repo: string) => CONTRIB_LOGOS[repo] ?? (/omarchy/i.test(repo) ? 'omarchy' : /angular/i.test(repo) ? 'angular' : 'github');
+export const contribLogo = (repo: string) => CONTRIB_LOGOS[repo] ?? (/omarchy/i.test(repo) ? 'omarchy' : /angular/i.test(repo) ? 'angular' : 'github');
 
 @Component({
   selector: 'app-projects',
