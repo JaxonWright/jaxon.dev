@@ -2,8 +2,9 @@
 // Fetches Jaxon's pull requests to other people's repositories (GitHub search API)
 // and writes src/app/services/contributions.json (gitignored) for the /projects page.
 // Works unauthenticated; set GITHUB_TOKEN for higher rate limits. On any failure an
-// existing contributions.json is kept, or the committed contributions.snapshot.json is
-// written in, so builds never break. Refresh the snapshot by copying a fresh fetch over it.
+// existing contributions.json is kept (and put in star order), or the committed
+// contributions.snapshot.json is written in, so builds never break. Refresh the snapshot
+// by copying a fresh fetch over it.
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
@@ -32,7 +33,9 @@ const PLATFORM_TAGS = {
 };
 /** How many of the repo's languages (by bytes, from the GitHub languages API) to tag. */
 const MAX_LANGS = 3;
-const OUT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
+const OUT = process.env.CONTRIBUTIONS_OUT
+  ? resolve(process.env.CONTRIBUTIONS_OUT)
+  : resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
 const SNAPSHOT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.snapshot.json');
 
 /** Highest star count first. Full repo name, alphabetical, is the stable tiebreaker. */
@@ -41,6 +44,17 @@ const byStars = (a, b) => b.stars - a.stars || a.repo.localeCompare(b.repo);
 function writeContributions(payload) {
   payload.repos.sort(byStars);
   writeFileSync(OUT, JSON.stringify(payload, null, 2) + '\n');
+}
+
+/** Reorder an existing file by stars. Leaves it untouched when it is already sorted or unreadable. */
+function ensureSorted(path) {
+  let data;
+  try { data = JSON.parse(readFileSync(path, 'utf8')); }
+  catch { return; }
+  if (!Array.isArray(data.repos)) return;
+  const before = data.repos.map(r => r.repo);
+  data.repos.sort(byStars);
+  if (before.some((name, i) => name !== data.repos[i].repo)) writeFileSync(path, JSON.stringify(data, null, 2) + '\n');
 }
 
 const headers = { 'Accept': 'application/vnd.github+json', 'User-Agent': 'jaxon.dev-build' };
@@ -116,11 +130,17 @@ async function main() {
 }
 
 // --if-missing only makes sure the file exists (tests, dev server) without refetching.
-if (process.argv.includes('--if-missing') && existsSync(OUT)) process.exit(0);
+// A file left over from the old pull-request ordering is rewritten into star order.
+if (process.argv.includes('--if-missing') && existsSync(OUT)) {
+  ensureSorted(OUT);
+  process.exit(0);
+}
 
 main().catch(err => {
-  const fallback = existsSync(OUT) ? 'keeping the existing contributions.json' : 'using the committed snapshot';
-  if (!existsSync(OUT)) writeContributions(JSON.parse(readFileSync(SNAPSHOT, 'utf8')));
+  const hadFile = existsSync(OUT);
+  const fallback = hadFile ? 'keeping the existing contributions.json' : 'using the committed snapshot';
+  if (hadFile) ensureSorted(OUT);
+  else writeContributions(JSON.parse(readFileSync(SNAPSHOT, 'utf8')));
   console.warn(`⚠ Contributions fetch failed (${err.message}${err.cause ? `: ${err.cause.code || err.cause.message}` : ""}); ${fallback}.`);
   process.exit(0);
 });
