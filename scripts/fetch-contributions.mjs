@@ -3,8 +3,8 @@
 // and writes src/app/services/contributions.json (gitignored) for the /projects page.
 // Works unauthenticated; set GITHUB_TOKEN for higher rate limits. On any failure an
 // existing contributions.json is kept, or the committed contributions.snapshot.json is
-// copied in, so builds never break. Refresh the snapshot by copying a fresh fetch over it.
-import { copyFileSync, existsSync, writeFileSync } from 'fs';
+// written in, so builds never break. Refresh the snapshot by copying a fresh fetch over it.
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 const AUTHOR = 'JaxonWright';
@@ -34,6 +34,14 @@ const PLATFORM_TAGS = {
 const MAX_LANGS = 3;
 const OUT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
 const SNAPSHOT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.snapshot.json');
+
+/** Highest star count first. Full repo name, alphabetical, is the stable tiebreaker. */
+const byStars = (a, b) => b.stars - a.stars || a.repo.localeCompare(b.repo);
+
+function writeContributions(payload) {
+  payload.repos.sort(byStars);
+  writeFileSync(OUT, JSON.stringify(payload, null, 2) + '\n');
+}
 
 const headers = { 'Accept': 'application/vnd.github+json', 'User-Agent': 'jaxon.dev-build' };
 if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
@@ -101,11 +109,9 @@ async function main() {
     // Only repos with at least one merged PR (their open/closed PRs stay listed).
     if (!kept.length || (!allowed(r.repo) && !kept.some(p => p.state === 'merged'))) repos.delete(r.repo);
   }
-  const list = [...repos.values()].sort((a, b) =>
-    b.prs.filter(p => p.state === 'merged').length - a.prs.filter(p => p.state === 'merged').length
-    || b.prs.length - a.prs.length || a.repo.localeCompare(b.repo));
+  const list = [...repos.values()].sort(byStars);
   if (!list.length) throw new Error('no contributions found');
-  writeFileSync(OUT, JSON.stringify({ author: AUTHOR, fetchedAt: new Date().toISOString(), repos: list }, null, 2) + '\n');
+  writeContributions({ author: AUTHOR, fetchedAt: new Date().toISOString(), repos: list });
   console.log(`✓ Contributions: ${list.length} repos, ${list.reduce((n, r) => n + r.prs.length, 0)} PRs -> ${OUT}`);
 }
 
@@ -114,7 +120,7 @@ if (process.argv.includes('--if-missing') && existsSync(OUT)) process.exit(0);
 
 main().catch(err => {
   const fallback = existsSync(OUT) ? 'keeping the existing contributions.json' : 'using the committed snapshot';
-  if (!existsSync(OUT)) copyFileSync(SNAPSHOT, OUT);
+  if (!existsSync(OUT)) writeContributions(JSON.parse(readFileSync(SNAPSHOT, 'utf8')));
   console.warn(`⚠ Contributions fetch failed (${err.message}${err.cause ? `: ${err.cause.code || err.cause.message}` : ""}); ${fallback}.`);
   process.exit(0);
 });
