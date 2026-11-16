@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { ProjectsComponent, contribLogo } from './projects.component';
+import { compareContributions, contribLogo, ProjectsComponent } from './projects.component';
 import contributions from '../../services/contributions.json';
+import snapshot from '../../services/contributions.snapshot.json';
 
 async function render() {
   const fixture = TestBed.createComponent(ProjectsComponent);
@@ -26,6 +27,20 @@ describe('ProjectsComponent', () => {
       expect(link?.textContent).toBe(repo.repo);
       for (const pr of repo.prs) expect(el.querySelector(`a[href="${pr.url}"]`)?.textContent).toBe(`#${pr.number}`);
     }
+  });
+
+  it('lists open-source contributions by GitHub stars, highest first', async () => {
+    const rank = (repos: { repo: string; stars: number }[]) => [...repos].sort(compareContributions).map(r => r.repo);
+    // Equal stars use the repo full name, alphabetical. A higher count always wins.
+    expect(compareContributions({ repo: 'b/b', stars: 3 }, { repo: 'a/a', stars: 3 })).toBeGreaterThan(0);
+    expect(compareContributions({ repo: 'z/z', stars: 100 }, { repo: 'a/a', stars: 1 })).toBeLessThan(0);
+    expect(snapshot.repos.map(r => r.repo)).toEqual(rank(snapshot.repos));
+    expect(contributions.repos.map(r => r.repo)).toEqual(rank(contributions.repos));
+
+    const { page, el } = await render();
+    const expected = rank(contributions.repos);
+    expect(page.contributions.map(c => c.repo)).toEqual(expected);
+    expect([...el.querySelectorAll('h3 > a')].map(a => a.textContent)).toEqual(expected);
   });
 
   it('marks archived and unreleased projects and counts the active ones', async () => {

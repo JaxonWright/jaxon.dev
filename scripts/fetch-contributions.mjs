@@ -2,9 +2,10 @@
 // Fetches Jaxon's pull requests to other people's repositories (GitHub search API)
 // and writes src/app/services/contributions.json (gitignored) for the /projects page.
 // Works unauthenticated; set GITHUB_TOKEN for higher rate limits. On any failure an
-// existing contributions.json is kept, or the committed contributions.snapshot.json is
-// copied in, so builds never break. Refresh the snapshot by copying a fresh fetch over it.
-import { copyFileSync, existsSync, writeFileSync } from 'fs';
+// existing contributions.json is kept (and put in star order), or the committed
+// contributions.snapshot.json is written in, so builds never break. Refresh the snapshot
+// by copying a fresh fetch over it.
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 const AUTHOR = 'JaxonWright';
@@ -32,8 +33,29 @@ const PLATFORM_TAGS = {
 };
 /** How many of the repo's languages (by bytes, from the GitHub languages API) to tag. */
 const MAX_LANGS = 3;
-const OUT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
+const OUT = process.env.CONTRIBUTIONS_OUT
+  ? resolve(process.env.CONTRIBUTIONS_OUT)
+  : resolve(import.meta.dirname, '..', 'src/app/services/contributions.json');
 const SNAPSHOT = resolve(import.meta.dirname, '..', 'src/app/services/contributions.snapshot.json');
+
+/** Highest star count first. Full repo name, alphabetical, is the stable tiebreaker. */
+const byStars = (a, b) => b.stars - a.stars || a.repo.localeCompare(b.repo);
+
+function writeContributions(payload) {
+  payload.repos.sort(byStars);
+  writeFileSync(OUT, JSON.stringify(payload, null, 2) + '\n');
+}
+
+/** Reorder an existing file by stars. Leaves it untouched when it is already sorted or unreadable. */
+function ensureSorted(path) {
+  let data;
+  try { data = JSON.parse(readFileSync(path, 'utf8')); }
+  catch { return; }
+  if (!Array.isArray(data.repos)) return;
+  const before = data.repos.map(r => r.repo);
+  data.repos.sort(byStars);
+  if (before.some((name, i) => name !== data.repos[i].repo)) writeFileSync(path, JSON.stringify(data, null, 2) + '\n');
+}
 
 const headers = { 'Accept': 'application/vnd.github+json', 'User-Agent': 'jaxon.dev-build' };
 if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
@@ -101,20 +123,24 @@ async function main() {
     // Only repos with at least one merged PR (their open/closed PRs stay listed).
     if (!kept.length || (!allowed(r.repo) && !kept.some(p => p.state === 'merged'))) repos.delete(r.repo);
   }
-  const list = [...repos.values()].sort((a, b) =>
-    b.prs.filter(p => p.state === 'merged').length - a.prs.filter(p => p.state === 'merged').length
-    || b.prs.length - a.prs.length || a.repo.localeCompare(b.repo));
+  const list = [...repos.values()].sort(byStars);
   if (!list.length) throw new Error('no contributions found');
-  writeFileSync(OUT, JSON.stringify({ author: AUTHOR, fetchedAt: new Date().toISOString(), repos: list }, null, 2) + '\n');
+  writeContributions({ author: AUTHOR, fetchedAt: new Date().toISOString(), repos: list });
   console.log(`✓ Contributions: ${list.length} repos, ${list.reduce((n, r) => n + r.prs.length, 0)} PRs -> ${OUT}`);
 }
 
 // --if-missing only makes sure the file exists (tests, dev server) without refetching.
-if (process.argv.includes('--if-missing') && existsSync(OUT)) process.exit(0);
+// A file left over from the old pull-request ordering is rewritten into star order.
+if (process.argv.includes('--if-missing') && existsSync(OUT)) {
+  ensureSorted(OUT);
+  process.exit(0);
+}
 
 main().catch(err => {
-  const fallback = existsSync(OUT) ? 'keeping the existing contributions.json' : 'using the committed snapshot';
-  if (!existsSync(OUT)) copyFileSync(SNAPSHOT, OUT);
+  const hadFile = existsSync(OUT);
+  const fallback = hadFile ? 'keeping the existing contributions.json' : 'using the committed snapshot';
+  if (hadFile) ensureSorted(OUT);
+  else writeContributions(JSON.parse(readFileSync(SNAPSHOT, 'utf8')));
   console.warn(`⚠ Contributions fetch failed (${err.message}${err.cause ? `: ${err.cause.code || err.cause.message}` : ""}); ${fallback}.`);
   process.exit(0);
 });

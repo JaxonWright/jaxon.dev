@@ -20,7 +20,12 @@ export interface Project {
   note?: string;
 }
 export interface PullRequest { number: number; title: string; state: 'merged' | 'open' | 'closed'; url: string; date: string; }
-export interface Contribution { repo: string; url: string; description: string; prs: PullRequest[]; languages?: string[]; tags?: string[]; }
+export interface Contribution { repo: string; url: string; description: string; prs: PullRequest[]; languages?: string[]; tags?: string[]; stars: number; }
+
+/** Highest GitHub star count first. Full repo name, alphabetical, is the stable tiebreaker. */
+export function compareContributions(a: { stars: number; repo: string }, b: { stars: number; repo: string }): number {
+  return b.stars - a.stars || a.repo.localeCompare(b.repo);
+}
 export interface Cell { text: string; fg: string; bg: string; }
 
 // Minor tone is the page background, so light details (the Volgistics V, testube's tt) read as cut-outs on every theme.
@@ -46,9 +51,12 @@ export const contribLogo = (repo: string) => CONTRIB_LOGOS[repo] ?? (/omarchy/i.
 export class ProjectsComponent {
   /** Fetched at build time by scripts/fetch-contributions.mjs (committed snapshot as fallback). */
   readonly contributions: (Contribution & { logo: string; merged: number })[] =
-    (require('../../services/contributions.json').repos as Contribution[]).map(r => ({
-      ...r, logo: contribLogo(r.repo), merged: r.prs.filter(p => p.state === 'merged').length,
-    }));
+    (require('../../services/contributions.json').repos as Contribution[])
+      .slice()
+      .sort(compareContributions)
+      .map(r => ({
+        ...r, logo: contribLogo(r.repo), merged: r.prs.filter(p => p.state === 'merged').length,
+      }));
   readonly prCount = this.contributions.reduce((n, r) => n + r.prs.length, 0);
 
   private readonly cache = new Map<string, Cell[][]>();
