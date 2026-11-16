@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { ProjectsComponent } from './projects.component';
+import { ProjectsComponent, contribLogo } from './projects.component';
 import contributions from '../../services/contributions.json';
 
 async function render() {
@@ -140,5 +140,21 @@ describe('ProjectsComponent', () => {
     const { page, el } = await render();
     expect(page.logo('not-a-logo')).toEqual(page.logo('github'));
     for (const art of el.querySelectorAll('.proj-logo')) expect(art.textContent!.trim()).not.toBe('');
+  });
+
+  it('draws the Folio app icon for omacom/folio, the same mark as folio-quickshare', async () => {
+    expect(contribLogo('omacom/folio')).toBe('folio');
+    expect(contribLogo('thisisgm/flea')).toBe('flea');
+    expect(contribLogo('omacom/omarchy')).toBe('omarchy');
+    expect(contribLogo('mattlewis92/angular-calendar')).toBe('angular');
+    expect(contribLogo('someone/unknown-repo')).toBe('github');
+    const { page, el } = await render();
+    const project = el.querySelector('[aria-label="folio-quickshare logo"]')!;
+    expect(project.textContent!.trim()).not.toBe('');
+    expect(page.logo(contribLogo('omacom/folio'))).toEqual(page.logo('folio'));
+    const entry = page.contributions.find(c => c.repo.toLowerCase() === 'omacom/folio');
+    if (!entry) return;
+    expect(entry.logo).toBe('folio');
+    expect(el.querySelector('[aria-label="omacom/folio logo"]')?.textContent).toBe(project.textContent);
   });
 });
