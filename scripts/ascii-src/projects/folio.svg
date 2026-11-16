@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <title>Folio</title>
-  <!-- Folio's folder, from https://github.com/omacom/folio share/folio.svg.
-       Copyright (c) 2026 David Heinemeier Hansson. MIT License: see folio-icon-LICENSE next to this file.
-       The hard shadows are left out so the generator keeps the folder. -->
+  <title>Files</title>
+  <!-- Folio's app icon, from https://github.com/omacom/folio share/folio.svg
+       at 841879e93fddfc093d58fa3b040785387423bb17 (unchanged at 795e741495789641d58ffc294e8ea4e62bc8fe21).
+       share/folio.desktop sets Icon=folio. Copyright (c) 2026 David Heinemeier Hansson.
+       MIT License: see folio-icon-LICENSE next to this file. -->
+  <desc>A folder seen from the front, in Tokyo Night colors: a lilac back with its tab, a pale sheet of paper inside, and a blue front panel, each with a hard shadow, on a transparent background.</desc>
   <defs>
     <linearGradient id="front" x1="0" y1="0" x2="1" y2="1">
       <stop stop-color="#7aa2f7"/>
@@ -10,10 +12,17 @@
     </linearGradient>
   </defs>
   <g transform="translate(256 256) scale(1.2) translate(-256 -260)">
+  <!-- Back of the folder with its tab; one hard shadow, as Hype's slides. -->
+  <path d="M84 118Q84 98 104 98H196Q206 98 212 106L226 126H408Q428 126 428 146V392Q428 412 408 412H104Q84 412 84 392Z" fill="#0e0f17" transform="translate(0 8)"/>
   <path d="M84 118Q84 98 104 98H196Q206 98 212 106L226 126H408Q428 126 428 146V392Q428 412 408 412H104Q84 412 84 392Z" fill="#bb9af7"/>
+  <!-- A sheet of paper inside, peeking over the front. -->
+  <rect x="124" y="160" width="264" height="190" rx="14" fill="#0e0f17" transform="translate(0 6)"/>
   <rect x="124" y="160" width="264" height="190" rx="14" fill="#c0caf5"/>
   <rect x="156" y="194" width="124" height="16" rx="8" fill="#565f89"/>
-  <rect x="156" y="226" width="176" height="16" rx="8" fill="#565f89"/>
+  <rect x="156" y="226" width="176" height="16" rx="8" fill="#565f89" opacity=".55"/>
+  <!-- Front of the folder. -->
+  <rect x="84" y="250" width="344" height="172" rx="20" fill="#0e0f17" transform="translate(0 8)"/>
   <rect x="84" y="250" width="344" height="172" rx="20" fill="url(#front)"/>
+  <rect x="112" y="374" width="96" height="14" rx="7" fill="#1a1b26" opacity=".35"/>
   </g>
 </svg>

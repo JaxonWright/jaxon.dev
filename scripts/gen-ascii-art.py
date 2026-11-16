@@ -229,7 +229,8 @@ PROJECT_ICONS = {
     'quickshare': ('scripts/ascii-src/projects/quickshare.png', False),
     # Flea, the Omarchy file manager: its spiral, from docs/images/icon.svg (MIT, Copyright (c) 2026 GM).
     'flea': ('scripts/ascii-src/projects/flea.png', False),
-    # Folio, Omarchy's file manager: its folder, from share/folio.svg (MIT, Copyright (c) 2026 David Heinemeier Hansson).
+    # Folio, Omarchy's file manager: share/folio.svg @ 841879e (MIT, Copyright (c) 2026 David Heinemeier Hansson).
+    # Desktop entry Icon=folio. Lilac back is primary, the blue flap is the accent, the sheet is a cut-out.
     'folio': ('scripts/ascii-src/projects/folio.png', False),
 }
 
@@ -301,9 +302,9 @@ PROJECT_ICON_CLASSIFY = {
     # Bot Catalog: orange and violet bots -> primary, blue and green -> secondary, white faces and lettering -> light,
     # eyes -> cut-outs. Grays split by brightness, since edge pixels darken as they're averaged with the transparency.
     'bot-catalog': lambda r, g, b: (3 if r > 90 else 2) if max(r, g, b) - min(r, g, b) < 40 else 4 if g > r else 1,
-    # Folio's folder: the lilac back and blue front are the accent, the pale sheet is a cut-out,
-    # and the two rules on the sheet stay ink.
-    'folio': lambda r, g, b: 1 if (lum := 0.3 * r + 0.59 * g + 0.11 * b) < 155 and b < 210 else 2 if r > 160 and g > 170 and b > 210 and lum > 175 else 1,
+    # Folio: pale sheet -> cut-out (2). Blue flap (green above red) -> accent (4), including the
+    # corner the resize darkens. Lilac back and the two rules on the sheet stay primary (1).
+    'folio': lambda r, g, b: 2 if (lum := 0.3 * r + 0.59 * g + 0.11 * b) > 180 and g > 185 and r > 170 and b > 220 and abs(g - r) < 30 else 4 if b > r + 40 and g > r + 12 and lum > 110 else 4 if b > r + 40 and g > r + 20 and lum > 90 else 1,
     'nowpaper': lambda r, g, b: 3 if (r > 200 and g > 200) else 2 if (r + g + b) / 3 < 125 else 1,
 }
 
@@ -373,6 +374,19 @@ def face_frames(cells, min_eye=4):
             'down': frame(shift(0, 2))}
 
 
+def prep_folio(im: Image.Image) -> Image.Image:
+    """Folio's icon offsets a near-black shadow under each shape. At 24 columns that
+    shadow is a stray strip, and a half-covered corner composites onto black and
+    falls out of the blue flap. Drop the shadow and keep the remaining edge pixels solid."""
+    import numpy as np
+    rgba = np.array(im.convert('RGBA'))
+    rgb = rgba[..., :3].astype(np.int16)
+    lum = 0.3 * rgb[..., 0] + 0.59 * rgb[..., 1] + 0.11 * rgb[..., 2]
+    rgba[(lum < 40) & (rgba[..., 3] > 0), 3] = 0
+    rgba[..., 3] = np.where(rgba[..., 3] > 100, 255, 0).astype(np.uint8)
+    return Image.fromarray(rgba)
+
+
 PROJECT_ICON_PREP = {
     # Wordmark-only sources: crop the mark / first letter, thicken hairlines.
     # Fill the outlined letters, then erode so neighbouring letters stay separate.
@@ -380,6 +394,7 @@ PROJECT_ICON_PREP = {
     'passageway': lambda im: (lambda f: (f.putalpha(f.getchannel('A').filter(ImageFilter.MaxFilter(13))), f)[1])(im.convert('RGBA')),
     'midnight': lambda im: (lambda f: (f.putalpha(f.getchannel('A').filter(ImageFilter.MinFilter(13))), f)[1])(fill_outlined(im)),
     'omnigear': lambda im: fill_shadow_gaps(im.convert('RGBA'), letters={1, 2}),  # M, N
+    'folio': prep_folio,
 }
 
 
