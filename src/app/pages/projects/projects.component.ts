@@ -222,6 +222,12 @@ export class ProjectsComponent {
       links: [{ title: 'Try it', link: 'https://x.ai/bot/OmQl-O-9WfvmuAtgF1Olc' }],
     },
     {
+      title: 'Duke', logo: 'duke',
+      description: 'Helps you win your fantasy football leagues on Sleeper, ESPN, Yahoo, NFL, or CBS with waiver and FAAB picks, trade ideas, start/sit calls, and the injury news that matters, in a blunt old-school coach\'s voice.',
+      tags: ['Grok Bot'],
+      links: [{ title: 'Try it', link: 'https://x.ai/bot/A5EbrHtrTSGzxnJCpAmZs' }],
+    },
+    {
       title: 'Larry', logo: 'larry',
       description: 'Sends you an original, never-aired Seinfeld episode, as if the show never ended. Every episode is period-accurate, from the \'90s to the near future, with neat caveats around the holidays. More nothing from the show about nothing.',
       tags: ['Grok Bot'],
